@@ -1,0 +1,19 @@
+{
+  "name": "frisby",
+  "description": "Automated REST API Endpoint Testing",
+  "version": "0.0.1",
+  "author": "Vance Lucas <vance@vancelucas.com>",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/indexzero/api-easy.git" 
+  },
+  "keywords": ["testing", "api", "REST", "vows"],
+  "dependencies": {
+    "request": "2.x.x",
+    "underscore": "1.2.x",
+    "vows": "0.5.x"
+  },
+  "devDependencies": {},
+  "main": "./lib/frisby",
+  "engines": { "node": ">= 0.4.7" }
+}
