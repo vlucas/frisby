@@ -5,13 +5,13 @@
   "author": "Vance Lucas <vance@vancelucas.com>",
   "repository": {
     "type": "git",
-    "url": "http://github.com/indexzero/api-easy.git" 
+    "url": "http://github.com/brightbit/frisby" 
   },
-  "keywords": ["testing", "api", "REST", "vows"],
+  "keywords": ["testing", "api", "REST", "vows", "jasmine"],
   "dependencies": {
     "request": "2.x.x",
     "underscore": "1.2.x",
-    "vows": "0.5.x"
+    "querystring": ">=0.0.4"
   },
   "devDependencies": {},
   "main": "./lib/frisby",
