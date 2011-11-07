@@ -7,7 +7,7 @@
     "type": "git",
     "url": "http://github.com/brightbit/frisby" 
   },
-  "keywords": ["testing", "api", "REST", "vows", "jasmine"],
+  "keywords": ["testing", "api", "REST", "jasmine", "bdd", "frisby"],
   "dependencies": {
     "request": "2.x.x",
     "underscore": "1.2.x",
