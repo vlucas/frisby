@@ -12,13 +12,14 @@ Install Frisby from NPM:
 
 ## Creating Tests
 
+Frisby tests start with `frisby.toss` with a description of the test followed by one of `get`, `post`, `put`, `delete`, or `head`, and ending with `run` to generate the resulting jasmine spec test. There is a `expectStatus` method built in to more easily test HTTP status codes. Any other jasmine `expect` tests should be done inside the `after` callback.
+
+Each set of unique sequences or API endpoint tests should be started with new `frisby.toss` method calls instead of trying to chain multiple HTTP requests together.
+
 ```javascript
 
 var frisby = require('../lib/frisby');
 
-
-// TESTS
-// ====================================================
 var URL = 'http://localhost:3000/';
 var URL_AUTH = 'http://username:password@localhost:3000/';
 
@@ -32,6 +33,9 @@ frisby.toss('GET user johndoe')
   .expectStatus(200)
   .after(function(err, res, body) {
   	var user = JSON.parse(body);
+
+  	// Normal jasmine style assertions
+  	expect(1+1).toEqual(2);
 
   	// Use data from previous result in next test
     frisby.toss('Update user')
