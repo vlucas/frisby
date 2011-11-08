@@ -14,6 +14,10 @@ frisby.toss('Get Brightbit Facebook Page')
     likes: Number,
     can_post: Boolean
   })
+  .expectBodyJSONContains({
+    id: "111848702235277",
+    website: "http://brightb.it"
+  })
 .run();
 
 

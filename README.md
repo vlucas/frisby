@@ -24,9 +24,9 @@ var URL = 'http://localhost:3000/';
 var URL_AUTH = 'http://username:password@localhost:3000/';
 
 frisby.toss('GET user johndoe')
-  .globalSetup({
+  .globalSetup({ // globalSetup is for ALL requests
     request: {
-      headers: { 'Referer': 'http://google.com' }
+      headers: { 'X-Auth-Token': 'fa8426a0-8eaf-4d22-8e13-7c1b16a9370c' }
     }
   })
   .get(URL + '/users/3.json')
