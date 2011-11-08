@@ -1,7 +1,7 @@
 {
   "name": "frisby",
   "description": "Automated REST API Endpoint Testing",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Vance Lucas <vance@vancelucas.com>",
   "repository": {
     "type": "git",
