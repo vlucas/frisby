@@ -28,15 +28,6 @@ frisby.toss('Get Brightbit Facebook Page')
 .run();
 
 
-// Setup for this test only
-frisby.toss('Get Brightbit Facebook Page with custom Accept header')
-  .addHeader('Accept', 'text/javascript') // Overrides global 'Accept' header set above
-  .get('https://graph.facebook.com/111848702235277')
-  .expectStatus(200)
-  .expectHeaderContains('content-type', 'text/javascript')
-.run();
-
-
 // Test error reponse
 frisby.toss('Get Brightbit Facebook Page Likes')
   .get('https://graph.facebook.com/111848702235277/likes')
