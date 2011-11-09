@@ -4,11 +4,18 @@
  */
 var frisby = require('../lib/frisby');
 
+// Global setup for all tests
+frisby.globalSetup({
+  request: {
+    headers:{'Accept': 'application/json'}
+  }
+});
+
 
 frisby.toss('Get Brightbit Facebook Page')
   .get('https://graph.facebook.com/111848702235277')
   .expectStatus(200)
-  .expectHeaderContains('content-type', 'text/javascript')
+  .expectHeaderContains('content-type', 'application/json')
   .expectBodyJSONTypes({
     id: String,
     likes: Number,
@@ -21,18 +28,12 @@ frisby.toss('Get Brightbit Facebook Page')
 .run();
 
 
-// With custom headers
+// Setup for this test only
 frisby.toss('Get Brightbit Facebook Page with custom Accept header')
-  .setup({
-    request: {
-      headers: {
-        'Accept': 'application/json'
-      }
-    }
-  })
+  .addHeader('Accept', 'text/javascript') // Overrides global 'Accept' header set above
   .get('https://graph.facebook.com/111848702235277')
   .expectStatus(200)
-  .expectHeaderContains('content-type', 'application/json')
+  .expectHeaderContains('content-type', 'text/javascript')
 .run();
 
 
