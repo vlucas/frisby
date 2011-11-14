@@ -1,7 +1,7 @@
 {
   "name": "frisby",
   "description": "REST API Endpoint Testing built on Jasmine",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "Vance Lucas <vance@vancelucas.com>",
   "repository": {
     "type": "git",
