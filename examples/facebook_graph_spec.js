@@ -16,12 +16,12 @@ frisby.toss('Get Brightbit Facebook Page')
   .get('https://graph.facebook.com/111848702235277')
   .expectStatus(200)
   .expectHeaderContains('content-type', 'application/json')
-  .expectBodyJSONTypes({
+  .expectJSONTypes({
     id: String,
     likes: Number,
     can_post: Boolean
   })
-  .expectBodyJSONContains({
+  .expectJSON({
     id: "111848702235277",
     website: "http://brightb.it"
   })
@@ -32,11 +32,15 @@ frisby.toss('Get Brightbit Facebook Page')
 frisby.toss('Get Brightbit Facebook Page Likes')
   .get('https://graph.facebook.com/111848702235277/likes')
   .expectStatus(400)
-  .expectBodyJSONTypes('error', {
-    message: String,
-    type: String
+  .expectJSONTypes({
+    error: {
+      message: String,
+      type: String
+    }
   })
-  .expectBodyJSONContains('error', {
-    type: "OAuthException"
+  .expectJSON({
+    error: {
+      type: "OAuthException"
+    }
   })
 .run();
