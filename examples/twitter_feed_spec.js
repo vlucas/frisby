@@ -18,6 +18,7 @@ frisby.toss('Get Brightbit Twitter feed')
   .expectHeaderContains('content-type', 'application/json')
   .expectJSON('0', {
     id_str: "138694438598868993",
+    place: function(val) { expect(val).toMatchOrBeNull("Oklahoma City, OK"); },
     user: {
       verified: false,
       location: "Oklahoma City, OK",
