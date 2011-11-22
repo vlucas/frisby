@@ -18,7 +18,7 @@ frisby.toss('Get Brightbit Twitter feed')
   .expectHeaderContains('content-type', 'application/json')
   .expectJSON('0', {
     id_str: "138694438598868993",
-    place: function(val) { expect(val).toMatchOrBeNull("Oklahoma City, OK"); },
+    place: function(val) { expect(val).toMatchOrBeNull("Oklahoma City, OK"); }, // Custom matcher
     user: {
       verified: false,
       location: "Oklahoma City, OK",
@@ -28,6 +28,7 @@ frisby.toss('Get Brightbit Twitter feed')
   .expectJSONTypes('0', {
     id_str: String,
     retweeted: Boolean,
+    in_reply_to_screen_name: function(val) { expect(val).toBeTypeOrNull(String); }, // Custom matcher
     user: {
       verified: Boolean,
       location: String,
