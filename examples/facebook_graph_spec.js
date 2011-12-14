@@ -12,7 +12,7 @@ frisby.globalSetup({
 });
 
 
-frisby.toss('Get Brightbit Facebook Page')
+frisby.create('Get Brightbit Facebook Page')
   .get('https://graph.facebook.com/111848702235277')
   .expectStatus(200)
   .expectHeaderContains('content-type', 'application/json')
@@ -25,11 +25,11 @@ frisby.toss('Get Brightbit Facebook Page')
     id: "111848702235277",
     website: "http://brightb.it"
   })
-.run();
+.toss();
 
 
 // Test error reponse
-frisby.toss('Get Brightbit Facebook Page Likes')
+frisby.create('Get Brightbit Facebook Page Likes')
   .get('https://graph.facebook.com/111848702235277/likes')
   .expectStatus(400)
   .expectJSONTypes({
@@ -43,4 +43,4 @@ frisby.toss('Get Brightbit Facebook Page Likes')
       type: "OAuthException"
     }
   })
-.run();
+.toss();

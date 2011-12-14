@@ -12,12 +12,11 @@ frisby.globalSetup({
 });
 
 
-frisby.toss('Get Brightbit Twitter feed')
+frisby.create('Get Brightbit Twitter feed')
   .get('https://api.twitter.com/1/statuses/user_timeline.json?include_entities=true&include_rts=true&screen_name=brightbit&count=2')
   .expectStatus(200)
   .expectHeaderContains('content-type', 'application/json')
   .expectJSON('0', {
-    id_str: "138694438598868993",
     place: function(val) { expect(val).toMatchOrBeNull("Oklahoma City, OK"); }, // Custom matcher
     user: {
       verified: false,
@@ -35,4 +34,4 @@ frisby.toss('Get Brightbit Twitter feed')
       url: String
     }
   })
-.run();
+.toss();
