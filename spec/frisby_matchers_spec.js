@@ -50,6 +50,22 @@ describe('Frisby matchers', function() {
   });
 
 
+  it('toContainJSON should not match with non-existent JSON key', function() {
+    // Set fake JSON body
+    var testJson = {
+      test_str: "I am a string!",
+      test_int: 42,
+      test_float: 42.42
+    };
+
+    // Expectation
+    expect(testJson).not.toContainJson({
+      test_str: "I am a string!",
+      test: "Some random value that won't match anyways" // Key that does not exist
+    });
+  });
+
+
   it('JSONTypes should match String', function() {
     // Set fake JSON body
     var testJson = {

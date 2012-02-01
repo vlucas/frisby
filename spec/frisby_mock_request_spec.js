@@ -84,6 +84,54 @@ describe('Frisby matchers', function() {
   });
 
 
+  it('expectJSON should NOT match ONE object in an array with path ending with question mark', function() {
+    // Mock API
+    var mockFn = mockRequest.mock()
+    .get('/test-object-array')
+      .respond({
+        statusCode: 200,
+        body: fixtures.arrayOfObjects
+      })
+    .run();
+
+    var f1 = frisby.create('Mock should not match one of the objects')
+      .get('http://mock-request/test-object-array', {mock: mockFn})
+      .expectJSON('test_subjects.?', { // ? == ONE object in 'test_subjects' array
+        test_str: "I am a string two nonsense!",
+        test_int: 4433
+      })
+      .exceptionHandler(function(e) {
+        // Expect Excepiton from 'expectJSON' due to no match being found
+        expect(e.message).toEqual("Expected 'I am a string three!' to match 'I am a string two nonsense!' on key 'test_str'");
+      })
+      .toss();
+  });
+
+
+  it('expectJSONTypes should NOT match ONE object in an array with path ending with question mark', function() {
+    // Mock API
+    var mockFn = mockRequest.mock()
+    .get('/test-object-array')
+      .respond({
+        statusCode: 200,
+        body: fixtures.arrayOfObjects
+      })
+    .run();
+
+    var f1 = frisby.create('Mock should not match one of the objects')
+      .get('http://mock-request/test-object-array', {mock: mockFn})
+      .expectJSONTypes('test_subjects.?', { // ? == ONE object in 'test_subjects' array
+        test_str: Boolean,
+        test_int: String
+      })
+      .exceptionHandler(function(e) {
+        // Expect Excepiton from 'expectJSONTypes' due to no match being found
+        expect(e.message).toEqual("Expected 'string' to be type 'boolean' on key 'test_str'");
+      })
+      .toss();
+  });
+
+
   it('expectJSONLength should properly count arrays, strings, and objects', function() {
     // Mock API
     var mockFn = mockRequest.mock()
