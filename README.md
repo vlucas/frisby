@@ -1,6 +1,6 @@
 # Frisby
 
-A node.js NPM module that makes testing API endpoints easy.
+A node.js NPM module that makes testing API endpoints easy, fast and fun.
 
 
 ## Installation
@@ -43,7 +43,7 @@ frisby.create('GET user johndoe')
   })
   // 'afterJSON' automatically parses response body as JSON and passes it as an argument
   .afterJSON(function(user) {
-  	// Normal jasmine style assertions
+  	// You can use any normal jasmine-style assertions here
   	expect(1+1).toEqual(2);
 
   	// Use data from previous result in next test

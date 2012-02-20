@@ -1,6 +1,6 @@
 /**
- * frisby.js: Main Frisby test package
- * (C) 2011, Vance Lucas
+ * frisby.js: Facebook usage example
+ * (C) 2012, Vance Lucas
  */
 var frisby = require('../lib/frisby');
 
