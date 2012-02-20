@@ -37,6 +37,71 @@ describe('Frisby matchers', function() {
   });
 
 
+  it('toContainJSON should NOT match with invalid callbacks', function() {
+    // Set fake JSON body
+    var testJson = {
+      test_str: "I am a string!",
+      test_int: 42,
+      test_float: 42.42
+    };
+
+    // Expectation
+    expect(testJson).toContainJson({
+      test_str: "I am a string!",
+      test_int: function(val) { expect(val).not.toMatch('blah'); }
+    });
+  });
+
+
+  it('toContainJSON should match callbacks that return boolean true', function() {
+    // Set fake JSON body
+    var testJson = {
+      test_str: "I am a string!",
+      test_int: 42,
+      test_float: 42.42
+    };
+
+    // Expectation
+    expect(testJson).toContainJson({
+      test_str: "I am a string!",
+      test_int: function(val) { return true; }
+    });
+  });
+
+
+  it('toContainJSON should NOT match callbacks that return boolean false', function() {
+    // Set fake JSON body
+    var testJson = {
+      test_str: "I am a string!",
+      test_int: 42,
+      test_float: 42.42
+    };
+
+    // Expectation
+    expect(testJson).not.toContainJson({
+      test_str: "I am a string!",
+      test_int: function(val) { return false; }
+    });
+  });
+
+
+  it('toContainJSON should pass when callbacks return anything other than boolean false', function() {
+    // Set fake JSON body
+    var testJson = {
+      test_str: "I am a string!",
+      test_int: 42,
+      test_float: 42.42
+    };
+
+    // Expectation
+    expect(testJson).toContainJson({
+      test_str: function(val) { return 'anything other than boolean false'; },
+      test_int: function(val) { return 42; },
+      test_float: function(val) { return; }
+    });
+  });
+
+
   it('toContainJSON should not match with undefined variable', function() {
     // Set fake JSON body
     var testJson = {
