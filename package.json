@@ -1,12 +1,12 @@
 {
   "name"         : "frisby"
-, "version"      : "0.3.2"
+, "version"      : "0.3.5"
 , "description"  : "REST API Endpoint Testing built on Jasmine"
 , "homepage"     : ""
 , "author"       : "Vance Lucas <vance@vancelucas.com>"
 , "contributors" : [ "Eric Boehs <ericboehs@gmail.com>" ]
 , "repository"   : { "type" : "git"
-                   , "url"  : "http://github.com/brightbit/frisby"
+                   , "url"  : "http://github.com/vlucas/frisby"
                    }
 , "keywords"     : ["testing", "api", "REST", "jasmine", "bdd", "frisby"]
 , "dependencies" : { "request": "2.x.x"

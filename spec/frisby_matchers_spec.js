@@ -198,4 +198,44 @@ describe('Frisby matchers', function() {
     });
   });
 
+
+  it('toContainJson should continue checking matches after nested object', function() {
+    // Expectation
+    expect({
+      test_str: "I am a string!",
+      test_obj: {
+        foo: 'bar',
+        bar: 'baz'
+      },
+      test_int: 42
+    }).not.toContainJson({
+      test_str: "I am a string!",
+      test_obj: {
+        foo: 'bar',
+        bar: 'baz'
+      },
+      test_int: 4242
+    });
+  });
+
+
+  it('toContainJson should fail on non-matching objects inside an array', function() {
+    // Expectation
+    expect({
+      test_str: "I am a string!",
+      test_objs: [
+        { foo: 'bar' },
+        { bar: 'baz' }
+      ],
+      test_int: 42
+    }).not.toContainJson({
+      test_str: "I am a string!",
+      test_objs: [
+        { foo: 'bar' },
+        { bar: 'barX' }
+      ],
+      test_int: 42
+    });
+  });
+
 });

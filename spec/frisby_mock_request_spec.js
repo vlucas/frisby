@@ -150,4 +150,91 @@ describe('Frisby matchers', function() {
       .toss();
   });
 
+
+  it('TEST FROM USER - should NOT pass', function() {
+    // Mock API
+    var mockFn = mockRequest.mock()
+      .get('/test-complex-nesting')
+      .respond({
+        statusCode: 201,
+        body: { response: 
+          { code: 201,
+           data: 
+            { id: 2863928,
+              user_id: 104,
+              username: 'test_john3000',
+              user_avatar_url: 
+               { px_24x24: 'http://example.com/18d083672fcbf860755882ca6eb225c0_24x24.png',
+                 px_48x48: 'http://example.com/18d083672fcbf860755882ca6eb225c0_48x48.png',
+                 px_128x128: 'http://example.com/18d083672fcbf860755882ca6eb225c0_128x128.png',
+                 px_512x512: 'http://example.com/18d083672fcbf860755882ca6eb225c0_512x512.png' },
+              title: 'Test Title',
+              highlight_color: null,
+              content: 
+               { rich: false,
+                 yvml: '<?xml version="1.0" encoding="utf-8"?>\n<!DOCTYPE ex-note SYSTEM "http://example.com/pub/exml_1_0.dtd">\n<ex-note>Test Note</ex-note>',
+                 html: 'Test Note',
+                 html_android: 'Test Note',
+                 html_ios: 'Test Note',
+                 text: 'Test Note' },
+              language_tag: 'en',
+              version_id: 1,
+              references: [
+                {
+                  "usfm": "GEN.1.1",
+                  "human": "Genesis 1:1",
+                }
+              ],
+              url: '/notes/2863928/test-title',
+              short_url: 'http://shrt.ly/aSAJ4',
+              user_status: 'public',
+              system_status: 'new',
+              created_dt: '2012-02-23 20:14:23+00',
+              published_dt: null,
+              updated_dt: '2012-02-23 20:14:23.687663+00' },
+           buildtime: '2012-02-23T20:14:23+00:00' } }
+      })
+    .run();
+
+    var f1 = frisby.create('test with mock complex and nested data')
+      .get('http://mock-request/test-complex-nesting', {mock: mockFn})
+      .expectStatus(201)
+      .expectJSON('response.data', {
+        "id": function(r) { expect(r).toBeType(Number); },
+        "user_id": function(r) { expect(r).toBeType(Number); },
+        "username": "test_john3000",
+        "user_avatar_url": {
+          "px_128x128": function(r) { expect(r).toBeType(Number); },
+          "px_24x24": function(r) { expect(r).toBeType(String); },
+          "px_48x48": function(r) { expect(r).toBeType(String); },
+          "px_512x512": function(r) { expect(r).toBeType(String); }
+        },
+        "title": "Test Title",
+        "content": {
+          "rich": function(r) { expect(r).toBeType(Boolean); },
+          "yvml": '<?xml version="1.0" encoding="utf-8"?>\n<!DOCTYPE ex-note SYSTEM "http://example.com/pub/exml_1_0.dtd">\n<ex-note>Test Note</ex-note>',
+          "text": "Test Note",
+          "html": "Test Note",
+          "html_android": "Test Note",
+          "html_ios": "Test Note"
+        },
+        "language_tag": "en",
+        "references": [
+          {
+            "usfm": "GEN.1.1",
+            "human": "Genesis 1:1",
+          }
+        ],
+        "version_id": 1,
+        "created_dt": function(r) { expect(r).toBeType(String) },
+        "published_dt": function(r) { expect(r).toBeTypeOrNull(String) },
+        "updated_dt": function(r) { expect(r).toBeType(String) },
+        "url": function(r) { expect(r).toBeType(String) },
+        "short_url": function(r) { expect(r).toBeType(String) },
+        "user_status": "public",
+        "system_status": "new"
+      })
+      .toss();
+  });
+
 });
