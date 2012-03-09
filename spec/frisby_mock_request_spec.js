@@ -125,7 +125,7 @@ describe('Frisby matchers', function() {
       })
       .exceptionHandler(function(e) {
         // Expect Excepiton from 'expectJSON' due to no match being found
-        expect(e.message).toEqual("Expected 'I am a string three!' to match 'I am a string two nonsense!' on key 'test_str'");
+        expect(e.message).toEqual("Expected string 'I am a string three!' to match string 'I am a string two nonsense!' on key 'test_str'");
       })
       .toss();
   });
