@@ -305,4 +305,20 @@ describe('Frisby matchers', function() {
 
   });
 
+
+  it('Invalid URLs should fail with an error message', function() {
+
+    frisby.create('test with httpbin for array of JSON objects')
+      .get('http://invalid-url')
+      .expectStatus(500)
+      .timeout(5)
+      .exceptionHandler(function(e) {
+
+        expect(e.message).toContain('Destination URL may be down or URL is invalid');
+
+      })
+    .toss();
+
+  });
+
 });
