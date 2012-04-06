@@ -205,7 +205,7 @@ describe('Frisby matchers', function() {
               references: [
                 {
                   "usfm": "GEN.1.1",
-                  "human": "Genesis 1:1",
+                  "human": "Genesis 1:1"
                 }
               ],
               url: '/notes/2863928/test-title',
@@ -245,7 +245,7 @@ describe('Frisby matchers', function() {
         "references": [
           {
             "usfm": "GEN.1.1",
-            "human": "Genesis 1:1",
+            "human": "Genesis 1:1"
           }
         ],
         "version_id": 1,
@@ -258,6 +258,51 @@ describe('Frisby matchers', function() {
         "system_status": "new"
       })
       .toss();
+  });
+
+
+  it('expectStatus for mock request should return 404', function() {
+    // Mock API
+    var mockFn = mockRequest.mock()
+    .get('/not-found')
+      .respond({
+        statusCode: 404
+      })
+    .run();
+
+    var f1 = frisby.create('test with httpbin for array of JSON objects')
+      .get('http://mock-request/not-found', {mock: mockFn})
+      .expectStatus(404)
+      .toss();
+  });
+
+
+  it('Frisby basicAuth should set the correct HTTP Authorization header', function() {
+
+    // Mock API
+    var mockFn = mockRequest.mock()
+    .get('/basic-auth')
+      .respond({
+        statusCode: 200,
+        headers: {
+          Authorization: 'Basic ZnJpc2J5OnBhc3N3ZA=='
+        }
+      })
+    .run();
+
+    frisby.create('test with httpbin for valid basic auth')
+      .get('http://mock-request/basic-auth', {mock: mockFn})
+      .auth('frisby', 'passwd')
+      .expectStatus(200)
+      .expectHeader('Authorization', 'Basic ZnJpc2J5OnBhc3N3ZA==')
+      .after(function(err, res, body) {
+
+        // Check to ensure outgoing HTTP request is the correct basic auth
+        expect(this.current.outgoing.headers.Authorization).toBe('Basic ZnJpc2J5OnBhc3N3ZA==');
+
+      })
+    .toss();
+
   });
 
 });
