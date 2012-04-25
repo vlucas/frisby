@@ -308,7 +308,7 @@ describe('Frisby matchers', function() {
 
   it('Invalid URLs should fail with an error message', function() {
 
-    frisby.create('test with httpbin for array of JSON objects')
+    frisby.create('Invalid URLs should fail with an error message')
       .get('http://invalid-url')
       .expectStatus(500)
       .timeout(5)
