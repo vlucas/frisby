@@ -173,6 +173,21 @@ describe('Frisby matchers', function() {
       .toss();
   });
 
+  it('expectJSONLength should support an asterisk in the path to test all elements of an array', function() {
+    // Mock API
+    var mockFn = mockRequest.mock()
+    .get('/test-object-array')
+      .respond({
+        statusCode: 200,
+        body: fixtures.arrayOfObjects
+      })
+    .run();
+
+    var f1 = frisby.create('Test expectJSONLength with asterisk in path')
+      .get('http://mock-request/test-object-array', {mock: mockFn})
+      .expectJSONLength('test_subjects.*', 4)
+      .toss();
+  });
 
   it('TEST FROM USER - should NOT pass', function() {
     // Mock API
