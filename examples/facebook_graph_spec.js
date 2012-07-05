@@ -19,7 +19,7 @@ frisby.create('Get Brightbit Facebook Page')
   .expectJSONTypes({
     id: String,
     likes: Number,
-    can_post: Boolean
+    is_published: Boolean
   })
   .expectJSON({
     id: "111848702235277",
