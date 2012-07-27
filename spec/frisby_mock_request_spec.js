@@ -2,14 +2,20 @@ var frisby = require('../lib/frisby');
 var mockRequest = require('mock-request');
 
 // Test global setup
-var previousGlobalSetup = frisby.globalSetup();
-frisby.globalSetup({
-  request: {
-    headers: {
-      'Test': 'One'
+var defaultGlobalSetup = frisby.globalSetup();
+var mockGlobalSetup = function() {
+  frisby.globalSetup({
+    request: {
+      headers: {
+        'Test'   : 'One',
+        'Referer': 'http://frisbyjs.com'
+      }
     }
-  }
-});
+  });
+}
+var restoreGlobalSetup = function() {
+  frisby.globalSetup(defaultGlobalSetup);
+}
 
 // JSON to use in mock tests
 var fixtures = {
@@ -56,7 +62,7 @@ describe('Frisby matchers', function() {
       .toss();
   });
 
-  it('setHeaders should override gloablSetup request headers', function() {
+  it('gloablSetup should set local request headers', function() {
     // Mock API
     var mockFn = mockRequest.mock()
     .get('/test-object-array')
@@ -66,17 +72,42 @@ describe('Frisby matchers', function() {
       })
     .run();
 
+    mockGlobalSetup();
     var f1 = frisby.create(this.description)
       .get('http://mock-request/test-object-array', {mock: mockFn})
-      .setHeaders({ 'Test': 'Two' })
       .after(function(err, res, body) {
-        // Local setHeaders should override global
-        expect(this.current.outgoing.headers['Test']).toBe('Two');
+        expect(this.current.outgoing.headers['Test']).toBe('One');
+        expect(this.current.outgoing.headers['Referer']).toBe('http://frisbyjs.com');
+
+        restoreGlobalSetup();
       })
       .toss();
   });
 
-  it('setHeaders should override gloablSetup request headers and not taint other Frisby tests', function() {
+  it('addHeaders should override gloablSetup request headers', function() {
+    // Mock API
+    var mockFn = mockRequest.mock()
+    .get('/test-object-array')
+      .respond({
+        statusCode: 200,
+        body: fixtures.arrayOfObjects
+      })
+    .run();
+
+    mockGlobalSetup();
+    var f1 = frisby.create(this.description)
+      .get('http://mock-request/test-object-array', {mock: mockFn})
+      .setHeaders({ 'Test': 'Two' })
+      .after(function(err, res, body) {
+        // Local addHeaders should override global
+        expect(this.current.outgoing.headers['Test']).toBe('Two');
+
+        restoreGlobalSetup();
+      })
+      .toss();
+  });
+
+  it('addHeaders should override globalSetup request headers and not taint other Frisby tests', function() {
     // Mock API
     var mockFn = mockRequest.mock()
     .get('/test-object-array-ex')
@@ -93,23 +124,27 @@ describe('Frisby matchers', function() {
       })
     .run();
 
+    mockGlobalSetup();
+
     var f1 = frisby.create(this.description + ' - mock test one')
       .get('http://mock-request/test-object-array-ex', {mock: mockFn})
-      .setHeaders({ 'Test': 'Two' })
+      .addHeaders({ 'Test': 'Two' })
       .after(function(err, res, body) {
-        // Local setHeaders should override global
+        // Local addHeaders should override global
         expect(this.current.outgoing.headers['Test']).toBe('Two');
       })
     .toss();
 
     var f2 = frisby.create(this.description + ' - mock test two')
       .get('http://mock-request/test-object-array-ex2', {mock: mockFn2})
-      .setHeaders({ 'Test': 'Three' })
+      .addHeaders({ 'Test': 'Three' })
       .after(function(err, res, body) {
-        // Local setHeaders should override global
+        // Local addHeaders should override global
         expect(this.current.outgoing.headers['Test']).toBe('Three');
       })
     .toss();
+
+    restoreGlobalSetup();
   });
 
   it('expectJSON should test EACH object in an array with path ending with asterisk', function() {
@@ -402,7 +437,3 @@ describe('Frisby matchers', function() {
   });
 
 });
-
-// Reset our modified global headers
-frisby.globalSetup(previousGlobalSetup);
-

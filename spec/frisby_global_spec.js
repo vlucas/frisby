@@ -9,7 +9,7 @@ describe('Frisby object setup', function() {
         headers: {}
       }
     }).toEqual(frisby.globalSetup());
-  })
+  });
 
   it('should have empty request properties on creation', function() {
     var f1 = frisby.create('test 1');
@@ -24,16 +24,16 @@ describe('Frisby object setup', function() {
     var f2 = frisby.create('test 2');
 
     // Equal setup
-    expect(f1._setup).toEqual(f2._setup);
+    expect(f1.current.request).toEqual(f2.current.request);
 
     // Different describe statements
     expect(f1.current.describe).not.toEqual(f2.current.describe);
 
     // Add header only to f1
-    f1.setHeaders({
+    f1.addHeaders({
       'Accept': 'application/json'
     });
-    f2.setHeaders({
+    f2.addHeaders({
       'Accept': 'application/x-www-form-urlencoded'
     });
 
