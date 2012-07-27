@@ -2,7 +2,7 @@ frisby = require('../lib/frisby');
 
 
 describe('Frisby object setup', function() {
-  
+
   it('global setup should be empty', function() {
     expect({
       request: {
@@ -11,14 +11,12 @@ describe('Frisby object setup', function() {
     }).toEqual(frisby.globalSetup());
   })
 
-  it('should be empty on creation', function() {
+  it('should have empty request properties on creation', function() {
     var f1 = frisby.create('test 1');
 
     expect({
-      request: {
-        headers: {}
-      }
-    }).toEqual(f1._setup);
+      headers: {}
+    }).toEqual(f1.current.request);
   });
 
   it('should be independent of other Frisby objects', function() {
@@ -32,23 +30,15 @@ describe('Frisby object setup', function() {
     expect(f1.current.describe).not.toEqual(f2.current.describe);
 
     // Add header only to f1
-    f1.setup({
-      request: {
-        headers: {
-          'Accept': 'application/json'
-        }
-      }
+    f1.setHeaders({
+      'Accept': 'application/json'
     });
-    f2.setup({
-      request: {
-        headers: {
-          'Accept': 'application/x-www-form-urlencoded'
-        }
-      }
+    f2.setHeaders({
+      'Accept': 'application/x-www-form-urlencoded'
     });
 
     // Different setup
-    expect(f1.setup()).not.toEqual(f2.setup());
+    expect(f1.current.request).not.toEqual(f2.current.request);
   });
 
 });

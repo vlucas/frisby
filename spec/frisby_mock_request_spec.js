@@ -402,3 +402,7 @@ describe('Frisby matchers', function() {
   });
 
 });
+
+// Reset our modified global headers
+frisby.globalSetup(previousGlobalSetup);
+
