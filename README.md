@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/vlucas/frisby.png)](http://travis-ci.org/vlucas/frisby)
 # Frisby
 
 A node.js NPM module that makes testing API endpoints easy, fast and fun.
