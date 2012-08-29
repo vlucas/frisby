@@ -17,4 +17,13 @@ describe('Frisby live running httpbin tests', function() {
 
   });
 
+  it('should pass in param hash to request call dependency', function() {
+
+    frisby.create('test with httpbin for valid basic auth')
+      .get('http://httpbin.org/redirect/3', { followRedirect: false, maxRedirects: 1 })
+      .expectStatus(302)
+    .toss();
+
+  });
+
 });

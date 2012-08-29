@@ -97,7 +97,7 @@ describe('Frisby matchers', function() {
     mockGlobalSetup();
     var f1 = frisby.create(this.description)
       .get('http://mock-request/test-object-array', {mock: mockFn})
-      .setHeaders({ 'Test': 'Two' })
+      .addHeaders({ 'Test': 'Two' })
       .after(function(err, res, body) {
         // Local addHeaders should override global
         expect(this.current.outgoing.headers['Test']).toBe('Two');
