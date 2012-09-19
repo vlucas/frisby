@@ -5,6 +5,7 @@ var mockRequest = require('mock-request');
 var defaultGlobalSetup = frisby.globalSetup();
 var mockGlobalSetup = function() {
   frisby.globalSetup({
+    timeout: 3000,
     request: {
       headers: {
         'Test'   : 'One',
@@ -60,6 +61,13 @@ describe('Frisby matchers', function() {
       .get('http://mock-request/not-found', {mock: mockFn})
       .expectStatus(404)
       .toss();
+  });
+
+  it('gloablSetup should set timeout to 3000', function() {
+    mockGlobalSetup();
+    var f1 = frisby.create(this.description)
+    expect(f1.timeout()).toBe(3000);
+    restoreGlobalSetup();
   });
 
   it('gloablSetup should set local request headers', function() {
