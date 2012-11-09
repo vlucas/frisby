@@ -1,5 +1,10 @@
+var nock = require('nock');
 var frisby = require('../lib/frisby');
 var mockRequest = require('mock-request');
+
+// Built-in node.js
+var fs = require('fs');
+var path = require('path');
 
 // Test global setup
 var defaultGlobalSetup = frisby.globalSetup();
@@ -42,6 +47,14 @@ var fixtures = {
     }
 };
 
+// Nock to intercept HTTP upload request
+var mock = nock('http://httpbin.org', { allowUnmocked: true })
+  .post('/file-upload')
+  .reply(200, {
+    name: 'Test Upload',
+    file: '/some/path/logo-frisby.png'
+  });
+
 //
 // Tests run like normal Frisby specs but with 'mock' specified with a 'mock-request' object
 // These work without further 'expects' statements because Frisby generates and runs Jasmine tests
@@ -51,7 +64,7 @@ describe('Frisby matchers', function() {
   it('expectStatus for mock request should return 404', function() {
     // Mock API
     var mockFn = mockRequest.mock()
-    .get('/not-found')
+      .get('/not-found')
       .respond({
         statusCode: 404
       })
@@ -444,4 +457,14 @@ describe('Frisby matchers', function() {
 
   });
 
+  it('should handle file uploads', function() {
+    // Intercepted with 'nock'
+    var f1 = frisby.create(this.description)
+      .post('http://httpbin.org/post', {
+          name: 'Test Upload',
+          file: fs.createReadStream(path.join(__dirname, 'logo-frisby.png'))
+        }, { form: true })
+      .expectStatus(200)
+    .toss();
+  });
 });
