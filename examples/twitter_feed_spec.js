@@ -15,9 +15,9 @@ frisby.create('Get Brightbit Twitter feed')
         verified: false,
         location: "Oklahoma City, OK",
         url: "http://brightb.it"
-      }
+      },
     })
-    .expectJSONTypes('0', {
+    .expectJSONTypes('*', {
       id_str: String,
       retweeted: Boolean,
       in_reply_to_screen_name: function(val) { expect(val).toBeTypeOrNull(String); }, // Custom matcher callback

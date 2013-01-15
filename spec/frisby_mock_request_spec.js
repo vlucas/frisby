@@ -238,15 +238,11 @@ describe('Frisby matchers', function() {
       })
     .run();
 
-    var f1 = frisby.create('Mock should not match one of the objects')
+    var f1 = frisby.create(this.description)
       .get('http://mock-request/test-object-array', {mock: mockFn})
-      .expectJSON('test_subjects.?', { // ? == ONE object in 'test_subjects' array
+      .not().expectJSON('test_subjects.?', { // ? == ONE object in 'test_subjects' array
         test_str: "I am a string two nonsense!",
         test_int: 4433
-      })
-      .exceptionHandler(function(e) {
-        // Expect Excepiton from 'expectJSON' due to no match being found
-        expect(e.message).toEqual("Expected string 'I am a string three!' to match string 'I am a string two nonsense!' on key 'test_str'");
       })
       .toss();
   });
@@ -262,15 +258,11 @@ describe('Frisby matchers', function() {
       })
     .run();
 
-    var f1 = frisby.create('Mock should not match one of the objects')
+    var f1 = frisby.create(this.description)
       .get('http://mock-request/test-object-array', {mock: mockFn})
-      .expectJSONTypes('test_subjects.?', { // ? == ONE object in 'test_subjects' array
+      .not().expectJSONTypes('test_subjects.?', { // ? == ONE object in 'test_subjects' array
         test_str: Boolean,
         test_int: String
-      })
-      .exceptionHandler(function(e) {
-        // Expect Excepiton from 'expectJSONTypes' due to no match being found
-        expect(e.message).toEqual("Expected 'string' to be type 'boolean' on key 'test_str'");
       })
       .toss();
   });
@@ -286,7 +278,7 @@ describe('Frisby matchers', function() {
       })
     .run();
 
-    var f1 = frisby.create('test with httpbin for array of JSON objects')
+    var f1 = frisby.create(this.description)
       .get('http://mock-request/test-object-array', {mock: mockFn})
       .expectJSONLength('test_subjects', 3)
       .expectJSONLength('test_subjects.0', 4)
@@ -304,7 +296,7 @@ describe('Frisby matchers', function() {
       })
     .run();
 
-    var f1 = frisby.create('Test expectJSONLength with asterisk in path')
+    var f1 = frisby.create(this.description)
       .get('http://mock-request/test-object-array', {mock: mockFn})
       .expectJSONLength('test_subjects.*', 4)
       .toss();
@@ -355,7 +347,7 @@ describe('Frisby matchers', function() {
       })
     .run();
 
-    var f1 = frisby.create('test with mock complex and nested data')
+    var f1 = frisby.create(this.description)
       .get('http://mock-request/test-complex-nesting', {mock: mockFn})
       .expectStatus(201)
       .expectJSON('response.data', {
@@ -406,7 +398,7 @@ describe('Frisby matchers', function() {
       })
     .run();
 
-    var f1 = frisby.create('test with httpbin for array of JSON objects')
+    var f1 = frisby.create(this.description)
       .get('http://mock-request/not-found', {mock: mockFn})
       .expectStatus(404)
       .toss();
@@ -426,7 +418,7 @@ describe('Frisby matchers', function() {
       })
     .run();
 
-    frisby.create('test with httpbin for valid basic auth')
+    frisby.create(this.description)
       .get('http://mock-request/basic-auth', {mock: mockFn})
       .auth('frisby', 'passwd')
       .expectStatus(200)
@@ -444,14 +436,12 @@ describe('Frisby matchers', function() {
 
   it('Invalid URLs should fail with an error message', function() {
 
-    frisby.create('Invalid URLs should fail with an error message')
+    frisby.create(this.description)
       .get('http://invalid-url')
       .expectStatus(500)
       .timeout(5)
       .exceptionHandler(function(e) {
-
         expect(e.message).toContain('Destination URL may be down or URL is invalid');
-
       })
     .toss();
 
@@ -459,7 +449,7 @@ describe('Frisby matchers', function() {
 
   it('should handle file uploads', function() {
     // Intercepted with 'nock'
-    var f1 = frisby.create(this.description)
+    frisby.create(this.description)
       .post('http://httpbin.org/post', {
           name: 'Test Upload',
           file: fs.createReadStream(path.join(__dirname, 'logo-frisby.png'))

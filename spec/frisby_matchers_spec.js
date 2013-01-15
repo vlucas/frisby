@@ -18,6 +18,11 @@ describe('Frisby matchers', function() {
       test_int: 42,
       test_float: 42.42
     });
+    expect(testJson).not.toContainJson({
+      test_str: "I am NOT a string!",
+      test_int: "43",
+      test_float: 43.43
+    });
   });
 
 
