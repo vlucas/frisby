@@ -188,7 +188,7 @@ describe('Frisby matchers', function() {
   });
 
 
-  it('expectJSONTypes should test EACH object in an array with path ending with asterisk and use toBeTypeOrNull callback properly', function() {
+  it('expectJSON should test EACH object in an array with path ending with asterisk and use toBeTypeOrNull callback properly', function() {
     // Mock API
     var mockFn = mockRequest.mock()
     .get('/test-object-array')
@@ -201,6 +201,25 @@ describe('Frisby matchers', function() {
     var f1 = frisby.create(this.description)
       .get('http://mock-request/test-object-array', {mock: mockFn})
       .expectJSON('test_subjects.*', { // * == EACH object in here should match
+        test_str_same: 'I am the same...'
+      })
+      .toss();
+  });
+
+
+  it('expectJSONTypes should test EACH object in an array with path ending with asterisk and use toBeTypeOrNull callback properly', function() {
+    // Mock API
+    var mockFn = mockRequest.mock()
+    .get('/test-object-array')
+      .respond({
+        statusCode: 200,
+        body: fixtures.arrayOfObjects
+      })
+    .run();
+
+    var f1 = frisby.create(this.description)
+      .get('http://mock-request/test-object-array', {mock: mockFn})
+      .expectJSONTypes('test_subjects.*', { // * == EACH object in here should match
         test_str_same: String,
         test_optional: function(val) { expect(val).toBeTypeOrNull(String); }
       })
