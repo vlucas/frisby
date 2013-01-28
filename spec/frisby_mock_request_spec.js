@@ -321,6 +321,176 @@ describe('Frisby matchers', function() {
       .toss();
   });
 
+  it('expectJSONLength should properly count arrays, strings, and objects using <=', function() {
+    // Mock API
+    var mockFn = mockRequest.mock()
+    .get('/test-object-array')
+      .respond({
+        statusCode: 200,
+        body: fixtures.arrayOfObjects
+      })
+    .run();
+
+    var f1 = frisby.create(this.description)
+      .get('http://mock-request/test-object-array', {mock: mockFn})
+      .expectJSONLength('test_subjects', '<=3')
+      .expectJSONLength('test_subjects.0', '<=4')
+      .expectJSONLength('some_string', '<=9')
+      .toss();
+  });
+
+  it('expectJSONLength should support an asterisk in the path to test all elements of an array using <=', function() {
+    // Mock API
+    var mockFn = mockRequest.mock()
+    .get('/test-object-array')
+      .respond({
+        statusCode: 200,
+        body: fixtures.arrayOfObjects
+      })
+    .run();
+
+    var f1 = frisby.create(this.description)
+      .get('http://mock-request/test-object-array', {mock: mockFn})
+      .expectJSONLength('test_subjects.*', '<=4')
+      .toss();
+  });
+
+  it('expectJSONLength should properly count arrays, strings, and objects using <', function() {
+    // Mock API
+    var mockFn = mockRequest.mock()
+    .get('/test-object-array')
+      .respond({
+        statusCode: 200,
+        body: fixtures.arrayOfObjects
+      })
+    .run();
+
+    var f1 = frisby.create(this.description)
+      .get('http://mock-request/test-object-array', {mock: mockFn})
+      .expectJSONLength('test_subjects', '<4')
+      .expectJSONLength('test_subjects.0', '<5')
+      .expectJSONLength('some_string', '<10')
+      .toss();
+  });
+
+  it('expectJSONLength should support an asterisk in the path to test all elements of an array using <', function() {
+    // Mock API
+    var mockFn = mockRequest.mock()
+    .get('/test-object-array')
+      .respond({
+        statusCode: 200,
+        body: fixtures.arrayOfObjects
+      })
+    .run();
+
+    var f1 = frisby.create(this.description)
+      .get('http://mock-request/test-object-array', {mock: mockFn})
+      .expectJSONLength('test_subjects.*', '<5')
+      .toss();
+  });
+
+  it('expectJSONLength should properly count arrays, strings, and objects using >=', function() {
+    // Mock API
+    var mockFn = mockRequest.mock()
+    .get('/test-object-array')
+      .respond({
+        statusCode: 200,
+        body: fixtures.arrayOfObjects
+      })
+    .run();
+
+    var f1 = frisby.create(this.description)
+      .get('http://mock-request/test-object-array', {mock: mockFn})
+      .expectJSONLength('test_subjects', '>=3')
+      .expectJSONLength('test_subjects.0', '>=4')
+      .expectJSONLength('some_string', '>=9')
+      .toss();
+  });
+
+  it('expectJSONLength should support an asterisk in the path to test all elements of an array using >=', function() {
+    // Mock API
+    var mockFn = mockRequest.mock()
+    .get('/test-object-array')
+      .respond({
+        statusCode: 200,
+        body: fixtures.arrayOfObjects
+      })
+    .run();
+
+    var f1 = frisby.create(this.description)
+      .get('http://mock-request/test-object-array', {mock: mockFn})
+      .expectJSONLength('test_subjects.*', '>=4')
+      .toss();
+  });
+
+  it('expectJSONLength should properly count arrays, strings, and objects using >', function() {
+    // Mock API
+    var mockFn = mockRequest.mock()
+    .get('/test-object-array')
+      .respond({
+        statusCode: 200,
+        body: fixtures.arrayOfObjects
+      })
+    .run();
+
+    var f1 = frisby.create(this.description)
+      .get('http://mock-request/test-object-array', {mock: mockFn})
+      .expectJSONLength('test_subjects', '>2')
+      .expectJSONLength('test_subjects.0', '>3')
+      .expectJSONLength('some_string', '>8')
+      .toss();
+  });
+
+  it('expectJSONLength should support an asterisk in the path to test all elements of an array using >', function() {
+    // Mock API
+    var mockFn = mockRequest.mock()
+    .get('/test-object-array')
+      .respond({
+        statusCode: 200,
+        body: fixtures.arrayOfObjects
+      })
+    .run();
+
+    var f1 = frisby.create(this.description)
+      .get('http://mock-request/test-object-array', {mock: mockFn})
+      .expectJSONLength('test_subjects.*', '>3')
+      .toss();
+  });
+
+  it('expectJSONLength should properly count arrays, strings, and objects testing string number', function() {
+    // Mock API
+    var mockFn = mockRequest.mock()
+    .get('/test-object-array')
+      .respond({
+        statusCode: 200,
+        body: fixtures.arrayOfObjects
+      })
+    .run();
+
+    var f1 = frisby.create(this.description)
+      .get('http://mock-request/test-object-array', {mock: mockFn})
+      .expectJSONLength('test_subjects', '3')
+      .expectJSONLength('test_subjects.0', '4')
+      .expectJSONLength('some_string', '9')
+      .toss();
+  });
+
+  it('expectJSONLength should support an asterisk in the path to test all elements of an array testing string number', function() {
+    // Mock API
+    var mockFn = mockRequest.mock()
+    .get('/test-object-array')
+      .respond({
+        statusCode: 200,
+        body: fixtures.arrayOfObjects
+      })
+    .run();
+
+    var f1 = frisby.create(this.description)
+      .get('http://mock-request/test-object-array', {mock: mockFn})
+      .expectJSONLength('test_subjects.*', '4')
+      .toss();
+  });
+
   it('TEST FROM USER - should NOT pass', function() {
     // Mock API
     var mockFn = mockRequest.mock()
