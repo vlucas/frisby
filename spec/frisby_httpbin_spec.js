@@ -26,4 +26,36 @@ describe('Frisby live running httpbin tests', function() {
 
   });
 
+  it('should POST raw body content', function() {
+    frisby.create(this.description)
+      .post('http://httpbin.org/post', null, {
+          body: "<?xml version=\"1.0\"?><foo bar=\"baz\"/>\n"
+      })
+      .addHeader('Content-Type', 'application/xml')
+      .expectStatus(200)
+      .expectJSON({
+        data: "<?xml version=\"1.0\"?><foo bar=\"baz\"/>\n",
+        headers: {
+          'Content-Type': 'application/xml'
+        }
+      })
+    .toss();
+  });
+
+  it('should PUT raw body content', function() {
+    frisby.create(this.description)
+      .put('http://httpbin.org/put', null, {
+          body: "<?xml version=\"1.0\"?><foo bar=\"baz\"/>\n"
+      })
+      .addHeader('Content-Type', 'application/xml')
+      .expectStatus(200)
+      .expectJSON({
+        data: "<?xml version=\"1.0\"?><foo bar=\"baz\"/>\n",
+        headers: {
+          'Content-Type': 'application/xml'
+        }
+      })
+    .toss();
+  });
+
 });
