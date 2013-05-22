@@ -97,8 +97,8 @@ describe('Frisby matchers', function() {
     var f1 = frisby.create(this.description)
       .get('http://mock-request/test-object-array', {mock: mockFn})
       .after(function(err, res, body) {
-        expect(this.current.outgoing.headers['Test']).toBe('One');
-        expect(this.current.outgoing.headers['Referer']).toBe('http://frisbyjs.com');
+        expect(this.current.outgoing.headers['test']).toBe('One');
+        expect(this.current.outgoing.headers['referer']).toBe('http://frisbyjs.com');
 
         restoreGlobalSetup();
       })
@@ -121,7 +121,7 @@ describe('Frisby matchers', function() {
       .addHeaders({ 'Test': 'Two' })
       .after(function(err, res, body) {
         // Local addHeaders should override global
-        expect(this.current.outgoing.headers['Test']).toBe('Two');
+        expect(this.current.outgoing.headers['test']).toBe('Two');
 
         restoreGlobalSetup();
       })
@@ -152,7 +152,7 @@ describe('Frisby matchers', function() {
       .addHeaders({ 'Test': 'Two' })
       .after(function(err, res, body) {
         // Local addHeaders should override global
-        expect(this.current.outgoing.headers['Test']).toBe('Two');
+        expect(this.current.outgoing.headers['test']).toBe('Two');
       })
     .toss();
 
@@ -161,7 +161,7 @@ describe('Frisby matchers', function() {
       .addHeaders({ 'Test': 'Three' })
       .after(function(err, res, body) {
         // Local addHeaders should override global
-        expect(this.current.outgoing.headers['Test']).toBe('Three');
+        expect(this.current.outgoing.headers['test']).toBe('Three');
       })
     .toss();
 
@@ -615,7 +615,7 @@ describe('Frisby matchers', function() {
       .after(function(err, res, body) {
 
         // Check to ensure outgoing HTTP request is the correct basic auth
-        expect(this.current.outgoing.headers.Authorization).toBe('Basic ZnJpc2J5OnBhc3N3ZA==');
+        expect(this.current.outgoing.headers.authorization).toBe('Basic ZnJpc2J5OnBhc3N3ZA==');
 
       })
     .toss();
@@ -626,7 +626,7 @@ describe('Frisby matchers', function() {
   it('Invalid URLs should fail with an error message', function() {
 
     frisby.create(this.description)
-      .get('http://invalid-url')
+      .get('invalid-url')
       .expectStatus(500)
       .timeout(5)
       .exceptionHandler(function(e) {
