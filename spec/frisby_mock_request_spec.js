@@ -646,4 +646,16 @@ describe('Frisby matchers', function() {
       .expectStatus(200)
     .toss();
   });
+
+  it('headers should be regex matchable', function() {
+    nock('http://httpbin.org', { allowUnmocked: true })
+      .post('/path')
+      .reply(201, "The payload", {'Location': '/path/23'});
+
+    frisby.create(this.description)
+      .post('http://httpbin.org/path', {foo: 'bar'})
+      .expectStatus(201)
+      .expectHeaderToMatch('location', /^\/path\/\d+$/)
+      .toss();
+  });
 });
