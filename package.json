@@ -15,6 +15,7 @@
     "keywords": ["testing", "api", "REST", "jasmine", "bdd", "frisby"],
     "dependencies": {
         "request": "2.x.x",
+        "json-bignum": "0.0.x",
         "mock-request": ">= 0.1.2",
         "nock": "*",
         "underscore": "1.2.x",
