@@ -1,31 +1,34 @@
 {
-    "name": "frisby",
-    "version": "0.6.9",
-    "description": "Frisby.js: REST API Endpoint Testing built on Jasmine",
-    "homepage": "http://frisbyjs.com",
-    "author": "Vance Lucas <vance@vancelucas.com>",
-    "license": {
-            "type": "BSD"
-    },
-    "contributors": [ "Eric Boehs <ericboehs@gmail.com>" ],
-    "repository": {
-        "type" : "git",
-        "url"  : "http://github.com/vlucas/frisby"
-    },
-    "keywords": ["testing", "api", "REST", "jasmine", "bdd", "frisby"],
-    "dependencies": {
-        "request": "2.x.x",
-        "json-bignum": "0.0.x",
-        "mock-request": ">= 0.1.2",
-        "nock": "*",
-        "underscore": "1.2.x",
-        "qs": "0.4.x"
-    },
-    "main": "./lib/frisby",
-    "engines": {
-        "node": ">= 0.4.7"
-    },
-    "scripts": {
-        "test": "jasmine-node spec/"
-    }
+  "name": "frisby",
+  "version": "0.7.0",
+  "description": "Frisby.js: REST API Endpoint Testing built on Jasmine",
+  "homepage": "http://frisbyjs.com",
+  "author": "Vance Lucas <vance@vancelucas.com>",
+  "license": {
+    "type": "BSD"
+  },
+  "contributors": [
+    "Eric Boehs <ericboehs@gmail.com>",
+    "Kevin Morey"
+  ],
+  "repository": {
+    "type" : "git",
+    "url"  : "http://github.com/vlucas/frisby"
+  },
+  "keywords": ["testing", "api", "REST", "jasmine", "bdd", "frisby"],
+  "dependencies": {
+    "request": "2.x.x",
+    "json-bignum": "0.0.x",
+    "mock-request": ">= 0.1.2",
+    "nock": "*",
+    "underscore": "1.2.x",
+    "qs": "0.4.x"
+  },
+  "main": "./lib/frisby",
+  "engines": {
+    "node": ">= 0.4.7"
+  },
+  "scripts": {
+    "test": "jasmine-node spec/"
+  }
 }
