@@ -19,6 +19,8 @@
   "dependencies": {
     "request": "2.x.x",
     "json-bignum": "0.0.x",
+    "json-schema": "0.2.x",
+    "stack-trace": "0.0.x",
     "mock-request": ">= 0.1.2",
     "nock": "*",
     "underscore": "1.2.x",
