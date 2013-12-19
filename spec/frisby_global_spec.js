@@ -6,7 +6,8 @@ describe('Frisby object setup', function() {
   it('global setup should be empty', function() {
     expect({
       request: {
-        headers: {}
+        headers: {},
+        json: false
       }
     }).toEqual(frisby.globalSetup());
   });
@@ -15,7 +16,8 @@ describe('Frisby object setup', function() {
     var f1 = frisby.create('test 1');
 
     expect({
-      headers: {}
+      headers: {},
+      json: false
     }).toEqual(f1.current.request);
   });
 
@@ -40,5 +42,42 @@ describe('Frisby object setup', function() {
     // Different setup
     expect(f1.current.request).not.toEqual(f2.current.request);
   });
+
+    it('should default to json = false', function() {
+        expect({
+            request: {
+                headers: {},
+                json: false
+            }
+        }).toEqual(frisby.globalSetup());
+
+        expect(frisby.create('mytest').get('/path').current.outgoing.json).toEqual(false);
+    });
+
+
+    it('should switch to json default = true when global config is configured json', function() {
+        frisby.globalSetup().request.json = true;
+        expect({
+            request: {
+                headers: {},
+                json: true
+            }
+        }).toEqual(frisby.globalSetup());
+
+        expect(frisby.create('mytest').get('/path').current.outgoing.json).toEqual(true);
+    });
+
+    it('should be overridable by the params parameter json=false', function() {
+        frisby.globalSetup().request.json = true;
+        expect({
+            request: {
+                headers: {},
+                json: true
+            }
+        }).toEqual(frisby.globalSetup());
+
+        expect(frisby.create('mytest').get('/path', {json:false}).current.outgoing.json).toEqual(false);
+    });
+
 
 });
