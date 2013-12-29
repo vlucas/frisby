@@ -1,6 +1,6 @@
 {
   "name": "frisby",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "Frisby.js: REST API Endpoint Testing built on Jasmine",
   "homepage": "http://frisbyjs.com",
   "author": "Vance Lucas <vance@vancelucas.com>",
@@ -17,7 +17,7 @@
   },
   "keywords": ["testing", "api", "REST", "jasmine", "bdd", "frisby"],
   "dependencies": {
-    "request": "2.x.x",
+    "request": "2.27.1",
     "json-bignum": "0.0.x",
     "json-schema": "0.2.x",
     "stack-trace": "0.0.x",
