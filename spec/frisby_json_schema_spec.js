@@ -1,6 +1,7 @@
 var nock = require('nock');
 var frisby = require('../lib/frisby');
 var path = require('path');
+var jsonSchema = require('json-schema');
 
 // Nock to intercept HTTP requests for testing
 nock('http://example.com', { allowUnmocked: false })
@@ -149,6 +150,67 @@ describe('Frisby JSONSchema', function() {
       .get('http://example.com/response-array')
       .expectStatus(200)
       .expectJSONSchema('items.?', 'fixtures/json_schema/response1.json')
+    .toss();
+  });
+
+  it('should fail JSONSchema validation when a required field is missing', function() {
+    var result = jsonSchema.validate({
+        id: 42,
+        name: "Foobar"
+      }, {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "Product",
+        "description": "A product from Acme's catalog",
+        "type": "object",
+        "properties": {
+          "idx": {
+            "description": "The unique identifier for a product",
+            "type": "integer"
+          },
+          "name": {
+            "description": "Name of the product",
+            "type": "string"
+          }
+        },
+        "required": ["idx", "name"]
+    });
+    expect(result.valid).toBe(false);
+  });
+
+  it('should fail JSONSchema validation when a required field is missing', function() {
+    frisby.create(this.description)
+      .get('http://example.com/response1')
+      .expectStatus(200)
+      .expectJSONSchema({
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "Product",
+        "description": "A product from Acme's catalog",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The unique identifier for a product",
+            "type": "integer"
+          },
+          "name": {
+            "description": "Name of the product",
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "minimum": 0,
+            "exclusiveMinimum": true
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          }
+        },
+        "required": ["idx", "name", "price"]
+      })
     .toss();
   });
 });
