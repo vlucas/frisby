@@ -659,3 +659,37 @@ describe('Frisby matchers', function() {
       .toss();
   });
 });
+
+
+// Additional tests with nested tosses and assertions
+nock('http://example.com')
+  .persist()
+  .get('/test')
+  .reply(200, {
+    "foo": "bar",
+    "bar": "baz",
+    "num": 1,
+    "bool": true
+  });
+
+describe('Nested Frisby Tests', function() {
+  it('should show failures in nested Frisby tests', function() {
+    frisby.create(this.description)
+      .get('http://example.com/test')
+      .expectStatus(200)
+      .afterJSON(function(json) {
+
+        expect(false).toBeTypeOrNull(String);
+
+        frisby.create(this.description)
+          .get('http://example.com/test')
+          .expectJSONTypes({
+            foo: String,
+            bar: function(r) { expect(r).toBeTypeOrNull(Number); }
+          })
+        .toss();
+
+      })
+    .toss();
+  });
+});
