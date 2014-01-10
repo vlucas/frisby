@@ -53,7 +53,12 @@ var mock = nock('http://httpbin.org', { allowUnmocked: true })
   .reply(200, {
     name: 'Test Upload',
     file: '/some/path/logo-frisby.png'
+  })
+  .post('/raw')
+  .reply(200, function(uri, requestBody) {
+    return requestBody;
   });
+      
 
 //
 // Tests run like normal Frisby specs but with 'mock' specified with a 'mock-request' object
@@ -644,6 +649,18 @@ describe('Frisby matchers', function() {
           file: fs.createReadStream(path.join(__dirname, 'logo-frisby.png'))
         }, { form: true })
       .expectStatus(200)
+    .toss();
+  });
+
+  it('should allow for passing raw request body', function() {
+    // Intercepted with 'nock'
+    frisby.create(this.description)
+      .post('http://httpbin.org/raw', false, {
+        body: 'some body here',
+      })
+      .inspectBody()
+      .expectStatus(200)
+      .expectBodyContains('some body here')
     .toss();
   });
 
