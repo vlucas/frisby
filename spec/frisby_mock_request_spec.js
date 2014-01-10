@@ -658,7 +658,6 @@ describe('Frisby matchers', function() {
       .post('http://httpbin.org/raw', false, {
         body: 'some body here',
       })
-      .inspectBody()
       .expectStatus(200)
       .expectBodyContains('some body here')
     .toss();
