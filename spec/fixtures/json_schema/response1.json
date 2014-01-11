@@ -6,16 +6,19 @@
     "properties": {
         "id": {
             "description": "The unique identifier for a product",
-            "type": "integer"
+            "type": "integer",
+            "required": true
         },
         "name": {
             "description": "Name of the product",
-            "type": "string"
+            "type": "string",
+            "required": true
         },
         "price": {
             "type": "number",
             "minimum": 0,
-            "exclusiveMinimum": true
+            "exclusiveMinimum": true,
+            "required": true
         },
         "tags": {
             "type": "array",
@@ -25,6 +28,5 @@
             "minItems": 1,
             "uniqueItems": true
         }
-    },
-    "required": ["id", "name", "price"]
+    }
 }
