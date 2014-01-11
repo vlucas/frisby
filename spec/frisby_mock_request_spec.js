@@ -655,7 +655,7 @@ describe('Frisby matchers', function() {
   it('should allow for passing raw request body', function() {
     // Intercepted with 'nock'
     frisby.create(this.description)
-      .post('http://httpbin.org/raw', false, {
+      .post('http://httpbin.org/raw', {}, {
         body: 'some body here',
       })
       .expectStatus(200)
