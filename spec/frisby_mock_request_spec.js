@@ -676,6 +676,7 @@ describe('Frisby matchers', function() {
       .expectHeader('Content-Type', 'application/json')
       .after(function(err, res, body) {
         expect(this.current.outgoing.headers['content-type']).toBe('application/json');
+        expect(this.current.outgoing.body).toBe('{}');
       })
     .toss();
   });
