@@ -58,7 +58,7 @@ var mock = nock('http://httpbin.org', { allowUnmocked: true })
   .reply(200, function(uri, requestBody) {
     return requestBody;
   });
-      
+
 
 //
 // Tests run like normal Frisby specs but with 'mock' specified with a 'mock-request' object
@@ -502,20 +502,20 @@ describe('Frisby matchers', function() {
       .get('/test-complex-nesting')
       .respond({
         statusCode: 201,
-        body: { response: 
+        body: { response:
           { code: 201,
-           data: 
+           data:
             { id: 2863928,
               user_id: 104,
               username: 'test_john3000',
-              user_avatar_url: 
+              user_avatar_url:
                { px_24x24: 'http://example.com/18d083672fcbf860755882ca6eb225c0_24x24.png',
                  px_48x48: 'http://example.com/18d083672fcbf860755882ca6eb225c0_48x48.png',
                  px_128x128: 'http://example.com/18d083672fcbf860755882ca6eb225c0_128x128.png',
                  px_512x512: 'http://example.com/18d083672fcbf860755882ca6eb225c0_512x512.png' },
               title: 'Test Title',
               highlight_color: null,
-              content: 
+              content:
                { rich: false,
                  yvml: '<?xml version="1.0" encoding="utf-8"?>\n<!DOCTYPE ex-note SYSTEM "http://example.com/pub/exml_1_0.dtd">\n<ex-note>Test Note</ex-note>',
                  html: 'Test Note',
@@ -660,6 +660,23 @@ describe('Frisby matchers', function() {
       })
       .expectStatus(200)
       .expectBodyContains('some body here')
+    .toss();
+  });
+
+  it('should allow for passing raw request body and preserve json:true option', function() {
+    nock('http://httpbin.org', { allowUnmocked: true })
+      .post('/json')
+      .reply(200, {'foo': 'bar'});
+
+    // Intercepted with 'nock'
+    frisby.create(this.description)
+      .post('http://httpbin.org/json', {}, { json: true })
+      .expectStatus(200)
+      .expectJSON({'foo': 'bar'})
+      .expectHeader('Content-Type', 'application/json')
+      .after(function(err, res, body) {
+        expect(this.current.outgoing.headers['content-type']).toBe('application/json');
+      })
     .toss();
   });
 
