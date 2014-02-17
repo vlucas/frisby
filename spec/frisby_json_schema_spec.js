@@ -22,6 +22,17 @@ nock('http://example.com', { allowUnmocked: false })
       "tags": ["home", "green"]
     }
   })
+  .get('/response_x')
+  .reply(200, {
+    response: {
+      data: {
+        "id_x": 1,
+        "name_x": "A green door",
+        "price_x": 12.50,
+        "tags_x": ["home", "green"]
+      }
+    }
+  })
   .get('/response-array')
   .reply(200, {
     items: [
@@ -144,11 +155,11 @@ describe('Frisby JSONSchema', function() {
     .toss();
   });
 
-  it('should accept and validate JSONSchema file with jsonPath at least one in array syntax', function() {
+  it('should accept and validate JSONSchema file with jsonPath syntax', function() {
     frisby.create(this.description)
-      .get('http://example.com/response-array')
+      .get('http://example.com/response_x')
       .expectStatus(200)
-      .expectJSONSchema('items.?', 'fixtures/json_schema/response1.json')
+      .not().expectJSONSchema('response.data', 'fixtures/json_schema/response1.json')
     .toss();
   });
 });
