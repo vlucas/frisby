@@ -26,4 +26,68 @@ describe('Frisby live running httpbin tests', function() {
 
   });
 
+  it('sending binary data via put or post requests should work', function() {
+
+      var data = [];
+
+      for(var i=0; i< 1024; i++)
+        data.push(Math.round(Math.random()*256))
+
+
+      frisby.create('POST random binary data')
+        .post('http://httpbin.org/post',
+              new Buffer(data),
+              {
+                  json : false,
+                  headers : {
+                      "content-type" : "application/octet-stream"
+                  }
+              })
+          .expectStatus(200)
+          .expectHeaderContains('content-type', 'application/json')
+          .expectJSON({
+                  data : 'data:application/octet-stream;base64,'+ new Buffer(data).toString('base64'),
+                  headers: {
+                      "Content-Type": "application/octet-stream",
+                      "Content-Length" : "1024"
+                  },
+                  url: "http://httpbin.org/post",
+                  json : null,
+                  files: {},
+                  form: {}
+              })
+          .expectJSONTypes({
+                  data: String
+              })
+      .toss();
+
+      frisby.create('PUT random binary data')
+        .put('http://httpbin.org/put',
+              new Buffer(data),
+              {
+                  json : false,
+                  headers : {
+                      "content-type" : "application/octet-stream"
+                  }
+              })
+          .expectStatus(200)
+          .expectHeaderContains('content-type', 'application/json')
+          .expectJSON({
+                  data : 'data:application/octet-stream;base64,'+ new Buffer(data).toString('base64'),
+                  headers: {
+                      "Content-Type": "application/octet-stream",
+                      "Content-Length" : "1024"
+                  },
+                  url: "http://httpbin.org/put",
+                  json : null,
+                  files: {},
+                  form: {}
+              })
+          .expectJSONTypes({
+                  data: String
+              })
+      .toss();
+
+  });
+
 });
