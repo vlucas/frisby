@@ -1,5 +1,4 @@
-frisby = require('../lib/frisby');
-
+var frisby = require('../lib/frisby');
 
 describe('Frisby object setup', function() {
 
@@ -7,6 +6,7 @@ describe('Frisby object setup', function() {
     expect({
       request: {
         headers: {},
+        inspectOnFailure: false,
         json: false
       }
     }).toEqual(frisby.globalSetup());
@@ -17,6 +17,7 @@ describe('Frisby object setup', function() {
 
     expect({
       headers: {},
+      inspectOnFailure: false,
       json: false
     }).toEqual(f1.current.request);
   });
@@ -43,41 +44,100 @@ describe('Frisby object setup', function() {
     expect(f1.current.request).not.toEqual(f2.current.request);
   });
 
-    it('should default to json = false', function() {
-        expect({
-            request: {
-                headers: {},
-                json: false
-            }
-        }).toEqual(frisby.globalSetup());
+  it('should default to json = false', function() {
+    expect({
+      request: {
+        headers: {},
+        inspectOnFailure: false,
+        json: false
+      }
+    }).toEqual(frisby.globalSetup());
 
-        expect(frisby.create('mytest').get('/path').current.outgoing.json).toEqual(false);
+    expect(frisby.create('mytest').get('/path').current.outgoing.json).toEqual(false);
+  });
+
+  it('should switch to json default = true when global config is configured json', function() {
+    frisby.globalSetup({
+      request: {
+        headers: {},
+        inspectOnFailure: false,
+        json: true
+      }
     });
 
+    expect({
+      request: {
+        headers: {},
+        inspectOnFailure: false,
+        json: true
+      }
+    }).toEqual(frisby.globalSetup());
 
-    it('should switch to json default = true when global config is configured json', function() {
-        frisby.globalSetup().request.json = true;
-        expect({
-            request: {
-                headers: {},
-                json: true
-            }
-        }).toEqual(frisby.globalSetup());
+    expect(frisby.create('mytest').get('/path').current.outgoing.json).toEqual(true);
+  });
 
-        expect(frisby.create('mytest').get('/path').current.outgoing.json).toEqual(true);
+  it('should be overridable by the params parameter json=false', function() {
+    frisby.globalSetup({
+      request: {
+        headers: {},
+        inspectOnFailure: false,
+        json: true
+      }
     });
 
-    it('should be overridable by the params parameter json=false', function() {
-        frisby.globalSetup().request.json = true;
-        expect({
-            request: {
-                headers: {},
-                json: true
-            }
-        }).toEqual(frisby.globalSetup());
+    expect({
+      request: {
+        headers: {},
+        inspectOnFailure: false,
+        json: true
+      }
+    }).toEqual(frisby.globalSetup());
 
-        expect(frisby.create('mytest').get('/path', {json:false}).current.outgoing.json).toEqual(false);
+    expect(frisby.create('mytest').get('/path', {
+      json: false
+    }).current.outgoing.json).toEqual(false);
+  });
+
+  it('should switch to inspectOnFailure default = true when global config is configured inspectOnFailure', function() {
+    frisby.globalSetup({
+      request: {
+        headers: {},
+        inspectOnFailure: true,
+        json: false
+      }
     });
 
+    expect({
+      request: {
+        headers: {},
+        inspectOnFailure: true,
+        json: false
+      }
+    }).toEqual(frisby.globalSetup());
+
+    expect(frisby.create('mytest').get('/path').current.outgoing.inspectOnFailure).toEqual(true);
+  });
+
+  it('should be overridable by the params parameter inspectOnFailure=false', function() {
+    frisby.globalSetup({
+      request: {
+        headers: {},
+        inspectOnFailure: true,
+        json: false
+      }
+    });
+
+    expect({
+      request: {
+        headers: {},
+        inspectOnFailure: true,
+        json: false
+      }
+    }).toEqual(frisby.globalSetup());
+
+    expect(frisby.create('mytest').get('/path', {
+      inspectOnFailure: false
+    }).current.outgoing.inspectOnFailure).toEqual(false);
+  });
 
 });
