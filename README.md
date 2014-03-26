@@ -1,5 +1,9 @@
 # Frisby
 
+[![NPM](https://nodei.co/npm/frisby.png)](https://nodei.co/npm/frisby/)
+[![Build
+Status](https://travis-ci.org/vlucas/frisby.png?branch=master)](https://travis-ci.org/vlucas/frisby)
+
 A node.js NPM module that makes testing API endpoints easy, fast and fun.
 
 
