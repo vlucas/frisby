@@ -1,6 +1,22 @@
 var frisby = require('../lib/frisby');
 var fs = require('fs');
 var path = require('path');
+var util = require('util');
+var Readable = require('stream').Readable;
+
+function StringStream(string, options) {
+    Readable.call(this, options);
+
+    this.writable = false;
+    this.readable = true;
+    this.string = string;
+}
+util.inherits(StringStream, Readable);
+
+StringStream.prototype._read = function (ignore) {
+    this.push(this.string);
+    this.push(null);
+};
 
 //
 // Tests run like normal Frisby specs but with 'mock' specified with a 'mock-request' object
@@ -117,6 +133,66 @@ describe('Frisby live running httpbin tests', function() {
                   data: String
               })
       .toss();
+
+  });
+
+  it('PATCH requests with Buffer and Stream objects should work.', function() {
+      var patchCommand = 'Patch me!';
+
+      frisby.create('PATCH via Buffer object')
+          .patch('http://httpbin.org/patch',
+          new Buffer(patchCommand),
+          {
+              json : false,
+              headers : {
+                  "content-type" : "text/plain"
+              }
+          })
+          .expectStatus(200)
+          .expectHeaderContains('content-type', 'application/json')
+          .expectJSON({
+              data : patchCommand.toString(),
+              headers: {
+                  "Content-Type": "text/plain",
+                  "Content-Length" : String(patchCommand.length)
+              },
+              url: "http://httpbin.org/patch",
+              json : null,
+              files: {},
+              form: {}
+          })
+          .expectJSONTypes({
+              data: String
+          })
+          .toss();
+
+      frisby.create('PATCH via Stream object')
+          .patch('http://httpbin.org/patch',
+          new StringStream(patchCommand),
+          {
+              json : false,
+              headers : {
+                  "content-type" : "text/plain",
+                  "content-length" : String(patchCommand.length)
+              }
+          })
+          .expectStatus(200)
+          .expectHeaderContains('content-type', 'application/json')
+          .expectJSON({
+              data : patchCommand.toString(),
+              headers: {
+                  "Content-Type": "text/plain",
+                  "Content-Length" : String(patchCommand.length)
+              },
+              url: "http://httpbin.org/patch",
+              json : null,
+              files: {},
+              form: {}
+          })
+          .expectJSONTypes({
+              data: String
+          })
+          .toss();
 
   });
 
