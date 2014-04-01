@@ -25,6 +25,9 @@
     "underscore": "1.6.x",
     "qs": "1.2.x"
   },
+  "devDependencies" : {
+    "form-data": ">= 0.1.2"
+  },
   "main": "./lib/frisby",
   "engines": {
     "node": ">= 0.10.0"

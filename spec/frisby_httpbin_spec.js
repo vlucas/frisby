@@ -3,6 +3,7 @@ var fs = require('fs');
 var path = require('path');
 var util = require('util');
 var Readable = require('stream').Readable;
+var FormData = require('form-data');
 
 function StringStream(string, options) {
     Readable.call(this, options);
@@ -258,4 +259,167 @@ describe('Frisby live running httpbin tests', function() {
                 .toss();
     });
 
+  it('sending multipart/from-data encoded bodies should work', function () {
+
+    var logoPath = path.resolve(__dirname, '../spec/logo-frisby.png');
+
+    var binaryData = [0xDE, 0xCA, 0xFB, 0xAD];
+
+    function makeFormData() {
+      var form = new FormData();
+
+      form.append('field_a', 'A');
+      form.append('field_b', 'B');
+
+      form.append('buffer', new Buffer(binaryData), {
+        contentType: 'application/octet-stream',
+        filename: 'test.bin'               // using Buffers, we need to pass a filename to make form-data set the content-type
+      });
+
+      form.append('file_1', fs.createReadStream(logoPath), {
+        knownLength: fs.statSync(logoPath).size         // we need to set the knownLength so we can call  form.getLengthSync()
+      });
+
+      form.append('file_2', fs.createReadStream(__filename), {
+        knownLength: fs.statSync(__filename).size       // we need to set the knownLength so we can call  form.getLengthSync()
+      });
+      return form;
+    }
+
+    var form = makeFormData();
+
+    frisby.create('POST frisby logo to http://httpbin.org/post')
+      .post('http://httpbin.org/post',
+      form,
+      {
+        json: false,
+        headers: {
+          'content-type': 'multipart/form-data; boundary=' + form.getBoundary(),
+          'content-length': form.getLengthSync()
+        }
+      })
+      .expectStatus(200)
+      .expectHeaderContains('content-type', 'application/json')
+      .expectJSON({
+        data: '', // empty, data is returned in the files and form propierties
+        headers: {
+          "Content-Type": 'multipart/form-data; boundary=' + form.getBoundary()
+        },
+        url: 'http://httpbin.org/post',
+        json: null,
+        files: {
+          buffer: 'data:application/octet-stream;base64,' + new Buffer(binaryData).toString('base64'),
+          file_1: 'data:image/png;base64,' + fs.readFileSync(logoPath).toString('base64'),
+          file_2: fs.readFileSync(__filename).toString()
+        },
+        form: {
+          field_a: 'A',
+          field_b: 'B'
+        }
+      })
+      .expectJSONTypes({
+        data: String,
+        form: {
+          field_a: String,
+          field_b: String
+        },
+        files: {
+          buffer: String,
+          file_1: String,
+          file_2: String
+        }
+      })
+      .toss();
+
+    form = makeFormData();  // FormData is a Stream and it has been consumed!
+
+    frisby.create('PUT frisby logo to http://httpbin.org/post')
+      .put('http://httpbin.org/put',
+      form,
+      {
+        json: false,
+        headers: {
+          'content-type': 'multipart/form-data; boundary=' + form.getBoundary(),
+          'content-length': form.getLengthSync()
+        }
+      })
+      .expectStatus(200)
+      .expectHeaderContains('content-type', 'application/json')
+      .expectJSON({
+        data: '', // empty, data is returned in the files and form propierties
+        headers: {
+          "Content-Type": 'multipart/form-data; boundary=' + form.getBoundary()
+        },
+        url: 'http://httpbin.org/put',
+        json: null,
+        files: {
+          buffer: 'data:application/octet-stream;base64,' + new Buffer(binaryData).toString('base64'),
+          file_1: 'data:image/png;base64,' + fs.readFileSync(logoPath).toString('base64'),
+          file_2: fs.readFileSync(__filename).toString()
+        },
+        form: {
+          field_a: 'A',
+          field_b: 'B'
+        }
+      })
+      .expectJSONTypes({
+        data: String,
+        form: {
+          field_a: String,
+          field_b: String
+        },
+        files: {
+          buffer: String,
+          file_1: String,
+          file_2: String
+        }
+      })
+      .toss();
+
+    form = makeFormData();  // FormData is a Stream and it has been consumed!
+
+    frisby.create('PATCH frisby logo to http://httpbin.org/post')
+      .patch('http://httpbin.org/patch',
+      form,
+      {
+        json: false,
+        headers: {
+          'content-type': 'multipart/form-data; boundary=' + form.getBoundary(),
+          'content-length': form.getLengthSync()
+        }
+      })
+      .expectStatus(200)
+      .expectHeaderContains('content-type', 'application/json')
+      .expectJSON({
+        data: '', // empty, data is returned in the files and form propierties
+        headers: {
+          "Content-Type": 'multipart/form-data; boundary=' + form.getBoundary()
+        },
+        url: 'http://httpbin.org/patch',
+        json: null,
+        files: {
+          buffer: 'data:application/octet-stream;base64,' + new Buffer(binaryData).toString('base64'),
+          file_1: 'data:image/png;base64,' + fs.readFileSync(logoPath).toString('base64'),
+          file_2: fs.readFileSync(__filename).toString()
+        },
+        form: {
+          field_a: 'A',
+          field_b: 'B'
+        }
+      })
+      .expectJSONTypes({
+        data: String,
+        form: {
+          field_a: String,
+          field_b: String
+        },
+        files: {
+          buffer: String,
+          file_1: String,
+          file_2: String
+        }
+      })
+      .toss();
+
+  })
 });
