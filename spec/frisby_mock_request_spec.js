@@ -619,7 +619,7 @@ describe('Frisby matchers', function() {
       .expectHeader('Authorization', 'Basic ZnJpc2J5OnBhc3N3ZA==')
       .after(function(err, res, body) {
         // Check to ensure outgoing set for basic auth
-        expect(this.current.outgoing.auth).toEqual({ user: 'frisby', pass: 'passwd' });
+        expect(this.current.outgoing.auth).toEqual({ user: 'frisby', pass: 'passwd', sendImmediately: true });
 
         // Check to ensure response headers contain basic auth header
         expect(this.current.response.headers.authorization).toBe('Basic ZnJpc2J5OnBhc3N3ZA==');
