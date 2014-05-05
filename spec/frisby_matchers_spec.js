@@ -78,6 +78,27 @@ describe('Frisby matchers', function() {
     });
   });
 
+  it('Callbacks should be able to use matcher toBeTypeOrUndefined', function() {
+    // Set fake JSON body
+    var testJson = {
+      test_str: "I am a string!",
+      test_optional: "I am optional key",
+      test_nest: {
+        nested_optional: "I am optional key too"
+      }
+    };
+
+    // Expectation
+    expect(testJson).toContainJson({
+      test_str: "I am a string!",
+      test_optional: function(val) { expect(val).toBeTypeOrUndefined(String); },
+      test_optional_nonexist: function(val) { expect(val).toBeTypeOrUndefined(String); },
+      test_nest: {
+        nested_optional: function(val) { expect(val).toBeTypeOrUndefined(String); },
+        nested_optional_nonexist: function(val) { expect(val).toBeTypeOrUndefined(String); }
+      }
+    });
+  });
 
   it('toContainJSON should match callbacks that return boolean true', function() {
     // Set fake JSON body
