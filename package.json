@@ -32,5 +32,8 @@
   },
   "scripts": {
     "test": "jasmine-node spec/"
+  },
+  "devDependencies": {
+    "jasmine-node": "~1.14.3"
   }
 }
