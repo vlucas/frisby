@@ -694,4 +694,22 @@ describe('Frisby matchers', function() {
       .expectHeaderToMatch('location', /^\/path\/\d+$/)
       .toss();
   });
+
+  it('should allow setting a base url via globalSetup', function(){
+     var mockFn = mockRequest.mock()
+      .get('/base-url')
+      .respond({
+        statusCode: 200
+      })
+      .run();
+
+    frisby.globalSetup({
+      baseUrl: 'http://mock-request'
+    });
+
+    frisby.create(this.description)
+      .get('/base-url', {mock: mockFn})
+      .expectStatus(200)
+      .toss();
+  });
 });
