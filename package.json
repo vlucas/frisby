@@ -12,10 +12,17 @@
     "Kevin Morey"
   ],
   "repository": {
-    "type" : "git",
-    "url"  : "http://github.com/vlucas/frisby"
+    "type": "git",
+    "url": "http://github.com/vlucas/frisby"
   },
-  "keywords": ["testing", "api", "REST", "jasmine", "bdd", "frisby"],
+  "keywords": [
+    "testing",
+    "api",
+    "REST",
+    "jasmine",
+    "bdd",
+    "frisby"
+  ],
   "dependencies": {
     "request": "2.x.x",
     "jsonschema": "1.0.0",
@@ -25,8 +32,9 @@
     "underscore": "1.6.x",
     "qs": "1.2.x"
   },
-  "devDependencies" : {
-    "form-data": ">= 0.1.2"
+  "devDependencies": {
+    "jasmine-node": "~1.14.5",
+    "form-data": "~0.1.4"
   },
   "main": "./lib/frisby",
   "engines": {
@@ -34,8 +42,5 @@
   },
   "scripts": {
     "test": "jasmine-node spec/"
-  },
-  "devDependencies": {
-    "jasmine-node": "~1.14.5"
   }
 }
