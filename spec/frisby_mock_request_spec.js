@@ -644,9 +644,14 @@ describe('Frisby matchers', function() {
   });
 
   it('should handle file uploads', function() {
+    nock('http://httpbin.org', { allowUnmocked: true })
+      .post('/file-upload')
+      .once()
+      .reply(200, {'result': 'ok'});
+
     // Intercepted with 'nock'
     frisby.create(this.description)
-      .post('http://httpbin.org/post', {
+      .post('http://httpbin.org/file-upload', {
           name: 'Test Upload',
           file: fs.createReadStream(path.join(__dirname, 'logo-frisby.png'))
         }, { form: true })
@@ -668,6 +673,7 @@ describe('Frisby matchers', function() {
   it('should allow for passing raw request body and preserve json:true option', function() {
     nock('http://httpbin.org', { allowUnmocked: true })
       .post('/json')
+      .once()
       .reply(200, {'foo': 'bar'});
 
     // Intercepted with 'nock'
@@ -686,6 +692,7 @@ describe('Frisby matchers', function() {
   it('headers should be regex matchable', function() {
     nock('http://httpbin.org', { allowUnmocked: true })
       .post('/path')
+      .once()
       .reply(201, "The payload", {'Location': '/path/23'});
 
     frisby.create(this.description)
