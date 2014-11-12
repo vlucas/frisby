@@ -33,14 +33,14 @@
     "qs": "1.2.x"
   },
   "devDependencies": {
-    "jasmine-node": "~1.14.5",
-    "form-data": "~0.1.4"
+    "form-data": "~0.1.4",
+    "minijasminenode2": "^1.0.0"
   },
   "main": "./lib/frisby",
   "engines": {
     "node": ">= 0.10.0"
   },
   "scripts": {
-    "test": "jasmine-node spec/"
+    "test": "minijasminenode2 spec/*.js"
   }
 }
