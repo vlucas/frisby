@@ -8,7 +8,8 @@ describe('Frisby object setup', function() {
         headers: {},
         inspectOnFailure: false,
         json: false
-      }
+      },
+      pathSplitChar : '.'
     }).toEqual(frisby.globalSetup());
   });
 
@@ -50,7 +51,8 @@ describe('Frisby object setup', function() {
         headers: {},
         inspectOnFailure: false,
         json: false
-      }
+      },
+      pathSplitChar : '.'
     }).toEqual(frisby.globalSetup());
 
     expect(frisby.create('mytest').get('/path').current.outgoing.json).toEqual(false);
@@ -70,7 +72,8 @@ describe('Frisby object setup', function() {
         headers: {},
         inspectOnFailure: false,
         json: true
-      }
+      },
+      pathSplitChar : '.'
     }).toEqual(frisby.globalSetup());
 
     expect(frisby.create('mytest').get('/path').current.outgoing.json).toEqual(true);
@@ -90,7 +93,8 @@ describe('Frisby object setup', function() {
         headers: {},
         inspectOnFailure: false,
         json: true
-      }
+      },
+      pathSplitChar : '.'
     }).toEqual(frisby.globalSetup());
 
     expect(frisby.create('mytest').get('/path', {
@@ -112,7 +116,8 @@ describe('Frisby object setup', function() {
         headers: {},
         inspectOnFailure: true,
         json: false
-      }
+      },
+      pathSplitChar : '.'
     }).toEqual(frisby.globalSetup());
 
     expect(frisby.create('mytest').get('/path').current.outgoing.inspectOnFailure).toEqual(true);
@@ -132,7 +137,8 @@ describe('Frisby object setup', function() {
         headers: {},
         inspectOnFailure: true,
         json: false
-      }
+      },
+      pathSplitChar : '.'
     }).toEqual(frisby.globalSetup());
 
     expect(frisby.create('mytest').get('/path', {
