@@ -24,7 +24,7 @@
     "frisby"
   ],
   "dependencies": {
-    "request": "2.x.x",
+    "request": ">=2.0.0 <2.50",
     "jsonschema": "1.0.0",
     "stack-trace": "0.0.x",
     "mock-request": ">= 0.1.2",
