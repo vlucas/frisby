@@ -1,7 +1,7 @@
 {
-  "name": "frisby",
-  "version": "0.8.3",
-  "description": "Frisby.js: REST API Endpoint Testing built on Jasmine",
+  "name": "frisby-hack",
+  "version": "0.8.4",
+  "description": "Frisby.js: REST API Endpoint Testing built on Jasmine (hacked to allow different path characters)",
   "homepage": "http://frisbyjs.com",
   "author": "Vance Lucas <vance@vancelucas.com>",
   "license": {
