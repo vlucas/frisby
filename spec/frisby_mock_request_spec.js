@@ -48,7 +48,7 @@ var fixtures = {
 };
 
 // Nock to intercept HTTP upload request
-var mock = nock('http://httpbin.org', { allowUnmocked: true })
+var mock = nock('http://fakehttpbin.org')
   .post('/file-upload')
   .reply(200, {
     name: 'Test Upload',
@@ -662,7 +662,7 @@ describe('Frisby matchers', function() {
   it('should allow for passing raw request body', function() {
     // Intercepted with 'nock'
     frisby.create(this.description)
-      .post('http://httpbin.org/raw', {}, {
+      .post('http://fakehttpbin.org/raw', {}, {
         body: 'some body here',
       })
       .expectStatus(200)
@@ -671,14 +671,14 @@ describe('Frisby matchers', function() {
   });
 
   it('should allow for passing raw request body and preserve json:true option', function() {
-    nock('http://httpbin.org', { allowUnmocked: true })
+    nock('http://fakehttpbin.org')
       .post('/json')
       .once()
       .reply(200, {'foo': 'bar'});
 
     // Intercepted with 'nock'
     frisby.create(this.description)
-      .post('http://httpbin.org/json', {}, { json: true })
+      .post('http://fakehttpbin.org/json', {}, { json: true })
       .expectStatus(200)
       .expectJSON({'foo': 'bar'})
       .expectHeader('Content-Type', 'application/json')
@@ -690,15 +690,33 @@ describe('Frisby matchers', function() {
   });
 
   it('headers should be regex matchable', function() {
-    nock('http://httpbin.org', { allowUnmocked: true })
+    nock('http://fakehttpbin.org')
       .post('/path')
       .once()
       .reply(201, "The payload", {'Location': '/path/23'});
 
     frisby.create(this.description)
-      .post('http://httpbin.org/path', {foo: 'bar'})
+      .post('http://fakehttpbin.org/path', {foo: 'bar'})
       .expectStatus(201)
       .expectHeaderToMatch('location', /^\/path\/\d+$/)
+      .toss();
+  });
+
+  it('should allow setting a base url via globalSetup', function(){
+     var mockFn = mockRequest.mock()
+      .get('/base-url')
+      .respond({
+        statusCode: 200
+      })
+      .run();
+
+    frisby.globalSetup({
+      baseUrl: 'http://mock-request'
+    });
+
+    frisby.create(this.description)
+      .get('/base-url', {mock: mockFn})
+      .expectStatus(200)
       .toss();
   });
 });
