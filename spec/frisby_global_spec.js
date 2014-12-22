@@ -7,7 +7,8 @@ describe('Frisby object setup', function() {
       request: {
         headers: {},
         inspectOnFailure: false,
-        json: false
+        json: false,
+        baseUri: ''
       }
     }).toEqual(frisby.globalSetup());
   });
@@ -18,7 +19,8 @@ describe('Frisby object setup', function() {
     expect({
       headers: {},
       inspectOnFailure: false,
-      json: false
+      json: false,
+      baseUri: ''
     }).toEqual(f1.current.request);
   });
 
@@ -49,7 +51,8 @@ describe('Frisby object setup', function() {
       request: {
         headers: {},
         inspectOnFailure: false,
-        json: false
+        json: false,
+        baseUri: ''
       }
     }).toEqual(frisby.globalSetup());
 
