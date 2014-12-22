@@ -1,8 +1,11 @@
 var frisby = require('../lib/frisby');
-var mockRequest = require('mock-request')
-
+var mockRequest = require('mock-request');
 
 describe('Frisby matchers', function() {
+
+  beforeEach(function(){
+    jasmine.addMatchers(frisby.matchers);
+  });
 
   it('toContainJSON should match exactly', function() {
     // Set fake JSON body
