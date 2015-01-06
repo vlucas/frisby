@@ -81,14 +81,14 @@ describe('Frisby matchers', function() {
       .toss();
   });
 
-  it('gloablSetup should set timeout to 3000', function() {
+  it('globalSetup should set timeout to 3000', function() {
     mockGlobalSetup();
     var f1 = frisby.create(this.description)
     expect(f1.timeout()).toBe(3000);
     restoreGlobalSetup();
   });
 
-  it('gloablSetup should set local request headers', function() {
+  it('globalSetup should set local request headers', function() {
     // Mock API
     var mockFn = mockRequest.mock()
     .get('/test-object-array')
@@ -110,7 +110,7 @@ describe('Frisby matchers', function() {
       .toss();
   });
 
-  it('addHeaders should override gloablSetup request headers', function() {
+  it('addHeaders should override globalSetup request headers', function() {
     // Mock API
     var mockFn = mockRequest.mock()
     .get('/test-object-array')
@@ -663,7 +663,7 @@ describe('Frisby matchers', function() {
     // Intercepted with 'nock'
     frisby.create(this.description)
       .post('http://httpbin.org/raw', {}, {
-        body: 'some body here',
+        body: 'some body here'
       })
       .expectStatus(200)
       .expectBodyContains('some body here')
@@ -684,7 +684,7 @@ describe('Frisby matchers', function() {
       .expectHeader('Content-Type', 'application/json')
       .after(function(err, res, body) {
         expect(this.current.outgoing.headers['content-type']).toBe('application/json');
-        expect(this.current.outgoing.body).toBe('{}');
+        expect(this.current.outgoing.body).toEqual({});
       })
     .toss();
   });
@@ -700,5 +700,31 @@ describe('Frisby matchers', function() {
       .expectStatus(201)
       .expectHeaderToMatch('location', /^\/path\/\d+$/)
       .toss();
+  });
+
+  it('globalSetup should be able to set baseURI', function() {
+    nock('http://httpbin.org', { allowUnmocked: true })
+     .post('/test')
+     .once()
+     .reply(200, function(uri, requestBody) {
+       return requestBody;
+     });
+
+    frisby.globalSetup({
+      request: {
+        baseUri: 'http://httpbin.org'
+      }
+    });
+
+    frisby.create(this.description)
+      .post('/test', {}, {
+        body: 'some body here'
+      })
+      .expectStatus(200)
+      .expectBodyContains('some body here')
+      .after(function() {
+        expect(this.current.outgoing.uri).toBe('http://httpbin.org/test');
+      })
+    .toss();
   });
 });

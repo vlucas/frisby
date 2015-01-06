@@ -2,6 +2,11 @@ var frisby = require('../lib/frisby');
 
 describe('Frisby withPath syntax', function() {
 
+  // Manually add Frisby matchers (otherwise done in toss())
+  beforeEach(function(){
+    jasmine.addMatchers(frisby.matchers);
+  });
+
   it('should work with single string path', function() {
     frisby.withPath('response', {
         response: {

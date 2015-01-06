@@ -1,6 +1,6 @@
 {
   "name": "frisby",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "description": "Frisby.js: REST API Endpoint Testing built on Jasmine",
   "homepage": "http://frisbyjs.com",
   "author": "Vance Lucas <vance@vancelucas.com>",
@@ -24,7 +24,7 @@
     "frisby"
   ],
   "dependencies": {
-    "request": ">=2.0.0 <2.50",
+    "request": ">=2.51",
     "jsonschema": "1.0.0",
     "stack-trace": "0.0.x",
     "mock-request": ">= 0.1.2",
@@ -33,14 +33,14 @@
     "qs": "1.2.x"
   },
   "devDependencies": {
-    "jasmine-node": "~1.14.5",
-    "form-data": "~0.1.4"
+    "form-data": "~0.1.4",
+    "minijasminenode2": "^1.0.0"
   },
   "main": "./lib/frisby",
   "engines": {
     "node": ">= 0.10.0"
   },
   "scripts": {
-    "test": "jasmine-node spec/"
+    "test": "minijasminenode2 spec/*.js"
   }
 }
