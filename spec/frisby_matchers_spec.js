@@ -148,6 +148,70 @@ describe('Frisby matchers', function() {
     });
   });
 
+  it('toContainJSON should match callbacks that return boolean true from inside a nested object', function() {
+    // Set fake JSON body
+    var testJson = {
+      test_nest: {
+        nested_str: "I am a string!"
+      }
+    };
+
+    // Expectation
+    expect(testJson).toContainJson({
+      test_nest: {
+        nested_str: function(val) { return true; }
+      }
+    });
+  });
+
+  it('toContainJSON should NOT match callbacks that return boolean false from inside a nested object', function() {
+    // Set fake JSON body
+    var testJson = {
+      test_nest: {
+        nested_str: "I am a string!"
+      }
+    };
+
+    // Expectation
+    expect(testJson).not.toContainJson({
+      test_nest: {
+        nested_str: function(val) { return false; }
+      }
+    });
+  });
+
+  it('toContainJSON should match callbacks that return boolean true from inside an array', function() {
+    // Set fake JSON body
+    var testJson = {
+      test_array: [{
+        test_array_str: "I'm in an array!"
+      }]
+    };
+
+    // Expectation
+    expect(testJson).toContainJson({
+      test_array: [{
+        test_array_str: function(val) { return true; }
+      }]
+    });
+  });
+
+  it('toContainJSON should NOT match callbacks that return boolean false from inside an array', function() {
+    // Set fake JSON body
+    var testJson = {
+      test_array: [{
+        test_array_str: "I'm in an array!"
+      }]
+    };
+
+    // Expectation
+    expect(testJson).not.toContainJson({
+      test_array: [{
+        test_array_str: function(val) { return false; }
+      }]
+    });
+  });  
+
 
   it('toContainJSON should not match with undefined variable', function() {
     // Set fake JSON body
@@ -174,6 +238,74 @@ describe('Frisby matchers', function() {
     expect(testJson).not.toContainJson({
       test_str: "I am a string!",
       test: "Some random value that won't match anyways" // Key that does not exist
+    });
+  });
+
+  it('JSONTypes should match callbacks that return boolean true from inside a nested object', function() {
+    // Set fake JSON body
+    var testJson = {
+      test_str: "I am a string!",
+      test_nest: {
+        nested_str: "I am a string!"
+      }
+    };
+
+    // Expectation
+    expect(testJson).toContainJsonTypes({
+      test_str: String,
+      test_nest: {
+        nested_str: function(val) { return true; }
+      }
+    }); 
+  });
+
+  it('JSONTypes should NOT match callbacks that return boolean false from inside a nested object', function() {
+    // Set fake JSON body
+    var testJson = {
+      test_str: "I am a string!",
+      test_nest: {
+        nested_str: "I am a string!"
+      }
+    };
+
+    // Expectation
+    expect(testJson).not.toContainJsonTypes({
+      test_str: String,
+      test_nest: {
+        nested_str: function(val) { return false; }
+      }
+    });
+  });
+
+  it('JSONTypes should match callbacks that return boolean true from inside an array', function() {
+    // Set fake JSON body
+    var testJson = {
+      test_array: [{
+        test_array_str: "I'm in an array!"
+      }]
+    };
+
+    // Expectation
+    expect(testJson).toContainJsonTypes({
+      test_array: [{
+        test_array_str: function(val) { return true; }
+      }]
+    });
+  });
+
+  it('JSONTypes should NOT match callbacks that return boolean false from inside an array', function() {
+    // Set fake JSON body
+    var testJson = {
+      test_array: [{
+        test_array_str: "I'm in an array!"
+      }]
+    };
+
+    // Expectation
+    expect(testJson).not.toContainJsonTypes({
+      test_array: [{
+        test_array_str: function(val) { return false; }
+      }]
     });
   });
 
