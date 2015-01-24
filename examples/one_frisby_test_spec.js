@@ -13,12 +13,12 @@ frisby.globalSetup({
     }
 });
 
-frisby.create('Should only run this test')
-    .get('https://graph.facebook.com/111848702235277')
-    .expectStatus(200)
-    .ttoss();
-
 frisby.create('Should NOT run this failed test')
     .get('https://graph.facebook.com/111848702235277')
     .expectStatus(400)
     .toss();
+
+frisby.create('Should only run this test')
+    .get('https://graph.facebook.com/111848702235277')
+    .expectStatus(200)
+    .ttoss();
