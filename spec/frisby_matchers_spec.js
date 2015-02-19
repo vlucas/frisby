@@ -151,6 +151,69 @@ describe('Frisby matchers', function() {
     });
   });
 
+  it('toContainJSON should pass when callbacks passes on deep fields', function() {
+    // Set fake JSON body
+    var testJson = {
+      test_obj: {
+        test_str: "I am a string!"
+      }
+    };
+
+    // Expectation toContainJSON
+    expect(testJson).toContainJson({
+      test_obj: {
+        test_str: function(val) { return true; }
+      }
+    });
+  });
+
+  it('toContainJSON should fail when callbacks fails on deep fields', function() {
+    // Set fake JSON body
+    var testJson = {
+      test_obj: {
+        test_str: "I am a string!"
+      }
+    };
+
+    // Expectation toContainJSON
+    expect(testJson).not.toContainJson({
+      test_obj: {
+        test_str: function(val) { return false; }
+      }
+    });
+  });
+
+  it('toContainJsonTypes should pass when callbacks passes on deep fields', function() {
+    // Set fake JSON body
+    var testJson = {
+      test_obj: {
+        test_str: "I am a string!"
+      }
+    };
+
+    // Expectation toContainJSONType
+    expect(testJson).toContainJsonTypes({
+      test_obj: {
+        test_str: function(val) { return true; }
+      }
+    });
+  });
+
+  it('toContainJsonTypes should fail when callbacks fails on deep fields', function() {
+    // Set fake JSON body
+    var testJson = {
+      test_obj: {
+        test_str: "I am a string!"
+      }
+    };
+
+    // Expectation toContainJSONType
+    expect(testJson).not.toContainJsonTypes({
+      test_obj: {
+        test_str: function(val) { return false; }
+      }
+    });
+  });
 
   it('toContainJSON should not match with undefined variable', function() {
     // Set fake JSON body
