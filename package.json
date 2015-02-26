@@ -36,6 +36,9 @@
     "form-data": "~0.1.4",
     "minijasminenode2": "^1.0.0"
   },
+  "peerDependencies": {
+    "jasmine-node": "^1.14.5"
+  },
   "main": "./lib/frisby",
   "engines": {
     "node": ">= 0.10.0"
