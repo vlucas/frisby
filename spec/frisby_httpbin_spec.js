@@ -421,5 +421,14 @@ describe('Frisby live running httpbin tests', function() {
       })
       .toss();
 
-  })
+  });
+
+  it('should handle multiple cookies in the header', function() {
+    frisby.create('test with httpbin for handling multiple cookies')
+        .get('http://httpbin.org/cookies/set?k1=v1&k2=v2', { followRedirect: false, maxRedirects: 1 })
+        .expectHeader('set-cookie', "k2=v2; path=/,k1=v1; path=/")
+        .expectHeaderContains('set-cookie', 'k2=v2')
+        .expectHeaderToMatch('set-cookie', /path=\//)
+        .toss();
+  });
 });
