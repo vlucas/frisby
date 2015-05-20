@@ -22,7 +22,7 @@ Each set of unique sequences or API endpoint tests should be started with new `f
 
 ```javascript
 
-var frisby = require('../lib/frisby');
+var frisby = require('frisby');
 
 var URL = 'http://localhost:3000/';
 var URL_AUTH = 'http://username:password@localhost:3000/';
@@ -80,6 +80,7 @@ Suggested file naming is to append the filename with `_spec`, like `mytests_spec
 ### Run it from the CLI
 
     cd your/project
+    export NODE_PATH="'$(npm root -g)'"
     jasmine-node .
     
 ### Documentation
