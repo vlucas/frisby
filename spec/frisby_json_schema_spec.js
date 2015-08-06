@@ -155,11 +155,11 @@ describe('Frisby JSONSchema', function() {
     .toss();
   });
 
-  it('should accept and validate JSONSchema file with jsonPath syntax', function() {
+  it('should accept and validate JSONSchema file with external reference if context was given', function() {
     frisby.create(this.description)
       .get('http://example.com/response_x')
       .expectStatus(200)
-      .not().expectJSONSchema('response.data', 'fixtures/json_schema/response1.json')
+      .not().expectJSONSchema(null, 'fixtures/json_schema/decision_set.json', { 'decision.json' : 'fixtures/json_schema/decision_set.json'})
     .toss();
   });
 });

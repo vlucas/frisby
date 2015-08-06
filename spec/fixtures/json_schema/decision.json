@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Decision",
+    "type": "object",
+    "properties": {
+        "external_id": {
+          "description": "the decision that belongs to the decisionSet",
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,255}$"
+        },
+        "weight" : {
+          "description": "Weights can be applied to a decision set. Useful when you know the alternative you want to test should not start on a 50/50 basis.",
+          "minimum": "0",
+          "maximum": "100",
+          "multipleOf": 1.0,
+          "type": "number"
+        }
+    },
+    "required": [ "external_id" ]
+}
+
+ 
