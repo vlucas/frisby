@@ -67,7 +67,7 @@ describe('Frisby JSONSchema', function() {
     frisby.create(this.description)
       .get('http://example.com/response1')
       .expectStatus(200)
-      .expectJSONSchema(null, {
+      .expectJSONSchema('', {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "title": "Product",
         "description": "A product from Acme's catalog",
