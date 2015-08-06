@@ -67,7 +67,7 @@ describe('Frisby JSONSchema', function() {
     frisby.create(this.description)
       .get('http://example.com/response1')
       .expectStatus(200)
-      .expectJSONSchema({
+      .expectJSONSchema(null, {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "title": "Product",
         "description": "A product from Acme's catalog",
@@ -104,7 +104,7 @@ describe('Frisby JSONSchema', function() {
     frisby.create(this.description)
       .get('http://example.com/response1')
       .expectStatus(200)
-      .expectJSONSchema('fixtures/json_schema/response1.json')
+      .expectJSONSchema(null, 'fixtures/json_schema/response1.json')
     .toss();
   });
 
@@ -112,7 +112,7 @@ describe('Frisby JSONSchema', function() {
     frisby.create(this.description)
       .get('http://example.com/response1')
       .expectStatus(200)
-      .expectJSONSchema(path.join(__dirname, 'fixtures/json_schema/response1.json'))
+      .expectJSONSchema(null, path.join(__dirname, 'fixtures/json_schema/response1.json'))
     .toss();
   });
 
