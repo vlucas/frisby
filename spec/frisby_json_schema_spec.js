@@ -183,15 +183,7 @@ describe('Frisby JSONSchema', function() {
     frisby.create(this.description)
       .get('http://example.com/response_ds')
       .expectStatus(200)
-      .expectJSONSchema(null, 'fixtures/json_schema/decision_set.json', { 'decision.json' : 'fixtures/json_schema/decision_set.json'}, false)
-    .toss();
-  });
-  
-  it('should accept and validate JSONSchema file with external reference if context was given excluding external required items', function() {
-    frisby.create(this.description)
-      .get('http://example.com/response_ds')
-      .expectStatus(200)
-      .expectJSONSchema('', 'fixtures/json_schema/decision_set.json', { 'decision.json' : 'fixtures/json_schema/decision_set.json'}, true)
+      .expectJSONSchema(null, 'fixtures/json_schema/decision_set.json', { 'decision.json' : 'fixtures/json_schema/decision_set.json'})
     .toss();
   });
 
