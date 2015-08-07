@@ -25,7 +25,7 @@
   ],
   "dependencies": {
     "request": ">=2.51",
-    "jsonschema": "1.0.0",
+    "tv4": ">=1.1.*",
     "stack-trace": "0.0.x",
     "mock-request": ">= 0.1.2",
     "nock": "*",

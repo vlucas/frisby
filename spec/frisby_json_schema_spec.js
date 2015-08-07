@@ -25,7 +25,7 @@ nock('http://example.com', { allowUnmocked: false })
   .get('/response_x')
   .reply(200, {
     response: {
-      data: {
+      "data": {
         "id_x": 1,
         "name_x": "A green door",
         "price_x": 12.50,
@@ -33,23 +33,21 @@ nock('http://example.com', { allowUnmocked: false })
       }
     }
   })
-  .get('/response_x')
+  .get('/response_ds')
   .reply(200, {
-    response: {
-       "id":"test_ds",
-       "title":"test_title_ds",
-       "decisions":[
-          {
-             "external_id":"some_identifier",
-             "weight":44
-          },
-          {
-             "external_id":"another_identifier",
-             "weight":25
-          }
-       ],
-       "created":"2885-08-12T16:53:12.206Z"
-    }
+    "id":"test_ds",
+    "title":"test_title_ds",
+    "decisions":[
+      {
+         "external_id":"some_identifier",
+         "weight":44
+      },
+      {
+         "external_id":"another_identifier",
+         "weight":25
+      }
+    ],
+    "created":"2885-08-12T16:53:12.206Z"
   })
   .get('/response-array')
   .reply(200, {
@@ -177,7 +175,7 @@ describe('Frisby JSONSchema', function() {
     frisby.create(this.description)
       .get('http://example.com/response_x')
       .expectStatus(200)
-      .not().expectJSONSchema('response.data', 'fixtures/json_schema/response1.json')
+      .expectJSONSchema('response.data', 'fixtures/json_schema/response1.json')
     .toss();
   });
 
@@ -185,7 +183,7 @@ describe('Frisby JSONSchema', function() {
     frisby.create(this.description)
       .get('http://example.com/response_ds')
       .expectStatus(200)
-      .not().expectJSONSchema(null, 'fixtures/json_schema/decision_set.json', { 'decision.json' : 'fixtures/json_schema/decision_set.json'})
+      .expectJSONSchema(null, 'fixtures/json_schema/decision_set.json', { 'decision.json' : 'fixtures/json_schema/decision_set.json'}, false)
     .toss();
   });
   
@@ -193,7 +191,15 @@ describe('Frisby JSONSchema', function() {
     frisby.create(this.description)
       .get('http://example.com/response_ds')
       .expectStatus(200)
-      .not().expectJSONSchema('', 'fixtures/json_schema/decision_set.json', { 'decision.json' : 'fixtures/json_schema/decision_set.json'}, false)
+      .expectJSONSchema('', 'fixtures/json_schema/decision_set.json', { 'decision.json' : 'fixtures/json_schema/decision_set.json'}, true)
+    .toss();
+  });
+
+  it('should not accept if jsonSchema is invalid', function() {
+    frisby.create(this.description)
+      .get('http://example.com/response_x')
+      .expectStatus(200)
+      .not().expectJSONSchema('', 'fixtures/json_schema/decision_set.json')
     .toss();
   });
 
