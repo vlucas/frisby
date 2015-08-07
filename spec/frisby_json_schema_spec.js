@@ -185,7 +185,7 @@ describe('Frisby JSONSchema', function() {
     frisby.create(this.description)
       .get('http://example.com/response_ds')
       .expectStatus(200)
-      .not().expectJSONSchema(null, 'fixtures/json_schema/decision_set.json', { 'decision.json' : 'fixtures/json_schema/decision_set.json', false})
+      .not().expectJSONSchema(null, 'fixtures/json_schema/decision_set.json', { 'decision.json' : 'fixtures/json_schema/decision_set.json'})
     .toss();
   });
   
