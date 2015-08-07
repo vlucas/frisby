@@ -33,6 +33,24 @@ nock('http://example.com', { allowUnmocked: false })
       }
     }
   })
+  .get('/response_x')
+  .reply(200, {
+    response: {
+       "id":"test_ds",
+       "title":"test_title_ds",
+       "decisions":[
+          {
+             "external_id":"some_identifier",
+             "weight":44
+          },
+          {
+             "external_id":"another_identifier",
+             "weight":25
+          }
+       ],
+       "created":"2885-08-12T16:53:12.206Z"
+    }
+  })
   .get('/response-array')
   .reply(200, {
     items: [
@@ -163,11 +181,19 @@ describe('Frisby JSONSchema', function() {
     .toss();
   });
 
-  it('should accept and validate JSONSchema file with external reference if context was given', function() {
+  it('should accept and validate JSONSchema file with external reference if context was given including external required items', function() {
     frisby.create(this.description)
-      .get('http://example.com/response_x')
+      .get('http://example.com/response_ds')
       .expectStatus(200)
-      .not().expectJSONSchema(null, 'fixtures/json_schema/decision_set.json', { 'decision.json' : 'fixtures/json_schema/decision_set.json'})
+      .not().expectJSONSchema(null, 'fixtures/json_schema/decision_set.json', { 'decision.json' : 'fixtures/json_schema/decision_set.json', false})
+    .toss();
+  });
+  
+  it('should accept and validate JSONSchema file with external reference if context was given excluding external required items', function() {
+    frisby.create(this.description)
+      .get('http://example.com/response_ds')
+      .expectStatus(200)
+      .not().expectJSONSchema('', 'fixtures/json_schema/decision_set.json', { 'decision.json' : 'fixtures/json_schema/decision_set.json'}, false)
     .toss();
   });
 
