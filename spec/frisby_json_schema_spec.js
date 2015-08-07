@@ -183,6 +183,14 @@ describe('Frisby JSONSchema', function() {
     frisby.create(this.description)
       .get('http://example.com/response_ds')
       .expectStatus(200)
+      .expectJSONSchema(null, 'fixtures/json_schema/decision_set.json', { '/decision.json' : 'fixtures/json_schema/decision_set.json'})
+    .toss();
+  });
+
+  it('should not accept if the schema was not found', function() {
+    frisby.create(this.description)
+      .get('http://example.com/response_ds')
+      .expectStatus(200)
       .expectJSONSchema(null, 'fixtures/json_schema/decision_set.json', { 'decision.json' : 'fixtures/json_schema/decision_set.json'})
     .toss();
   });
