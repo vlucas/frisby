@@ -22,7 +22,7 @@ Each set of unique sequences or API endpoint tests should be started with new `f
 
 ```javascript
 
-var frisby = require('../lib/frisby');
+var frisby = require('frisby');
 
 var URL = 'http://localhost:3000/';
 var URL_AUTH = 'http://username:password@localhost:3000/';
