@@ -1,0 +1,30 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Decision Set",
+    "type": "object",
+    "properties": {
+        "id": {
+          "description": "Decision Set UID.",
+          "type": "string",
+          "pattern": "^[a-z0-9_-]{1,128}$"
+        },
+        "title": {
+          "description": "Decision Set Title.",
+          "type": "string"
+        },
+        "decisions": {
+          "description": "Decision Set UID.",
+          "type": "array",
+          "minimum": 1,
+          "items": {
+            "$ref": "decision.json"
+          }
+        },
+        "created": {
+          "description": "Timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.",
+          "type": "string",
+          "format": "date-time"
+        }
+    },
+    "required": [ "id", "title", "decisions", "created" ]
+}

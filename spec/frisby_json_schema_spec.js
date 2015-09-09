@@ -25,13 +25,29 @@ nock('http://example.com', { allowUnmocked: false })
   .get('/response_x')
   .reply(200, {
     response: {
-      data: {
+      "data": {
         "id_x": 1,
         "name_x": "A green door",
         "price_x": 12.50,
         "tags_x": ["home", "green"]
       }
     }
+  })
+  .get('/response_ds')
+  .reply(200, {
+    "id":"test_ds",
+    "title":"test_title_ds",
+    "decisions":[
+      {
+         "external_id":"some_identifier",
+         "weight":44
+      },
+      {
+         "external_id":"another_identifier",
+         "weight":25
+      }
+    ],
+    "created":"2885-08-12T16:53:12.206Z"
   })
   .get('/response-array')
   .reply(200, {
@@ -67,7 +83,7 @@ describe('Frisby JSONSchema', function() {
     frisby.create(this.description)
       .get('http://example.com/response1')
       .expectStatus(200)
-      .expectJSONSchema({
+      .expectJSONSchema('', {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "title": "Product",
         "description": "A product from Acme's catalog",
@@ -104,7 +120,7 @@ describe('Frisby JSONSchema', function() {
     frisby.create(this.description)
       .get('http://example.com/response1')
       .expectStatus(200)
-      .expectJSONSchema('fixtures/json_schema/response1.json')
+      .expectJSONSchema(null, 'fixtures/json_schema/response1.json')
     .toss();
   });
 
@@ -112,7 +128,7 @@ describe('Frisby JSONSchema', function() {
     frisby.create(this.description)
       .get('http://example.com/response1')
       .expectStatus(200)
-      .expectJSONSchema(path.join(__dirname, 'fixtures/json_schema/response1.json'))
+      .expectJSONSchema(null, path.join(__dirname, 'fixtures/json_schema/response1.json'))
     .toss();
   });
 
@@ -159,7 +175,32 @@ describe('Frisby JSONSchema', function() {
     frisby.create(this.description)
       .get('http://example.com/response_x')
       .expectStatus(200)
-      .not().expectJSONSchema('response.data', 'fixtures/json_schema/response1.json')
+      .expectJSONSchema('response.data', 'fixtures/json_schema/response1.json')
     .toss();
   });
+
+  it('should accept and validate JSONSchema file with external reference if context was given including external required items', function() {
+    frisby.create(this.description)
+      .get('http://example.com/response_ds')
+      .expectStatus(200)
+      .expectJSONSchema(null, 'fixtures/json_schema/decision_set.json', { '/decision.json' : 'fixtures/json_schema/decision_set.json'})
+    .toss();
+  });
+
+  it('should not accept if the schema was not found', function() {
+    frisby.create(this.description)
+      .get('http://example.com/response_ds')
+      .expectStatus(200)
+      .expectJSONSchema(null, 'fixtures/json_schema/decision_set.json', { 'decision.json' : 'fixtures/json_schema/decision_set.json'})
+    .toss();
+  });
+
+  it('should not accept if jsonSchema is invalid', function() {
+    frisby.create(this.description)
+      .get('http://example.com/response_x')
+      .expectStatus(200)
+      .not().expectJSONSchema('', 'fixtures/json_schema/decision_set.json')
+    .toss();
+  });
+
 });
