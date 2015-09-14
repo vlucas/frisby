@@ -8,7 +8,8 @@ describe('Frisby object setup', function() {
         headers: {},
         inspectOnFailure: false,
         json: false,
-        baseUri: ''
+        baseUri: '',
+        overRideContentType: true
       }
     }).toEqual(frisby.globalSetup());
   });
@@ -20,7 +21,8 @@ describe('Frisby object setup', function() {
       headers: {},
       inspectOnFailure: false,
       json: false,
-      baseUri: ''
+      baseUri: '',
+      overRideContentType: true
     }).toEqual(f1.current.request);
   });
 
@@ -52,7 +54,8 @@ describe('Frisby object setup', function() {
         headers: {},
         inspectOnFailure: false,
         json: false,
-        baseUri: ''
+        baseUri: '',
+        overRideContentType: true
       }
     }).toEqual(frisby.globalSetup());
 
