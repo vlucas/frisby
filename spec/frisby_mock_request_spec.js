@@ -670,6 +670,23 @@ describe('Frisby matchers', function() {
     .toss();
   });
 
+  it('should expect body to not contain value', function() {
+    nock('http://httpbin.org', { allowUnmocked: true })
+      .post('/not-contains')
+      .reply(200, function(uri, requestBody) {
+          return requestBody;
+      });
+      
+    // Intercepted with 'nock'
+    frisby.create(this.description)
+      .post('http://httpbin.org/not-contains', {}, {
+        body: 'some body here'
+      })
+      .expectStatus(200)
+      .expectBodyNotContains('some body not here')
+    .toss();
+  });
+
   it('should allow for passing raw request body and preserve json:true option', function() {
     nock('http://httpbin.org', { allowUnmocked: true })
       .post('/json')
