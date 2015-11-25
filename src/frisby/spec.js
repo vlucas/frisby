@@ -4,7 +4,7 @@ import fetch from 'node-fetch';
 export default class FrisbySpec {
   constructor(testName) {
     this.testName = testName;
-    this.fetch;
+    this._fetch;
     this.response;
     this.responseJson;
     this.expects = [];
@@ -14,7 +14,7 @@ export default class FrisbySpec {
    * Create new test
    */
   fetch(url, params = {}) {
-    this.fetch = fetch(url, params)
+    this._fetch = fetch(url, params)
       .then((response) => {
         this.response = response;
         return response;
@@ -28,7 +28,7 @@ export default class FrisbySpec {
    */
   then(fn) {
     this._ensureHasFetched();
-    this.fetch.then(fn);
+    this._fetch.then(fn);
 
     return this;
   }
@@ -39,7 +39,7 @@ export default class FrisbySpec {
   toss() {
     this._ensureHasFetched();
 
-    // Requires Jasmine
+    // Requires Jasmine for 'it' function
     it(this.testName, (doneFn) => {
 
       this.then(() => {
@@ -49,6 +49,7 @@ export default class FrisbySpec {
 
         doneFn.call(null);
       });
+
     });
   }
 
@@ -71,11 +72,9 @@ export default class FrisbySpec {
    */
 
   expectStatus(statusCode) {
-    this.expects.push(function expectStatus(response) {
+    return this._expects(function expectStatus(response) {
       expect(response.status).toBe(statusCode);
     });
-
-    return this;
   }
 
   /**
@@ -87,8 +86,16 @@ export default class FrisbySpec {
    * Ensure fetch() has been called already
    */
   _ensureHasFetched() {
-    if (typeof this.fetch === 'undefined') {
+    if (typeof this._fetch === 'undefined') {
       throw new Error('Frisby spec not started. You must call fetch() first to begin a Frisby test.');
     }
+  }
+
+  /**
+   * Add expectation to execute after HTTP call is done
+   */
+  _expects(fn) {
+    this.expects.push(fn);
+    return this;
   }
 }
