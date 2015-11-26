@@ -1,26 +1,52 @@
+// NPM
 import _ from 'lodash';
 import fetch from 'node-fetch';
 
+// Frisby
+import { getExpectHandlers } from './expects';
+let expectHandlers = getExpectHandlers();
+
+
 export default class FrisbySpec {
   constructor(testName) {
-    this.testName = testName;
+    this._testName = testName;
     this._fetch;
-    this.response;
-    this.responseJson;
-    this.expects = [];
+    this._response;
+    this._expects = [];
   }
 
   /**
-   * Create new test
+   * Fetch given URL with params (passthru to 'fetch' API)
    */
   fetch(url, params = {}) {
     this._fetch = fetch(url, params)
       .then((response) => {
-        this.response = response;
-        return response;
+        this._response = response;
+        return response.json();
+      }).then((json) => {
+        this._response.json = json;
       });
 
     return this;
+  }
+
+  /**
+   * POST convenience wrapper
+   * Auto-encodes JSON if 'body' is typeof object
+   */
+  post(url, params = {}) {
+    let postParams = {
+      method: 'post'
+    };
+
+    // Auto-encode JSON body
+    if (_.isObject(params.body)) {
+      params.body = JSON.stringify(params.body);
+    }
+
+    _.merge(postParams, params);
+
+    return this.fetch(url, postParams);
   }
 
   /**
@@ -40,11 +66,11 @@ export default class FrisbySpec {
     this._ensureHasFetched();
 
     // Requires Jasmine for 'it' function
-    it(this.testName, (doneFn) => {
+    it(this._testName, (doneFn) => {
 
       this.then(() => {
-        for(let i = 0; i < this.expects.length; i++) {
-          this.expects[i].call(this, this.response);
+        for(let i = 0; i < this._expects.length; i++) {
+          this._expects[i].call(this, this._response);
         }
 
         doneFn.call(null);
@@ -60,7 +86,7 @@ export default class FrisbySpec {
 
   inspectResponse() {
     this.then(() => {
-      console.log(this.response);
+      console.log(this._response);
     });
 
     return this;
@@ -71,14 +97,22 @@ export default class FrisbySpec {
    * ==========================================================================
    */
 
-  expectStatus(statusCode) {
-    return this._expects(function expectStatus(response) {
-      expect(response.status).toBe(statusCode);
+  /**
+   * Add expectation for current test
+   */
+  expect(expectName, ...expectValues) {
+    if (typeof expectHandlers[expectName] === 'undefined') {
+      throw new Error("Expectation '" + expectName + "' is not defined.");
+    }
+
+    return this._addExpect(() => {
+      expectHandlers[expectName].apply(this, [this._response].concat(expectValues));
     });
   }
 
   /**
-   * Private methods (not meant to be part of the public API)
+   * Private methods (not meant to be part of the public API, and NOT to be
+   * relied upon by consuming code - these names may change!)
    * ==========================================================================
    */
 
@@ -94,8 +128,16 @@ export default class FrisbySpec {
   /**
    * Add expectation to execute after HTTP call is done
    */
-  _expects(fn) {
-    this.expects.push(fn);
+  _addExpect(fn) {
+    this._expects.push(fn);
     return this;
+  }
+
+  /**
+   * Static methods (mainly ones that affect all Frisby tests)
+   * ==========================================================================
+   */
+  static addExpectHandler(expectName, expectFn) {
+    expectHandlers[expectName] = expectFn;
   }
 }

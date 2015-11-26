@@ -13,3 +13,7 @@ export const version = pkg.version;
 export function create(testName) {
   return new FrisbySpec(testName);
 }
+
+export function addExpectHandler(expectName, expectFn) {
+  return FrisbySpec.addExpectHandler(expectName, expectFn);
+}
