@@ -3,13 +3,19 @@ var nock = require('nock');
 var mockHost = 'http://api.example.com';
 var mocks = {
 
-  user1: function() {
+  getUser1: function() {
     return nock(mockHost)
       .get('/users/1')
       .reply(200, {
         id: 1,
         email: 'joe.schmoe@example.com'
       });
+  },
+
+  deleteUser1: function() {
+    return nock(mockHost)
+      .delete('/users/1')
+      .reply(200, {});
   },
 
   userCreate: function() {

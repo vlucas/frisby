@@ -6,13 +6,12 @@ import fetch from 'node-fetch';
 import { getExpectHandlers } from './expects';
 let expectHandlers = getExpectHandlers();
 
-
 export default class FrisbySpec {
   constructor(testName) {
     this._testName = testName;
     this._fetch;
     this._response;
-    this._expects = [];
+    this._assertions = [];
   }
 
   /**
@@ -50,6 +49,19 @@ export default class FrisbySpec {
   }
 
   /**
+   * DELETE convenience wrapper
+   */
+  delete(url, params = {}) {
+    let deleteParams = {
+      method: 'delete'
+    };
+
+    _.merge(deleteParams, params);
+
+    return this.fetch(url, deleteParams);
+  }
+
+  /**
    * Chain calls to execute after fetch()
    */
   then(fn) {
@@ -69,10 +81,7 @@ export default class FrisbySpec {
     it(this._testName, (doneFn) => {
 
       this.then(() => {
-        for(let i = 0; i < this._expects.length; i++) {
-          this._expects[i].call(this, this._response);
-        }
-
+        this._runAssertions();
         doneFn.call(null);
       });
 
@@ -93,19 +102,19 @@ export default class FrisbySpec {
   }
 
   /**
-   * Expectations (wrappers around Jasmine methods)
+   * Assertions (wrappers around Jasmine methods)
    * ==========================================================================
    */
 
   /**
-   * Add expectation for current test
+   * Add assertions for current test
    */
   expect(expectName, ...expectValues) {
     if (typeof expectHandlers[expectName] === 'undefined') {
       throw new Error("Expectation '" + expectName + "' is not defined.");
     }
 
-    return this._addExpect(() => {
+    return this._addAssertion(() => {
       expectHandlers[expectName].apply(this, [this._response].concat(expectValues));
     });
   }
@@ -128,9 +137,18 @@ export default class FrisbySpec {
   /**
    * Add expectation to execute after HTTP call is done
    */
-  _addExpect(fn) {
-    this._expects.push(fn);
+  _addAssertion(fn) {
+    this._assertions.push(fn);
     return this;
+  }
+
+  /**
+   * Run/execute all defined expect statements made for this test
+   */
+  _runAssertions() {
+    for(let i = 0; i < this._assertions.length; i++) {
+      this._assertions[i].call(this, this._response);
+    }
   }
 
   /**
