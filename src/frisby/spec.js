@@ -8,8 +8,7 @@ let expectHandlers = getExpectHandlers();
 
 
 export default class FrisbySpec {
-  constructor(testName) {
-    this._testName = testName;
+  constructor() {
     this._fetch;
     this._response;
     this._expects = [];
@@ -60,22 +59,16 @@ export default class FrisbySpec {
   }
 
   /**
-   * Generate Jasmine test from Frisby instructions
+   * Run test expectations
    */
-  toss() {
+  _runExpects() {
     this._ensureHasFetched();
 
-    // Requires Jasmine for 'it' function
-    it(this._testName, (doneFn) => {
-
-      this.then(() => {
-        for(let i = 0; i < this._expects.length; i++) {
-          this._expects[i].call(this, this._response);
-        }
-
-        doneFn.call(null);
-      });
-
+    // Run all expectations
+    this.then(() => {
+      for(let i = 0; i < this._expects.length; i++) {
+        this._expects[i].call(this, this._response);
+      }
     });
   }
 

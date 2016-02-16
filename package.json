@@ -28,7 +28,7 @@
     "test": "npm run build && jasmine"
   },
   "dependencies": {
-    "lodash": "^3.10.1",
+    "lodash": "^4.0.0",
     "node-fetch": "^1.3.3"
   },
   "devDependencies": {

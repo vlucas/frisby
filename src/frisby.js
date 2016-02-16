@@ -10,8 +10,15 @@ export const version = pkg.version;
 /**
  * Create a new FrisbySpec test with specified name
  */
-export function create(testName) {
-  return new FrisbySpec(testName);
+export function createWithAction(action, params) {
+  let test = new FrisbySpec();
+  return test[action].apply(test, params);
+}
+export function fetch(...params) {
+  return createWithAction('fetch', params);
+}
+export function post(...params) {
+  return createWithAction('post', params);
 }
 
 export function addExpectHandler(expectName, expectFn) {

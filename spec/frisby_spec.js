@@ -7,38 +7,30 @@ var testHost = 'http://api.example.com';
 
 describe('Frisby', function() {
 
-  it('should throw exception if fetch() is not called', function() {
-    expect(function() {
-      frisby.create('should require fetch() to be called first').toss();
-    }).toThrow(new Error('Frisby spec not started. You must call fetch() first to begin a Frisby test.'));
-  });
-
-
-  describe('should allow the creation of single tests', function() {
+  it('Test expectStatus works as... well, expected', function(doneFn) {
     mocks.use(['user1']);
 
-    frisby.create('Test expectStatus works as... well, expected')
-      .fetch(testHost + '/users/1')
+    frisby.fetch(testHost + '/users/1')
       .expect('status', 200)
-      .toss();
+      .then(doneFn);
   });
 
 
-  describe('should default to JSON support', function() {
+
+  it('should support JSON natively', function (doneFn) {
     mocks.use(['userCreate']);
 
-    frisby.create('should support JSON natively')
-      .post(testHost + '/users', {
+    frisby.post(testHost + '/users', {
         body: {
           email: 'user@example.com',
           password: 'password'
         }
       })
       .expect('status', 201)
-      .toss();
+      .then(doneFn);
   });
 
-  describe('should allow custom expect handlers to be registered', function() {
+  if('should allow custom expect handlers to be registered and used', function (doneFn) {
     mocks.use(['user1']);
 
     // Add our custom expect handler
@@ -49,9 +41,8 @@ describe('Frisby', function() {
     });
 
     // Use it!
-    frisby.create('should validate user1 using custom expect handler')
-      .fetch(testHost + '/users/1')
+    frisby.fetch(testHost + '/users/1')
       .expect('customUserResponse')
-      .toss();
+      .then(doneFn);
   });
 });
