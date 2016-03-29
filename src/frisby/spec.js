@@ -1,13 +1,14 @@
+'use strict';
+
 // NPM
-import _ from 'lodash';
-import fetch from 'node-fetch';
+let _ = require('lodash');
+let fetch = require('node-fetch');
 
 // Frisby
-import { getExpectHandlers } from './expects';
-let expectHandlers = getExpectHandlers();
+let expectHandlers = require('./expects');
 
 
-export default class FrisbySpec {
+class FrisbySpec {
   constructor() {
     this._fetch;
     this._response;
@@ -17,8 +18,8 @@ export default class FrisbySpec {
   /**
    * Fetch given URL with params (passthru to 'fetch' API)
    */
-  fetch(url, params = {}) {
-    this._fetch = fetch(url, params)
+  fetch(url, params) {
+    this._fetch = fetch(url, params || {})
       .then((response) => {
         this._response = response;
         return response.json();
@@ -30,10 +31,17 @@ export default class FrisbySpec {
   }
 
   /**
+   * GET convenience wrapper
+   */
+  get(url) {
+    return this.fetch(url);
+  }
+
+  /**
    * POST convenience wrapper
    * Auto-encodes JSON if 'body' is typeof object
    */
-  post(url, params = {}) {
+  post(url, params) {
     let postParams = {
       method: 'post'
     };
@@ -43,9 +51,16 @@ export default class FrisbySpec {
       params.body = JSON.stringify(params.body);
     }
 
-    _.merge(postParams, params);
+    _.merge(postParams, params || {});
 
     return this.fetch(url, postParams);
+  }
+
+  /**
+   * DELETE convenience wrapper
+   */
+  del(url) {
+    return this.fetch(url, { method: 'delete' });
   }
 
   /**
@@ -93,11 +108,12 @@ export default class FrisbySpec {
   /**
    * Add expectation for current test
    */
-  expect(expectName, ...expectValues) {
+  expect(expectName) {
     if (typeof expectHandlers[expectName] === 'undefined') {
       throw new Error("Expectation '" + expectName + "' is not defined.");
     }
 
+    let expectValues = arguments;
     return this._addExpect(() => {
       expectHandlers[expectName].apply(this, [this._response].concat(expectValues));
     });
@@ -134,3 +150,5 @@ export default class FrisbySpec {
     expectHandlers[expectName] = expectFn;
   }
 }
+
+module.exports = FrisbySpec;

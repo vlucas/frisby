@@ -1,12 +1,12 @@
+'use strict';
+
 let expects = {
 
   // HTTP status
-  'status': function expectStatus(response, ...params) {
-    expect(response.status).toBe(params[0]);
+  'status': function expectStatus(response, statusCode) {
+    expect(response.status).toBe(statusCode);
   }
 
 };
 
-export function getExpectHandlers() {
-  return expects;
-}
+module.exports = expects;

@@ -1,4 +1,4 @@
-var frisby = require('../lib/frisby');
+var frisby = require('../src/frisby');
 
 // Setup and use mocks
 var mocks = require('./fixtures/http_mocks');
@@ -8,7 +8,7 @@ var testHost = 'http://api.example.com';
 describe('Frisby', function() {
 
   it('Test expectStatus works as... well, expected', function(doneFn) {
-    mocks.use(['user1']);
+    mocks.use(['getUser1']);
 
     frisby.fetch(testHost + '/users/1')
       .expect('status', 200)
@@ -18,7 +18,7 @@ describe('Frisby', function() {
 
 
   it('should support JSON natively', function (doneFn) {
-    mocks.use(['userCreate']);
+    mocks.use(['createUser2']);
 
     frisby.post(testHost + '/users', {
         body: {
@@ -31,7 +31,7 @@ describe('Frisby', function() {
   });
 
   if('should allow custom expect handlers to be registered and used', function (doneFn) {
-    mocks.use(['user1']);
+    mocks.use(['getUser1']);
 
     // Add our custom expect handler
     frisby.addExpectHandler('customUserResponse', function(response) {

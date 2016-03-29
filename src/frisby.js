@@ -1,26 +1,36 @@
-import pkg from '../package.json';
-import FrisbySpec from './frisby/spec.js';
+'use strict';
+
+let pkg = require('../package.json');
+let FrisbySpec = require('./frisby/spec.js');
 
 
 /**
  * Export Frisby version from package.json
  */
-export const version = pkg.version;
+const version = pkg.version;
 
 /**
  * Create a new FrisbySpec test with specified name
  */
-export function createWithAction(action, params) {
+function createWithAction(action, params) {
   let test = new FrisbySpec();
   return test[action].apply(test, params);
 }
-export function fetch(...params) {
-  return createWithAction('fetch', params);
+function fetch() {
+  return createWithAction('fetch', arguments);
 }
-export function post(...params) {
-  return createWithAction('post', params);
+function get() {
+  return createWithAction('get', arguments);
+}
+function post() {
+  return createWithAction('post', arguments);
+}
+function del() {
+  return createWithAction('delete', arguments);
 }
 
-export function addExpectHandler(expectName, expectFn) {
+function addExpectHandler(expectName, expectFn) {
   return FrisbySpec.addExpectHandler(expectName, expectFn);
 }
+
+module.exports = { createWithAction, fetch, post, addExpectHandler };
