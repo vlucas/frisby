@@ -33,4 +33,4 @@ function addExpectHandler(expectName, expectFn) {
   return FrisbySpec.addExpectHandler(expectName, expectFn);
 }
 
-module.exports = { createWithAction, fetch, post, addExpectHandler };
+module.exports = { createWithAction, fetch, get: get, post, del, addExpectHandler };

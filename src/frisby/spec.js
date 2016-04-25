@@ -149,6 +149,9 @@ class FrisbySpec {
   static addExpectHandler(expectName, expectFn) {
     expectHandlers[expectName] = expectFn;
   }
+  static removeExpectHandler(expectName) {
+    delete expectHandlers[expectName];
+  }
 }
 
 module.exports = FrisbySpec;

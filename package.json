@@ -24,7 +24,6 @@
     "node": ">= 4.4.2"
   },
   "scripts": {
-    "build": "./node_modules/babel-cli/bin/babel.js src --out-dir lib --presets es2015",
     "test": "npm run build && jasmine"
   },
   "dependencies": {
@@ -32,8 +31,6 @@
     "node-fetch": "^1.3.3"
   },
   "devDependencies": {
-    "babel-cli": "^6.1.2",
-    "babel-preset-es2015": "^6.1.2",
     "nock": "^3.3.2"
   }
 }

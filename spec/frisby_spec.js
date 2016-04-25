@@ -49,5 +49,13 @@ describe('Frisby', function() {
     frisby.fetch(testHost + '/users/1')
       .expect('customUserResponse')
       .then(doneFn);
+
+    // Remove said custom handler
+    frisby.removeExpectHandler('customUserResponse');
+  });
+
+  it('should', function (done) {
+
+    done();
   });
 });
