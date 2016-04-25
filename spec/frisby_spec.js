@@ -20,6 +20,8 @@ describe('Frisby', function() {
   it('should support JSON natively', function (doneFn) {
     mocks.use(['createUser2']);
 
+    expect(true).toBeTruthy();
+
     frisby.post(testHost + '/users', {
         body: {
           email: 'user@example.com',
@@ -27,6 +29,9 @@ describe('Frisby', function() {
         }
       })
       .expect('status', 201)
+      .expect(function () {
+        expect(true).toBeTruthy();
+      })
       .then(doneFn);
   });
 
