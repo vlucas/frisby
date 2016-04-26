@@ -29,9 +29,6 @@ describe('Frisby', function() {
         }
       })
       .expect('status', 201)
-      .expect(function () {
-        expect(true).toBeTruthy();
-      })
       .then(doneFn);
   });
 

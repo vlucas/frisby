@@ -22,9 +22,10 @@ class FrisbySpec {
     this._fetch = fetch(url, params || {})
       .then((response) => {
         this._response = response;
-        return response.json();
+        return response.bodyUsed ? response.json() : {};
       }).then((json) => {
         this._response.json = json;
+        this._runExpects();
       });
 
     return this;
@@ -85,6 +86,8 @@ class FrisbySpec {
         this._expects[i].call(this, this._response);
       }
     });
+
+    return this;
   }
 
   /**
@@ -109,13 +112,19 @@ class FrisbySpec {
    * Add expectation for current test
    */
   expect(expectName) {
-    if (typeof expectHandlers[expectName] === 'undefined') {
-      throw new Error("Expectation '" + expectName + "' is not defined.");
+    let expectHandler;
+    if (_.isFunction(expectName)) {
+      expectHandler = expectName;
+    } else {
+      expectHandler = expectHandlers[expectName];
+      if (typeof expectHandler === 'undefined') {
+        throw new Error("Expectation '" + expectName + "' is not defined.");
+      }
     }
 
-    let expectValues = arguments;
+    let expectValues = Array.prototype.slice.call(arguments).slice(1);
     return this._addExpect(() => {
-      expectHandlers[expectName].apply(this, [this._response].concat(expectValues));
+      expectHandler.apply(this, [this._response].concat(expectValues));
     });
   }
 

@@ -12,9 +12,10 @@ const version = pkg.version;
 /**
  * Create a new FrisbySpec test with specified name
  */
-function createWithAction(action, params) {
-  let test = new FrisbySpec();
-  return test[action].apply(test, params);
+function createWithAction(action, args) {
+  let frisby = new FrisbySpec();
+  let params = Array.prototype.slice.call(args);
+  return frisby[action].apply(frisby, params);
 }
 function fetch() {
   return createWithAction('fetch', arguments);
@@ -26,7 +27,7 @@ function post() {
   return createWithAction('post', arguments);
 }
 function del() {
-  return createWithAction('delete', arguments);
+  return createWithAction('del', arguments);
 }
 
 function addExpectHandler(expectName, expectFn) {
