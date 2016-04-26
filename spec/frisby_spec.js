@@ -1,9 +1,9 @@
-var frisby = require('../src/frisby');
+'use strict';
 
-// Setup and use mocks
-var mocks = require('./fixtures/http_mocks');
+const frisby = require('../src/frisby');
+const mocks = require('./fixtures/http_mocks');
 
-var testHost = 'http://api.example.com';
+const testHost = 'http://api.example.com';
 
 describe('Frisby', function() {
 
@@ -12,15 +12,11 @@ describe('Frisby', function() {
 
     frisby.fetch(testHost + '/users/1')
       .expect('status', 200)
-      .then(doneFn);
+      .done(doneFn);
   });
-
-
 
   it('should support JSON natively', function (doneFn) {
     mocks.use(['createUser2']);
-
-    expect(true).toBeTruthy();
 
     frisby.post(testHost + '/users', {
         body: {
@@ -29,30 +25,36 @@ describe('Frisby', function() {
         }
       })
       .expect('status', 201)
-      .then(doneFn);
+      .done(doneFn);
   });
 
-  if('should allow custom expect handlers to be registered and used', function (doneFn) {
+  it('should allow custom expect handlers to be registered and used', function (doneFn) {
     mocks.use(['getUser1']);
 
     // Add our custom expect handler
     frisby.addExpectHandler('customUserResponse', function(response) {
-      var json = response.json;
+      let json = response._body;
       expect(json.id).toBe(1);
       expect(json.email).toBe('joe.schmoe@example.com');
     });
 
     // Use it!
-    frisby.fetch(testHost + '/users/1')
+    frisby.get(testHost + '/users/1')
       .expect('customUserResponse')
-      .then(doneFn);
+      .done(doneFn);
 
     // Remove said custom handler
     frisby.removeExpectHandler('customUserResponse');
   });
 
-  it('should', function (done) {
+  it('should allow custom expect functions to be used without registering them', function (doneFn) {
+    mocks.use(['getUser1']);
 
-    done();
+    frisby.get(testHost + '/users/1')
+      .then(function (json) {
+        expect(json.id).toBe(1);
+        expect(json.email).toBe('joe.schmoe@example.com');
+      })
+      .done(doneFn);
   });
 });

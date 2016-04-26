@@ -22,11 +22,17 @@ class FrisbySpec {
     this._fetch = fetch(url, params || {})
       .then((response) => {
         this._response = response;
-        return response.bodyUsed ? response.json() : {};
-      }).then((json) => {
-        this._response.json = json;
+
+        if (response.headers.get('Content-Type') === 'application/json') {
+          return response.json();
+        }
+        return response.text();
+      }).then((responseBody) => {
+        this._response._body = responseBody;
         this._runExpects();
-      });
+
+        return responseBody;
+      }).catch(this._fetchErrorHandler);
 
     return this;
   }
@@ -69,9 +75,27 @@ class FrisbySpec {
    */
   then(fn) {
     this._ensureHasFetched();
-    this._fetch.then(fn);
+    this._fetch.then((responseBody) => {
+      fn(responseBody);
+      return responseBody;
+    }).catch(this._fetchErrorHandler);
 
     return this;
+  }
+
+  /**
+   * Used for 'done' function in Jasmine async tests
+   * Ensures any errors get pass
+   */
+  done(doneFn) {
+    this._fetch.then(() => doneFn());
+  }
+
+  _fetchErrorHandler(err) {
+    // Hack alert: This is the easiest way I found to fail an async Jasmine
+    // test (ex. in a Promise chain) and still show the full error and stack
+    // trace to the user
+    expect(err.stack).toBeNull();
   }
 
   /**
@@ -123,8 +147,8 @@ class FrisbySpec {
     }
 
     let expectValues = Array.prototype.slice.call(arguments).slice(1);
-    return this._addExpect(() => {
-      expectHandler.apply(this, [this._response].concat(expectValues));
+    return this._addExpect((response) => {
+      expectHandler.apply(this, [response].concat(expectValues));
     });
   }
 

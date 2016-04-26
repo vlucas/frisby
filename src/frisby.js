@@ -33,5 +33,8 @@ function del() {
 function addExpectHandler(expectName, expectFn) {
   return FrisbySpec.addExpectHandler(expectName, expectFn);
 }
+function removeExpectHandler(expectName, expectFn) {
+  return FrisbySpec.removeExpectHandler(expectName, expectFn);
+}
 
-module.exports = { createWithAction, fetch, get: get, post, del, addExpectHandler };
+module.exports = { createWithAction, fetch, get: get, post, del, addExpectHandler, removeExpectHandler };

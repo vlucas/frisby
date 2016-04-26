@@ -1,9 +1,9 @@
-var frisby = require('../src/frisby');
+'use strict';
 
-// Setup and use mocks
-var mocks = require('./fixtures/http_mocks');
+const frisby = require('../src/frisby');
+const mocks = require('./fixtures/http_mocks');
 
-var testHost = 'http://api.example.com';
+const testHost = 'http://api.example.com';
 
 describe('Frisby nested calls', function() {
 
@@ -24,7 +24,7 @@ describe('Frisby nested calls', function() {
             frisbyCount++;
             expect(frisbyCount).toEqual(2);
           })
-          .then(doneFn);
+          .done(doneFn);
       });
   });
 
