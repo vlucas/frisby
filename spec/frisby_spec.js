@@ -57,4 +57,14 @@ describe('Frisby', function() {
       })
       .done(doneFn);
   });
+
+  // it('should inspect the current request body', function (doneFn) {
+  //   mocks.use(['getUser1']);
+  //
+  //   frisby.get(testHost + '/users/1')
+  //     .inspectBody()
+  //     .inspectHeaders()
+  //     .inspectStatus()
+  //     .done(doneFn);
+  // });
 });

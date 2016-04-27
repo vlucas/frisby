@@ -120,10 +120,31 @@ class FrisbySpec {
    */
 
   inspectResponse() {
-    this.then(() => {
-      console.log(this._response);
-    });
+    return this.then(() => { this.inspectLog("\nResponse:", this._response); });
+  }
 
+  inspectBody() {
+    return this.then(() => { this.inspectLog("\nBody:", this._response._body); });
+  }
+
+  inspectStatus() {
+    return this.then(() => { this.inspectLog("\nStatus:", this._response.status); });
+  }
+
+  inspectHeaders() {
+    console.log("\n");
+    return this.then(() => {
+      this.inspectLog('Headers:');
+      let headers = this._response.headers._headers;
+      for (let key in headers) {
+        this.inspectLog("\t" + key + ': ' + headers[key]);
+      }
+    });
+  }
+
+  inspectLog() {
+    let params = Array.prototype.slice.call(arguments);
+    console.log.apply(null, params);
     return this;
   }
 
