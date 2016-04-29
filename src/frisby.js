@@ -37,4 +37,4 @@ function removeExpectHandler(expectName, expectFn) {
   return FrisbySpec.removeExpectHandler(expectName, expectFn);
 }
 
-module.exports = { createWithAction, fetch, get: get, post, del, addExpectHandler, removeExpectHandler };
+module.exports = { version, createWithAction, fetch, get: get, post, del, addExpectHandler, removeExpectHandler };
