@@ -32,7 +32,7 @@ describe('Frisby', function() {
     mocks.use(['getUser1']);
 
     // Add our custom expect handler
-    frisby.addExpectHandler('customUserResponse', function(response) {
+    frisby.addExpectHandler('customUserResponse', function(expect, response) {
       let json = response._body;
       expect(json.id).toBe(1);
       expect(json.email).toBe('joe.schmoe@example.com');
@@ -57,14 +57,4 @@ describe('Frisby', function() {
       })
       .done(doneFn);
   });
-
-  // it('should inspect the current request body', function (doneFn) {
-  //   mocks.use(['getUser1']);
-  //
-  //   frisby.get(testHost + '/users/1')
-  //     .inspectBody()
-  //     .inspectHeaders()
-  //     .inspectStatus()
-  //     .done(doneFn);
-  // });
 });

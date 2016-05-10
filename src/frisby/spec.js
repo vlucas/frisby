@@ -154,10 +154,34 @@ class FrisbySpec {
    */
 
   /**
-   * Add expectation for current test
+   * Add expectation for current test (expects)
    */
   expect(expectName) {
+    let expectArgs = Array.prototype.slice.call(arguments).slice(1);
+    return this._getExpectRunner(expectName, expectArgs, true);
+  }
+
+  /**
+   * Add negative expectation for current test (expects.not)
+   */
+  expectNot(expectName) {
+    let expectArgs = Array.prototype.slice.call(arguments).slice(1);
+    return this._getExpectRunner(expectName, expectArgs, false);
+  }
+
+  /**
+   * Private methods (not meant to be part of the public API, and NOT to be
+   * relied upon by consuming code - these names may change!)
+   * ==========================================================================
+   */
+
+  /**
+   * Used internally for expect and expectNot to add expectations and then run them
+   */
+  _getExpectRunner(expectName, expectArgs, expectPass) {
     let expectHandler;
+    let expectFn = expect; // Global - from Jasmine
+
     if (_.isFunction(expectName)) {
       expectHandler = expectName;
     } else {
@@ -167,17 +191,15 @@ class FrisbySpec {
       }
     }
 
-    let expectValues = Array.prototype.slice.call(arguments).slice(1);
+    // Use negative expectation if we don't expect the test to pass
+    if (expectPass === false) {
+      expectFn = value => expect(value).not;
+    }
+
     return this._addExpect((response) => {
-      expectHandler.apply(this, [response].concat(expectValues));
+      expectHandler.apply(this, [expectFn, response].concat(expectArgs));
     });
   }
-
-  /**
-   * Private methods (not meant to be part of the public API, and NOT to be
-   * relied upon by consuming code - these names may change!)
-   * ==========================================================================
-   */
 
   /**
    * Ensure fetch() has been called already

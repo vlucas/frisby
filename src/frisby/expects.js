@@ -1,14 +1,12 @@
 'use strict';
 
-let expects = {
+const expects = {
 
-  // Response Status
-  'status': function expectStatus(response, statusCode) {
+  status(expect, response, statusCode) {
     expect(response.status).toBe(statusCode);
   },
 
-  // Response Header
-  'header': function expectHeader(response, header, headerValue) {
+  header(expect, response, header, headerValue) {
     let headers = response.headers;
 
     if (headers.get(header)) {

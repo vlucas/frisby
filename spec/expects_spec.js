@@ -7,6 +7,14 @@ const testHost = 'http://api.example.com';
 
 describe('Frisby', function() {
 
+  it('expectStatus should match', function(doneFn) {
+    mocks.use(['getUser1']);
+
+    frisby.fetch(testHost + '/users/1')
+      .expect('status', 200)
+      .done(doneFn);
+  });
+
   it('expectHeader should match exactly', function(doneFn) {
     mocks.use(['getUser1']);
 
