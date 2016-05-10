@@ -16,6 +16,39 @@ class FrisbySpec {
   }
 
   /**
+   * Load JSON directly for use
+   */
+  fromJSON(json) {
+    let jsonString = JSON.stringify(json);
+
+    // Prepare headers
+    let headers = new fetch.Headers();
+    headers.set('Content-Type', 'application/json');
+
+    // Prepare Response object
+    this._response = new fetch.Response(jsonString, {
+      url: '/',
+      status: 200,
+      statusText: 'OK',
+      headers: headers,
+      size: jsonString.length,
+      timeout: 0
+    });
+
+    // Resolve as promise
+    this._fetch = fetch.Promise.resolve(this._response)
+      .then(response => response.json())
+      .then((responseBody) => {
+        this._response._body = responseBody;
+        this._runExpects();
+
+        return responseBody;
+      }).catch(this._fetchErrorHandler);
+
+    return this;
+  }
+
+  /**
    * Fetch given URL with params (passthru to 'fetch' API)
    */
   fetch(url, params) {
