@@ -1,27 +1,42 @@
 'use strict';
 
+const assert = require('assert');
+const _ = require('lodash/core');
+const utils = require('./utils');
+
 const expects = {
 
-  status(expect, response, statusCode) {
-    expect(response.status).toBe(statusCode);
+  status(response, statusCode) {
+    assert.equal(response.status, statusCode);
   },
 
-  header(expect, response, header, headerValue) {
+  header(response, header, headerValue) {
     let headers = response.headers;
 
     if (headers.get(header)) {
-      expect(headers.get(header).toLowerCase()).toEqual(headerValue.toLowerCase());
+      assert.equal(headers.get(header).toLowerCase(), headerValue.toLowerCase());
     } else {
       throw new Error("Header '" + header + "' not present in HTTP response");
     }
   },
 
-  'json': function expectJson(expect, response, json) {
-    expect(json).toEqual(response._body);
+  json(response, _path, _json) {
+    let json = _json ? _json : _path;
+    let path = _json ? _path : false;
+
+    utils.withPath(path, response._body, function jsonAssertion(jsonChunk) {
+      assert.deepEqual(json, jsonChunk);
+    });
   },
 
-  jsonContains(expect, response, json) {
-    expect(response._body).toEqual(jasmine.objectContaining(json));
+  jsonContains(response, _path, _json) {
+    let json = _json ? _json : _path;
+    let path = _json ? _path : false;
+
+    utils.withPath(path, response._body, function jsonContainsAssertion(jsonChunk) {
+      let failMsg = "Response [ " + JSON.stringify(jsonChunk) + " ] does not contain provided JSON [ " + JSON.stringify(json) + " ]";
+      assert.ok(_.some([jsonChunk], json), failMsg);
+    });
   }
 
 };

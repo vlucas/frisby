@@ -13,6 +13,7 @@ class FrisbySpec {
     this._fetch;
     this._response;
     this._expects = [];
+    this._doneFn;
   }
 
   /**
@@ -124,11 +125,23 @@ class FrisbySpec {
     this._fetch.then(() => doneFn());
   }
 
+  /**
+   * Return internal promise used by Frisby.js
+   * Note: Using this will break the chainability of Frisby.js method calls
+   */
+  promise() {
+    return this._fetch;
+  }
+
   _fetchErrorHandler(err) {
     // Hack alert: This is the easiest way I found to fail an async Jasmine
     // test (ex. in a Promise chain) and still show the full error and stack
     // trace to the user
-    expect(err.stack).toBeNull();
+    if (typeof expect !== 'undefined') {
+      expect(err.stack).toBeNull();
+    } else {
+      throw err;
+    }
   }
 
   /**
@@ -213,7 +226,6 @@ class FrisbySpec {
    */
   _getExpectRunner(expectName, expectArgs, expectPass) {
     let expectHandler;
-    let expectFn = expect; // Global - from Jasmine
 
     if (_.isFunction(expectName)) {
       expectHandler = expectName;
@@ -224,13 +236,15 @@ class FrisbySpec {
       }
     }
 
-    // Use negative expectation if we don't expect the test to pass
-    if (expectPass === false) {
-      expectFn = value => expect(value).not;
-    }
-
     return this._addExpect((response) => {
-      expectHandler.apply(this, [expectFn, response].concat(expectArgs));
+      try {
+        expectHandler.apply(this, [response].concat(expectArgs));
+      } catch(e) {
+        // Re-throw error if pass is expected; else bury it
+        if (e.name === 'AssertionError' && expectPass === true) {
+          throw e;
+        }
+      }
     });
   }
 
