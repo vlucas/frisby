@@ -67,9 +67,11 @@ class FrisbySpec {
       .then((response) => {
         this._response = response;
 
-        if (response.headers.get('Content-Type') === 'application/json') {
+        // Auto-parse JSON
+        if (response.headers.has('Content-Type') && ~response.headers.get('Content-Type').indexOf('json')) {
           return response.json();
         }
+
         return response.text();
       }).then((responseBody) => {
         this._response._body = responseBody;
