@@ -1,11 +1,11 @@
 'use strict';
 
 // NPM
-let _ = require('lodash');
-let fetch = require('node-fetch');
+const _ = require('lodash');
+const fetch = require('node-fetch');
 
 // Frisby
-let expectHandlers = require('./expects');
+const expectHandlers = require('./expects');
 
 
 class FrisbySpec {
@@ -13,7 +13,15 @@ class FrisbySpec {
     this._fetch;
     this._response;
     this._expects = [];
-    this._doneFn;
+    this._setupDefaults;
+  }
+
+  /**
+   * Setup defaults (probably from globalSetup(), but can be also be called per test)
+   */
+  setup(opts) {
+    this._setupDefaults = opts;
+    return this;
   }
 
   /**
@@ -53,13 +61,9 @@ class FrisbySpec {
    * Fetch given URL with params (passthru to 'fetch' API)
    */
   fetch(url, params) {
-    let defaultParams = {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    };
+    let fetchParams = Object.assign({}, this._setupDefaults.request, params || {});
 
-    this._fetch = fetch(url, Object.assign({}, defaultParams, params))
+    this._fetch = fetch(url, fetchParams)
       .then((response) => {
         this._response = response;
 
