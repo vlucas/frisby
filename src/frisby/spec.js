@@ -53,7 +53,13 @@ class FrisbySpec {
    * Fetch given URL with params (passthru to 'fetch' API)
    */
   fetch(url, params) {
-    this._fetch = fetch(url, params || {})
+    let defaultParams = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    this._fetch = fetch(url, Object.assign({}, defaultParams, params))
       .then((response) => {
         this._response = response;
 
@@ -79,22 +85,24 @@ class FrisbySpec {
   }
 
   /**
+   * PATCH convenience wrapper
+   */
+  patch(url, params) {
+    return this._requestWithBody('PATCH', url, params);
+  }
+
+  /**
    * POST convenience wrapper
-   * Auto-encodes JSON if 'body' is typeof object
    */
   post(url, params) {
-    let postParams = {
-      method: 'post'
-    };
+    return this._requestWithBody('POST', url, params);
+  }
 
-    // Auto-encode JSON body
-    if (_.isObject(params.body)) {
-      params.body = JSON.stringify(params.body);
-    }
-
-    _.merge(postParams, params || {});
-
-    return this.fetch(url, postParams);
+  /**
+   * PUT convenience wrapper
+   */
+  put(url, params) {
+    return this._requestWithBody('PUT', url, params);
   }
 
   /**
@@ -102,6 +110,25 @@ class FrisbySpec {
    */
   del(url) {
     return this.fetch(url, { method: 'delete' });
+  }
+
+  /**
+   *
+   */
+  _requestWithBody(method, url, params) {
+    let postParams = { method };
+
+    // Auto-encode JSON body
+    if (_.isObject(params.body)) {
+      params.body = JSON.stringify(params.body);
+    }
+
+    // Auto-set 'body' from 'params' JSON if 'body' and 'headers' are not provided (assume sending raw body only)
+    if (_.isUndefined(params.body) && _.isUndefined(params.headers)) {
+      postParams.body = JSON.stringify(params);
+    }
+
+    return this.fetch(url, Object.assign(postParams, params || {}));
   }
 
   /**
