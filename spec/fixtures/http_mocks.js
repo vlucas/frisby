@@ -3,6 +3,9 @@ var nock = require('nock');
 var mockHost = 'http://api.example.com';
 var mocks = {
 
+  /**
+   * Users
+   */
   getUser1: function() {
     return nock(mockHost)
       .get('/users/1')
@@ -27,6 +30,17 @@ var mocks = {
       .reply(201, {
         id: 2,
         email: 'user@example.com'
+      });
+  },
+
+  /**
+   * Errors
+   */
+  postError: function() {
+    return nock(mockHost)
+      .post('/error')
+      .reply(400, {
+        result: 'error'
       });
   }
 

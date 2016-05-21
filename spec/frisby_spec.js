@@ -57,4 +57,15 @@ describe('Frisby', function() {
       })
       .done(doneFn);
   });
+
+  it('should allow POST with empty request body', function (doneFn) {
+    mocks.use(['postError']);
+
+    frisby.post(testHost + '/error')
+      .expect('status', 400)
+      .expect('json', {
+        result: 'error'
+      })
+      .done(doneFn);
+  });
 });

@@ -125,12 +125,12 @@ class FrisbySpec {
     let postParams = { method };
 
     // Auto-encode JSON body
-    if (_.isObject(params.body)) {
+    if (params && _.isObject(params.body)) {
       params.body = JSON.stringify(params.body);
     }
 
     // Auto-set 'body' from 'params' JSON if 'body' and 'headers' are not provided (assume sending raw body only)
-    if (_.isUndefined(params.body) && _.isUndefined(params.headers)) {
+    if (params && _.isUndefined(params.body) && _.isUndefined(params.headers)) {
       postParams.body = JSON.stringify(params);
     }
 
