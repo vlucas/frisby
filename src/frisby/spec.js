@@ -141,10 +141,18 @@ class FrisbySpec {
    * Chain calls to execute after fetch()
    */
   then(fn) {
+    if (fn instanceof FrisbySpec) {
+      return fn
+    }
+
     this._ensureHasFetched();
     this._fetch.then((responseBody) => {
-      fn(responseBody);
-      return responseBody;
+      let result = fn(responseBody);
+      if (result) {
+        return result;
+      } else {
+        return responseBody;
+      }
     }).catch(this._fetchErrorHandler);
 
     return this;

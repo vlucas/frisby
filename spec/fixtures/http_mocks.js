@@ -1,3 +1,5 @@
+'use strict';
+
 var nock = require('nock');
 
 var mockHost = 'http://api.example.com';
@@ -12,6 +14,25 @@ var mocks = {
       .reply(200, {
         id: 1,
         email: 'joe.schmoe@example.com'
+      });
+  },
+
+  getUser2: function() {
+    return nock(mockHost)
+      .get('/users/2')
+      .reply(200, {
+        id: 2,
+        email: 'testy.mctestface@example.com'
+      });
+  },
+
+  getUser2WithDelay: function() {
+    return nock(mockHost)
+      .get('/users/2')
+      .delay(500)
+      .reply(200, {
+        id: 2,
+        email: 'testy.mctestface@example.com'
       });
   },
 
@@ -50,12 +71,16 @@ var mocks = {
 /**
  * Specify which mocks to setup and use
  */
-module.exports.use = function (mocksRequested) {
+module.exports.use = function (mocksRequested, callback) {
   mocksRequested.forEach(function(mockName) {
     if (typeof mocks[mockName] === 'undefined') {
       throw new Error("Mock '" + mockName + "' is not defined in 'mocks' object. Unknown mock requested.");
     }
 
-    mocks[mockName].call(this);
+    var result = mocks[mockName].call(this);
+
+    if (callback) {
+      callback.call(this, result);
+    }
   });
 };

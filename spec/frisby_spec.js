@@ -68,4 +68,18 @@ describe('Frisby', function() {
       })
       .done(doneFn);
   });
+
+  it('should use new responseBody when returning another Frisby spec inside then()', function (doneFn) {
+    mocks.use(['getUser1', 'getUser2WithDelay']);
+
+    frisby.get(testHost + '/users/1')
+      .expect('jsonContains', { id: 1 })
+      .then(frisby.get(testHost + '/users/2')
+          .expect('jsonContains', { id: 2 })
+      )
+      .then(function (user2) {
+        expect(user2.id).toBe(2);
+      })
+      .done(doneFn);
+  });
 });

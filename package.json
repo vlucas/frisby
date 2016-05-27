@@ -32,6 +32,6 @@
   },
   "devDependencies": {
     "jasmine": "^2.4.1",
-    "nock": "^3.3.2"
+    "nock": "^7.7.2"
   }
 }
