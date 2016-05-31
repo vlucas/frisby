@@ -175,10 +175,13 @@ class FrisbySpec {
   }
 
   _fetchErrorHandler(err) {
-    // Hack alert: This is the easiest way I found to fail an async Jasmine
-    // test (ex. in a Promise chain) and still show the full error and stack
-    // trace to the user
-    if (typeof expect !== 'undefined') {
+    if (typeof fail === 'function') {
+      // If a 'fail' method is provided, use it (Jasmine 2.1+)
+      fail(err);
+    } else if (typeof expect === 'function') {
+      // Hack alert: This is the easiest way I found to fail an async Jasmine
+      // test (ex. in a Promise chain) and still show the full error and stack
+      // trace to the user when 'fail' is not provided
       expect(err.stack).toBeNull();
     } else {
       throw err;
