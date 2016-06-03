@@ -14,6 +14,7 @@ class FrisbySpec {
     this._response;
     this._expects = [];
     this._setupDefaults;
+    this._lastResult;
   }
 
   /**
@@ -147,7 +148,15 @@ class FrisbySpec {
 
     this._ensureHasFetched();
     this._fetch.then((responseBody) => {
-      let result = fn(responseBody);
+      let result;
+
+      if (this._lastResult && (this._lastResult instanceof FrisbySpec || this._lastResult instanceof Promise)) {
+        result = this._lastResult.then(fn);
+      } else {
+        result = fn(responseBody);
+        this._lastResult = result;
+      }
+
       if (result) {
         return result;
       } else {
