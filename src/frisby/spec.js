@@ -11,6 +11,7 @@ const expectHandlers = require('./expects');
 class FrisbySpec {
   constructor() {
     this._fetch;
+    this._doneFn;
     this._response;
     this._expects = [];
     this._setupDefaults;
@@ -152,6 +153,13 @@ class FrisbySpec {
 
       if (this._lastResult && (this._lastResult instanceof FrisbySpec || this._lastResult instanceof Promise)) {
         result = this._lastResult.then(fn);
+
+        // Move 'done' to new promise and remove it from this one
+        let doneFn = this._doneFn;
+        if (doneFn) {
+          this._lastResult.then(() => doneFn());
+          this._doneFn = null;
+        }
       } else {
         result = fn(responseBody);
         this._lastResult = result;
@@ -172,7 +180,8 @@ class FrisbySpec {
    * Ensures any errors get pass
    */
   done(doneFn) {
-    this._fetch.then(() => doneFn());
+    this._doneFn = doneFn;
+    this._fetch.then(() => this._doneFn ? doneFn() : null);
   }
 
   /**

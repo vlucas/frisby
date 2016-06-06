@@ -17,6 +17,16 @@ var mocks = {
       });
   },
 
+  getUser1WithDelay: function() {
+    return nock(mockHost)
+      .get('/users/1')
+      .delay(500)
+      .reply(200, {
+        id: 1,
+        email: 'joe.schmoe@example.com'
+      });
+  },
+
   getUser2: function() {
     return nock(mockHost)
       .get('/users/2')

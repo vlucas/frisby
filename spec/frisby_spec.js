@@ -97,4 +97,28 @@ describe('Frisby', function() {
       })
       .done(doneFn);
   });
+
+  it('should use new responseBody when returning another Frisby spec inside then() with multiple specs chained', function (doneFn) {
+    mocks.use(['getUser1', 'getUser2WithDelay']);
+
+    frisby.get(testHost + '/users/1')
+      .expect('jsonContains', { id: 1 })
+      .then(function () {
+        mocks.use(['getUser1WithDelay']);
+
+        return frisby.get(testHost + '/users/1')
+          .expect('jsonContains', { id: 2 });
+      })
+      .then(function (user1) {
+        expect(user1.id).toBe(1);
+      })
+      .then(function () {
+        return frisby.get(testHost + '/users/2')
+          .expect('jsonContains', { id: 2 });
+      })
+      .then(function (user2) {
+        expect(user2.id).toBe(2);
+      })
+      .done(doneFn);
+  });
 });
