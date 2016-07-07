@@ -1,7 +1,8 @@
 'use strict';
 
 const assert = require('assert');
-const _ = require('lodash/core');
+const _ = require('lodash');
+const Joi = require('joi');
 const utils = require('./utils');
 
 const expects = {
@@ -36,6 +37,19 @@ const expects = {
     utils.withPath(path, response._body, function jsonContainsAssertion(jsonChunk) {
       let failMsg = "Response [ " + JSON.stringify(jsonChunk) + " ] does not contain provided JSON [ " + JSON.stringify(json) + " ]";
       assert.ok(_.some([jsonChunk], json), failMsg);
+    });
+  },
+
+  jsonTypes(response, _path, _json) {
+    let json = _json ? _json : _path;
+    let path = _json ? _path : false;
+
+    utils.withPath(path, response._body, function jsonTypesAssertion(jsonChunk) {
+      let result = Joi.validate(jsonChunk, json);
+
+      if (result.error) {
+        throw result.error;
+      }
     });
   }
 
