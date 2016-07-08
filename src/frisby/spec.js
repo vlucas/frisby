@@ -303,8 +303,8 @@ class FrisbySpec {
         expectHandler.apply(this, [response].concat(expectArgs));
       } catch(e) {
         // Re-throw error if pass is expected; else bury it
-        if (e.name === 'AssertionError' && expectPass === true) {
-          throw e;
+        if (expectPass === true) {
+          this._fetchErrorHandler(e);
         }
       }
     });

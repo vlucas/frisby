@@ -27,6 +27,7 @@
     "test": "./node_modules/jasmine/bin/jasmine.js"
   },
   "dependencies": {
+    "joi": "^8.4.2",
     "lodash": "^4.11.1",
     "node-fetch": "^1.5.2"
   },

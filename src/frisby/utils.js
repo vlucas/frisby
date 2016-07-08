@@ -8,7 +8,7 @@ function withPath(path, jsonBody, callback) {
 
   // Execute immediately with no path
   if (!path) {
-    callback(jsonBody);
+    return callback(jsonBody);
   }
 
   // Use given path to check deep objects
@@ -30,11 +30,6 @@ function withPath(path, jsonBody, callback) {
       }
     } else {
       jsonBody = jsonBody[segment];
-
-      // Must be object or array
-      if (!_.isObject(jsonBody) && !_.isArray(jsonBody)) {
-        throw new TypeError("Expected '" + path + "' to be object or array (got '" + jt + "' from JSON response)");
-      }
     }
   });
 
