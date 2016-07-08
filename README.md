@@ -93,7 +93,35 @@ response of your API.
  * `json` - Match json structure + values
  * `jsonTypes` - Match json structure + values
 
-## Custom Expect Handlers
+## Define Custom Expect Handlers
+
+When Frisby's built-in expect handlers are not enough, or if you find yourself
+running the same expectations in multiple places in your tests, you can define
+your own custom expect handler once, and then run it from anywhere in your
+tests.
+
+```javascript
+// Add our custom expect handler
+frisby.addExpectHandler('isUser1', function (response) {
+  let json = response._body;
+
+  // Run custom Jasmine matchers here
+  expect(json.id).toBe(1);
+  expect(json.email).toBe('testy.mctesterpants@example.com');
+});
+
+// Use our new custom expect handler
+it('should allow custom expect handlers to be registered and used', function (doneFn) {
+  frisby.get('https://api.example.com/users/1')
+    .expect('isUser1')
+    .done(doneFn);
+});
+
+// Remove said custom handler (if needed)
+frisby.removeExpectHandler('isUser1');
+```
+
+## Using Jasmine Matchers Directly
 
 Any of the [Jasmine matchers](http://jasmine.github.io/2.4/introduction.html)
 can be used inside the `then` method to perform additional or custom tests on
@@ -141,6 +169,5 @@ documentation pages has separate
 [repositiory](https://github.com/vlucas/frisby-site).
 
 ## License
-Licensed under the [BSD
-3-Clause](http://opensource.org/licenses/MIT)/[BSD](http://opensource.org/licenses/BSD-3-Clause)
+Licensed under the [BSD 3-Clause](http://opensource.org/licenses/BSD-3-Clause)
 license.
