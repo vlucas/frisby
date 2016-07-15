@@ -30,8 +30,8 @@ class FrisbySpec {
   /**
    * Setup defaults (probably from globalSetup(), but can be also be called per test)
    */
-  setup(opts) {
-    this._setupDefaults = opts;
+  setup(opts, replace) {
+    this._setupDefaults = replace ? opts : _.merge(this._setupDefaults, opts);
     return this;
   }
 

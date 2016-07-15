@@ -138,4 +138,42 @@ describe('Frisby', function() {
       .expect('status', 200)
       .done(doneFn);
   });
+
+  it('frisby setup merges options with previous options already set', function(doneFn) {
+    mocks.use(['twoHeaders']);
+
+    // Should merge headers so both are present
+    frisby.setup({
+        request: {
+          headers: { 'One': 'one' }
+        }
+      })
+      .setup({
+        request: {
+          headers: { 'Two': 'two' }
+        }
+      })
+      .fetch(testHost + '/two-headers')
+      .expect('status', 200)
+      .done(doneFn);
+  });
+
+  it('frisby setup second parameter replaces setup options instead of merging them', function(doneFn) {
+    mocks.use(['getUser1WithAuth']);
+
+    // Second call uses 'true' as 2nd argument, so it should overwrite options
+    frisby.setup({
+        request: {
+          headers: { 'authorizationX': 'Basic AuthX' }
+        }
+      })
+      .setup({
+        request: {
+          headers: { 'authorization': 'Basic Auth' }
+        }
+      }, true)
+      .fetch(testHost + '/users/1/auth')
+      .expect('status', 200)
+      .done(doneFn);
+  });
 });

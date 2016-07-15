@@ -19,9 +19,8 @@ var mocks = {
 
   getUser1WithAuth: function() {
     return nock(mockHost, {
-        reqheaders: {
-          'authorization': 'Basic Auth'
-        }
+        reqheaders: { 'authorization': 'Basic Auth' },
+        badheaders: ['authorizationX']
       })
       .get('/users/1/auth')
       .reply(200, {
@@ -74,6 +73,24 @@ var mocks = {
       .reply(201, {
         id: 2,
         email: 'user@example.com'
+      });
+  },
+
+  /**
+   * Headers
+   */
+
+  twoHeaders: function() {
+    return nock(mockHost, {
+        reqheaders: {
+          'One': 'one',
+          'Two': 'two'
+        }
+      })
+      .get('/two-headers')
+      .reply(200, {
+        one: 1,
+        two: 2
       });
   },
 
