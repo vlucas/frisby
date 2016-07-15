@@ -12,6 +12,7 @@ class FrisbySpec {
   constructor() {
     this._fetch;
     this._doneFn;
+    this._request;
     this._response;
     this._expects = [];
     this._setupDefaults = {};
@@ -72,8 +73,9 @@ class FrisbySpec {
    */
   fetch(url, params) {
     let fetchParams = Object.assign({}, this._setupDefaults.request, params || {});
+    this._request = new fetch.Request(url, fetchParams);
 
-    this._fetch = fetch(url, fetchParams)
+    this._fetch = fetch(this._request)
       .then((response) => {
         this._response = response;
 
@@ -237,6 +239,10 @@ class FrisbySpec {
 
   inspectResponse() {
     return this.then(() => { this.inspectLog("\nResponse:", this._response); });
+  }
+
+  inspectRequest() {
+    return this.then(() => { this.inspectLog("\nRequest:", this._request); });
   }
 
   inspectBody() {
