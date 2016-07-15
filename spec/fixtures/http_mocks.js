@@ -17,6 +17,19 @@ var mocks = {
       });
   },
 
+  getUser1WithAuth: function() {
+    return nock(mockHost, {
+        reqheaders: {
+          'authorization': 'Basic Auth'
+        }
+      })
+      .get('/users/1/auth')
+      .reply(200, {
+        id: 1,
+        email: 'joe.schmoe@example.com'
+      });
+  },
+
   getUser1WithDelay: function() {
     return nock(mockHost)
       .get('/users/1')

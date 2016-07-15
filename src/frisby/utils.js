@@ -19,13 +19,13 @@ function withPath(path, jsonBody, callback) {
     if ("*" === segment || "?" === segment) {
       type = segment;
 
-      if (_.isArray(jsonBody)) {
+      if (!_.isArray(jsonBody)) {
         throw new TypeError("Expected '" + path + "' to be Array (got '" + jt + "' from JSON response)");
       }
     } else if ("&" === segment) {
       type = segment;
 
-      if (_.isObject(jsonBody)) {
+      if (!_.isObject(jsonBody)) {
         throw new TypeError("Expected '" + path + "' to be Object (got '" + jt + "' from JSON response)");
       }
     } else {

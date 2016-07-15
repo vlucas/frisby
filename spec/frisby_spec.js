@@ -121,4 +121,21 @@ describe('Frisby', function() {
       })
       .done(doneFn);
   });
+
+  it('use function allows modifications for current Frisby spec', function(doneFn) {
+    mocks.use(['getUser1WithAuth']);
+
+    let withAuthHeader = function (spec) {
+      spec.setup({
+        request: {
+          headers: { 'authorization': 'Basic Auth' }
+        }
+      });
+    };
+
+    frisby.use(withAuthHeader)
+      .fetch(testHost + '/users/1/auth')
+      .expect('status', 200)
+      .done(doneFn);
+  });
 });

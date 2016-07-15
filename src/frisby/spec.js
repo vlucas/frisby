@@ -14,8 +14,16 @@ class FrisbySpec {
     this._doneFn;
     this._response;
     this._expects = [];
-    this._setupDefaults;
+    this._setupDefaults = {};
     this._lastResult;
+  }
+
+  /**
+   * Call function to do some setup for this spec/test
+   */
+  use(fn) {
+    fn(this);
+    return this;
   }
 
   /**

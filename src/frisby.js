@@ -67,6 +67,9 @@ function fromJSON() {
 function setup() {
   return createWithAction('setup', arguments);
 }
+function use() {
+  return createWithAction('use', arguments);
+}
 
 function addExpectHandler(expectName, expectFn) {
   return FrisbySpec.addExpectHandler(expectName, expectFn);
@@ -75,4 +78,4 @@ function removeExpectHandler(expectName, expectFn) {
   return FrisbySpec.removeExpectHandler(expectName, expectFn);
 }
 
-module.exports = { version, globalSetup, fetch, get: get, patch, post, put, del, fromJSON, Joi, setup, addExpectHandler, removeExpectHandler };
+module.exports = { version, globalSetup, fetch, get: get, patch, post, put, del, fromJSON, Joi, setup, use, addExpectHandler, removeExpectHandler };

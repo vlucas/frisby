@@ -139,4 +139,13 @@ describe('Frisby expect jsonTypes', function() {
       .done(doneFn);
   });
 
+  it('should match JSON with array of objects and asterisk path (each)', function (doneFn) {
+    frisby.fromJSON({
+        "offers": [{"name": "offer1"}, {"name": "offer2"}]
+      })
+      .expect('jsonTypes', 'offers.*', {
+        "name": Joi.string()
+      })
+      .done(doneFn);
+  });
 });
