@@ -3,6 +3,7 @@
 // NPM
 const _ = require('lodash');
 const fetch = require('node-fetch');
+const TIMEOUT_DEFAULT = 5000;
 
 // Frisby
 const expectHandlers = require('./expects');
@@ -15,6 +16,9 @@ class FrisbySpec {
     this._request;
     this._response;
     this._expects = [];
+    this._expectError;
+
+    this._timeout = TIMEOUT_DEFAULT;
     this._setupDefaults = {};
     this._lastResult;
   }
@@ -32,6 +36,22 @@ class FrisbySpec {
    */
   setup(opts, replace) {
     this._setupDefaults = replace ? opts : _.merge(this._setupDefaults, opts);
+    this._timeout = this._setupDefaults.request.timeout || TIMEOUT_DEFAULT;
+    return this;
+  }
+
+  timeout(timeout) {
+    // GETTER
+    if (!timeout) {
+      if (this._setupDefaults.request && this._setupDefaults.request.timeout) {
+        return this._setupDefaults.request.timeout;
+      }
+
+      return this._timeout;
+    }
+
+    // SETTER
+    this._timeout = timeout;
     return this;
   }
 
@@ -75,7 +95,7 @@ class FrisbySpec {
     let fetchParams = Object.assign({}, this._setupDefaults.request, params || {});
     this._request = new fetch.Request(url, fetchParams);
 
-    this._fetch = fetch(this._request)
+    this._fetch = fetch(this._request, { timeout: this.timeout() }) // 'timeout' is a node-fetch option
       .then((response) => {
         this._response = response;
 
@@ -90,7 +110,7 @@ class FrisbySpec {
         this._runExpects();
 
         return responseBody;
-      }).catch(this._fetchErrorHandler);
+      }).catch(this._fetchErrorHandler.bind(this));
 
     return this;
   }
@@ -180,7 +200,7 @@ class FrisbySpec {
       } else {
         return responseBody;
       }
-    }).catch(this._fetchErrorHandler);
+    }).catch(this._fetchErrorHandler.bind(this));
 
     return this;
   }
@@ -192,6 +212,15 @@ class FrisbySpec {
   done(doneFn) {
     this._doneFn = doneFn;
     this._fetch.then(() => this._doneFn ? doneFn() : null);
+    return this;
+  }
+
+  /**
+   * Custom error handler (Promise catch)
+   */
+  catch(fn) {
+    this._expectError = fn;
+    return this;
   }
 
   /**
@@ -203,6 +232,11 @@ class FrisbySpec {
   }
 
   _fetchErrorHandler(err) {
+    // User can handle expected errors manually if desired
+    if (this._expectError) {
+      return this._expectError(err);
+    }
+
     if (typeof fail === 'function') {
       // If a 'fail' method is provided, use it (Jasmine 2.1+)
       fail(err);

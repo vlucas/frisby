@@ -8,7 +8,7 @@ var mocks = {
   /**
    * Users
    */
-  getUser1: function() {
+  getUser1() {
     return nock(mockHost)
       .get('/users/1')
       .reply(200, {
@@ -17,7 +17,7 @@ var mocks = {
       });
   },
 
-  getUser1WithAuth: function() {
+  getUser1WithAuth() {
     return nock(mockHost, {
         reqheaders: { 'authorization': 'Basic Auth' },
         badheaders: ['authorizationX']
@@ -29,7 +29,7 @@ var mocks = {
       });
   },
 
-  getUser1WithDelay: function() {
+  getUser1WithDelay() {
     return nock(mockHost)
       .get('/users/1')
       .delay(500)
@@ -39,7 +39,7 @@ var mocks = {
       });
   },
 
-  getUser2: function() {
+  getUser2() {
     return nock(mockHost)
       .get('/users/2')
       .reply(200, {
@@ -48,7 +48,7 @@ var mocks = {
       });
   },
 
-  getUser2WithDelay: function() {
+  getUser2WithDelay() {
     return nock(mockHost)
       .get('/users/2')
       .delay(500)
@@ -58,13 +58,13 @@ var mocks = {
       });
   },
 
-  deleteUser1: function() {
+  deleteUser1() {
     return nock(mockHost)
       .delete('/users/1')
       .reply(204);
   },
 
-  createUser2: function() {
+  createUser2() {
     return nock(mockHost)
       .post('/users', {
         email: 'user@example.com',
@@ -79,8 +79,7 @@ var mocks = {
   /**
    * Headers
    */
-
-  twoHeaders: function() {
+  twoHeaders() {
     return nock(mockHost, {
         reqheaders: {
           'One': 'one',
@@ -97,7 +96,16 @@ var mocks = {
   /**
    * Errors
    */
-  postError: function() {
+  timeout() {
+    return nock(mockHost)
+      .get('/timeout')
+      .delay(500)
+      .reply(200, {
+        timout: 2000
+      });
+  },
+
+  postError() {
     return nock(mockHost)
       .post('/error')
       .reply(400, {

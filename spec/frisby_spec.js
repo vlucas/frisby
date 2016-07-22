@@ -176,4 +176,16 @@ describe('Frisby', function() {
       .expect('status', 200)
       .done(doneFn);
   });
+
+  it('frisy timeout is configurable per spec', function(doneFn) {
+    mocks.use(['timeout']);
+
+    // Test timeout by catching timeout error and running assertions on it
+    frisby.timeout(10)
+      .fetch(testHost + '/timeout')
+      .catch(function (err) {
+        expect(err.name).toBe('FetchError');
+      })
+      .done(doneFn);
+  });
 });
