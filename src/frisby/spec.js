@@ -40,6 +40,11 @@ class FrisbySpec {
     return this;
   }
 
+  /**
+   * Timeout getter/setter
+   *
+   * @param {number} timeout - Max. timeout in milliseconds
+   */
   timeout(timeout) {
     // GETTER
     if (!timeout) {
@@ -57,6 +62,8 @@ class FrisbySpec {
 
   /**
    * Load JSON directly for use
+   *
+   * @param {Object} json - JSON to use as HTTP response
    */
   fromJSON(json) {
     let jsonString = JSON.stringify(json);
@@ -283,13 +290,17 @@ class FrisbySpec {
     return this.then(() => { this.inspectLog("\nBody:", this._response._body); });
   }
 
+  inspectJSON() {
+    return this.then(() => { this.inspectLog("\nJSON:", JSON.stringify(this._response._body, null, 4)); });
+  }
+
   inspectStatus() {
     return this.then(() => { this.inspectLog("\nStatus:", this._response.status); });
   }
 
   inspectHeaders() {
-    console.log("\n");
     return this.then(() => {
+      this.inspectLog("\n");
       this.inspectLog('Headers:');
       let headers = this._response.headers._headers;
       for (let key in headers) {
