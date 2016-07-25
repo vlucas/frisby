@@ -31,4 +31,36 @@ describe('Frisby', function() {
       .done(doneFn);
   });
 
+  it('expectHeader should match with regex', function(doneFn) {
+    mocks.use(['getUser1']);
+
+    frisby.fetch(testHost + '/users/1')
+      .expect('header', 'Content-Type', /json/)
+      .done(doneFn);
+  });
+
+  it('expectHeader should not match with bad regex', function(doneFn) {
+    mocks.use(['getUser1']);
+
+    frisby.fetch(testHost + '/users/1')
+      .expectNot('header', 'Content-Type', /jsonx/)
+      .done(doneFn);
+  });
+
+  it('expectHeader should only check for header existence when third argument is not supplied', function(doneFn) {
+    mocks.use(['getUser1']);
+
+    frisby.fetch(testHost + '/users/1')
+      .expect('header', 'Content-Type')
+      .done(doneFn);
+  });
+
+  it('expectHeader should fail check for header existence when third argument is not supplied and header is not present', function(doneFn) {
+    mocks.use(['getUser1']);
+
+    frisby.fetch(testHost + '/users/1')
+      .expectNot('header', 'Custom-Header')
+      .done(doneFn);
+  });
+
 });

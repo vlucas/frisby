@@ -13,9 +13,18 @@ const expects = {
 
   header(response, header, headerValue) {
     let headers = response.headers;
+    let responseHeader = headers.get(header);
 
-    if (headers.get(header)) {
-      assert.equal(headers.get(header).toLowerCase(), headerValue.toLowerCase());
+    if (responseHeader) {
+      if (!headerValue) {
+        assert.ok(headers.has(header));
+      } else if (headerValue instanceof RegExp) {
+        // RegExp
+        assert.notEqual(responseHeader.match(headerValue), null, 'Header regex did not match for header ' + header);
+      } else {
+        // String
+        assert.equal(responseHeader.toLowerCase(), headerValue.toLowerCase());
+      }
     } else {
       throw new Error("Header '" + header + "' not present in HTTP response");
     }
