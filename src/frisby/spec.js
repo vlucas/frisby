@@ -185,7 +185,7 @@ class FrisbySpec {
     }
 
     this._ensureHasFetched();
-    this._fetch.then((responseBody) => {
+    this._fetch = this._fetch.then((responseBody) => {
       let result;
 
       if (this._lastResult && (this._lastResult instanceof FrisbySpec || this._lastResult instanceof Promise)) {

@@ -107,7 +107,7 @@ describe('Frisby', function() {
         mocks.use(['getUser1WithDelay']);
 
         return frisby.get(testHost + '/users/1')
-          .expect('jsonContains', { id: 2 });
+          .expect('jsonContains', { id: 1 });
       })
       .then(function (user1) {
         expect(user1.id).toBe(1);
