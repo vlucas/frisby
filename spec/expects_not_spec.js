@@ -15,4 +15,12 @@ describe('Frisby expectNot()', function() {
       .done(doneFn);
   });
 
+  it('expectStatus should not match', function(doneFn) {
+    mocks.use(['getUser1']);
+
+    frisby.get(testHost + '/users/1')
+      .expectNot('status', 999)
+      .done(doneFn);
+  });
+
 });

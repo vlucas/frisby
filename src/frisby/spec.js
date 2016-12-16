@@ -358,13 +358,22 @@ class FrisbySpec {
     }
 
     return this._addExpect((response) => {
+      let didFail = false;
+
       try {
         expectHandler.apply(this, [response].concat(expectArgs));
       } catch(e) {
+        didFail = true;
+
         // Re-throw error if pass is expected; else bury it
         if (expectPass === true) {
           this._fetchErrorHandler(e);
         }
+      }
+
+      if (!expectPass && !didFail) {
+        let fnArgs = expectArgs.map(a => a.toString()).join(', ');
+        this._fetchErrorHandler(new Error('expectNot(\'' + expectName + '\', ' + fnArgs + ') passed and was supposed to fail'));
       }
     });
   }
