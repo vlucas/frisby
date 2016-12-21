@@ -125,8 +125,8 @@ class FrisbySpec {
   /**
    * GET convenience wrapper
    */
-  get(url) {
-    return this.fetch(url);
+  get(url, params) {
+    return this.fetch(url, params);
   }
 
   /**
