@@ -85,7 +85,7 @@ Suggested file naming is to append the filename with `_spec`, like `mytests_spec
     jasmine-node .
     
 ### Documentation
-Documentation is hosted at [frisbyjs.com](http://frisbyjs.com/), the documentation pages has separate [repositiory](https://github.com/vlucas/frisby-site).
+Documentation is hosted at [frisbyjs.com](http://frisbyjs.com/), the documentation pages has separate [repository](https://github.com/vlucas/frisby-site).
 
 ## License
 Licensed under the [MIT](http://opensource.org/licenses/MIT)/[BSD](http://opensource.org/licenses/BSD-3-Clause) license.
