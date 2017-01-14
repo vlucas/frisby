@@ -5,15 +5,31 @@ const _ = require('lodash');
 const Joi = require('joi');
 const utils = require('./utils');
 
+/**
+ * Runs obviously true assertion to increment assertion count because using
+ * Node's built-in 'assert' library does not increment the assertion count in
+ * Jasmine and others
+ */
+function incrementAssertionCount() {
+  if (_.isFunction(expect)) {
+    // Jasmine
+    expect(true).toBe(true);
+  }
+}
+
 const expects = {
 
   status(response, statusCode) {
-    assert.equal(response.status, statusCode);
+    incrementAssertionCount();
+
+    assert.strictEqual(response.status, statusCode);
   },
 
   header(response, header, headerValue) {
     let headers = response.headers;
     let responseHeader = headers.get(header);
+
+    incrementAssertionCount();
 
     if (responseHeader) {
       if (!headerValue) {
@@ -34,6 +50,8 @@ const expects = {
     let json = _json ? _json : _path;
     let path = _json ? _path : false;
 
+    incrementAssertionCount();
+
     utils.withPath(path, response._body, function jsonAssertion(jsonChunk) {
       assert.deepEqual(json, jsonChunk);
     });
@@ -42,6 +60,8 @@ const expects = {
   jsonContains(response, _path, _json) {
     let json = _json ? _json : _path;
     let path = _json ? _path : false;
+
+    incrementAssertionCount();
 
     utils.withPath(path, response._body, function jsonContainsAssertion(jsonChunk) {
       let failMsg = "Response [ " + JSON.stringify(jsonChunk) + " ] does not contain provided JSON [ " + JSON.stringify(json) + " ]";
@@ -52,6 +72,8 @@ const expects = {
   jsonTypes(response, _path, _json) {
     let json = _json ? _json : _path;
     let path = _json ? _path : false;
+
+    incrementAssertionCount();
 
     utils.withPath(path, response._body, function jsonTypesAssertion(jsonChunk) {
       let result = Joi.validate(jsonChunk, json, { allowUnknown: true });

@@ -125,8 +125,8 @@ class FrisbySpec {
   /**
    * GET convenience wrapper
    */
-  get(url) {
-    return this.fetch(url);
+  get(url, params) {
+    return this.fetch(url, params);
   }
 
   /**
@@ -185,7 +185,7 @@ class FrisbySpec {
     }
 
     this._ensureHasFetched();
-    this._fetch.then((responseBody) => {
+    this._fetch = this._fetch.then((responseBody) => {
       let result;
 
       if (this._lastResult && (this._lastResult instanceof FrisbySpec || this._lastResult instanceof Promise)) {
@@ -358,13 +358,22 @@ class FrisbySpec {
     }
 
     return this._addExpect((response) => {
+      let didFail = false;
+
       try {
         expectHandler.apply(this, [response].concat(expectArgs));
       } catch(e) {
+        didFail = true;
+
         // Re-throw error if pass is expected; else bury it
         if (expectPass === true) {
           this._fetchErrorHandler(e);
         }
+      }
+
+      if (!expectPass && !didFail) {
+        let fnArgs = expectArgs.map(a => a.toString()).join(', ');
+        this._fetchErrorHandler(new Error('expectNot(\'' + expectName + '\', ' + fnArgs + ') passed and was supposed to fail'));
       }
     });
   }
