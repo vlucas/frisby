@@ -198,7 +198,7 @@ class FrisbySpec {
           this._doneFn = null;
         }
       } else {
-        result = fn(responseBody, this._response.headers);
+        result = fn(responseBody);
         this._lastResult = result;
       }
 

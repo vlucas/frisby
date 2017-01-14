@@ -93,16 +93,6 @@ var mocks = {
       });
   },
 
-  provideHeaders() {
-    return nock(mockHost)
-      .get('/provideheaders')
-      .reply(200, {
-        'foo':'bar'
-      },{
-        'Some-Headers': 'Some-Value'
-   });
-  },
-
   /**
    * Errors
    */

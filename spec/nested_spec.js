@@ -28,16 +28,4 @@ describe('Frisby nested calls', function() {
       });
   });
 
-  it('should allow provide previous requests response header', function(doneFn) {
-    mocks.use(['provideHeaders']);
-
-    // Fetch headers
-    frisby.fetch(testHost + '/provideheaders')
-      .expect('status', 200)
-      .then(function(body, headers) {
-            expect(headers.get('Some-Headers')).toEqual('Some-Value');
-          })
-          .done(doneFn);
-      });
-
 });
