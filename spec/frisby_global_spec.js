@@ -143,4 +143,15 @@ describe('Frisby object setup', function() {
     }).current.outgoing.inspectOnFailure).toEqual(false);
   });
 
+  it('should be able to addHeader when global request headers is not configured', function() {
+    frisby.globalSetup({
+      request: {
+        inspectOnFailure: false,
+        json: false
+      }
+    });
+
+    frisby.create('mytest').addHeader('Cookie', 'key=value');
+  });
+
 });
