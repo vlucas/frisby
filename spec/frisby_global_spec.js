@@ -143,4 +143,9 @@ describe('Frisby object setup', function() {
     }).current.outgoing.inspectOnFailure).toEqual(false);
   });
 
+  it('should accept both encoded/decoded multibyte urls', function() {
+    expect(frisby.create('mytest-not encoded').get('http://user@example.com:1234/multibyte文字/included').current.outgoing.uri)
+      .toEqual(encodeURI('http://user@example.com:1234/multibyte文字/included'));
+  });
+
 });
