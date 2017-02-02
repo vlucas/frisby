@@ -61,7 +61,7 @@ frisby.create('GET user johndoe')
 
 ```
 
-Any of the [Jasmine matchers](https://github.com/pivotal/jasmine/wiki/Matchers) can be used inside the `after` and `afterJSON` callbacks to perform additional or custom tests on the response data.
+Any of the [Jasmine matchers](http://jasmine.github.io/2.0/introduction.html#section-Matchers) can be used inside the `after` and `afterJSON` callbacks to perform additional or custom tests on the response data.
 
 To run only one of the tests, replace `toss` to `ttoss`.
 
