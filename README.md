@@ -82,6 +82,7 @@ Suggested file naming is to append the filename with `_spec`, like `mytests_spec
 ### Run it from the CLI
 
     cd your/project
+    export NODE_PATH="'$(npm root -g)'"
     jasmine-node .
     
 ### Documentation
