@@ -21,4 +21,4 @@ frisby.create('Should NOT run this failed test')
 frisby.create('Should only run this test')
     .get('https://graph.facebook.com/111848702235277')
     .expectStatus(200)
-    .ttoss();
+    .toss();
