@@ -18,7 +18,7 @@ Install Frisby from NPM into your project:
 ## Creating Tests
 
 Frisby tests start with `frisby` followed by one of `get`, `post`, `put`,
-`delete`, `head`, `fetch`.
+`del`, `head`, `fetch`.
 
 All of the HTTP method conveience methods use `fetch` internally, as Frisby.js is based
 on the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) web standard.
