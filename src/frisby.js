@@ -43,8 +43,29 @@ function createWithAction(action, args) {
   let params = Array.prototype.slice.call(args);
   return frisby[action].apply(frisby, params);
 }
+
+/**
+ * Set global base URL for all your frisby tests
+ */
+function baseUrl(url) {
+  globalSetup({
+    request: {
+      baseUrl: url
+    }
+  });
+}
+
+/**
+ * HTTP helpers
+ */
+function del() {
+  return createWithAction('del', arguments);
+}
 function fetch() {
   return createWithAction('fetch', arguments);
+}
+function fromJSON() {
+  return createWithAction('fromJSON', arguments);
 }
 function get() {
   return createWithAction('get', arguments);
@@ -58,12 +79,6 @@ function post() {
 function put() {
   return createWithAction('put', arguments);
 }
-function del() {
-  return createWithAction('del', arguments);
-}
-function fromJSON() {
-  return createWithAction('fromJSON', arguments);
-}
 function setup() {
   return createWithAction('setup', arguments);
 }
@@ -74,6 +89,9 @@ function use() {
   return createWithAction('use', arguments);
 }
 
+/**
+ * Global expect handlers for custom expectations
+ */
 function addExpectHandler(expectName, expectFn) {
   return FrisbySpec.addExpectHandler(expectName, expectFn);
 }
@@ -81,4 +99,9 @@ function removeExpectHandler(expectName, expectFn) {
   return FrisbySpec.removeExpectHandler(expectName, expectFn);
 }
 
-module.exports = { version, globalSetup, fetch, get: get, patch, post, put, del, fromJSON, Joi, setup, timeout, use, addExpectHandler, removeExpectHandler };
+module.exports = {
+  baseUrl,
+  del, fetch, fromJSON, get: get, globalSetup, Joi, patch, post, put, setup, timeout, use,
+  version,
+  addExpectHandler, removeExpectHandler,
+};

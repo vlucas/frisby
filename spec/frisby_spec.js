@@ -188,4 +188,16 @@ describe('Frisby', function() {
       })
       .done(doneFn);
   });
+
+  it('baseUrl sets global baseUrl to be used with all relative URLs', function(doneFn) {
+    mocks.use(['getUser1']);
+
+    // Set baseUrl
+    frisby.baseUrl(testHost);
+
+    // Call path only
+    frisby.fetch('/users/1')
+      .expect('status', 200)
+      .done(doneFn);
+  });
 });

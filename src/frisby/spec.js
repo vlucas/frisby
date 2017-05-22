@@ -95,12 +95,28 @@ class FrisbySpec {
     return this;
   }
 
+  getBaseUrl() {
+    return this._setupDefaults.request.baseUrl ? this._setupDefaults.request.baseUrl : false;
+  }
+
+  _formatUrl(url) {
+    let newUrl = url;
+    let baseUrl = this.getBaseUrl();
+
+    // Prepend baseUrl if set, and if URL supplied is a path
+    if (url.startsWith('/') && baseUrl) {
+      newUrl = baseUrl + url;
+    }
+
+    return newUrl;
+  }
+
   /**
    * Fetch given URL with params (passthru to 'fetch' API)
    */
   fetch(url, params) {
     let fetchParams = Object.assign({}, this._setupDefaults.request, params || {});
-    this._request = new fetch.Request(url, fetchParams);
+    this._request = new fetch.Request(this._formatUrl(url), fetchParams);
 
     this._fetch = fetch(this._request, { timeout: this.timeout() }) // 'timeout' is a node-fetch option
       .then((response) => {
