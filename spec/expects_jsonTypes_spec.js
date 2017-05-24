@@ -148,4 +148,15 @@ describe('Frisby expect jsonTypes', function() {
       })
       .done(doneFn);
   });
+
+  it('should ignore additional JSON keys', function (doneFn) {
+    frisby.fromJSON({
+        "name": "john",
+        "foo": "bar"
+      })
+      .expect('jsonTypes', {
+        "name": Joi.string()
+      })
+      .done(doneFn);
+  });
 });

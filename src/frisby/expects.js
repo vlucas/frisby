@@ -76,7 +76,7 @@ const expects = {
     incrementAssertionCount();
 
     utils.withPath(path, response._body, function jsonTypesAssertion(jsonChunk) {
-      let result = Joi.validate(jsonChunk, json);
+      let result = Joi.validate(jsonChunk, json, { allowUnknown: true });
 
       if (result.error) {
         throw result.error;
