@@ -6,6 +6,7 @@ const fetch = require('node-fetch');
 const TIMEOUT_DEFAULT = 5000;
 
 // Frisby
+const FrisbyResponse = require('./response');
 const expectHandlers = require('./expects');
 
 
@@ -73,7 +74,7 @@ class FrisbySpec {
     headers.set('Content-Type', 'application/json');
 
     // Prepare Response object
-    this._response = new fetch.Response(jsonString, {
+    let fetchResponse = new fetch.Response(jsonString, {
       url: '/',
       status: 200,
       statusText: 'OK',
@@ -81,12 +82,13 @@ class FrisbySpec {
       size: jsonString.length,
       timeout: 0
     });
+    this._response = new FrisbyResponse(fetchResponse);
 
     // Resolve as promise
-    this._fetch = fetch.Promise.resolve(this._response)
+    this._fetch = fetch.Promise.resolve(fetchResponse)
       .then(response => response.json())
       .then((responseBody) => {
-        this._response._body = responseBody;
+        this._response.setBody(responseBody);
         this._runExpects();
 
         return responseBody;
@@ -120,7 +122,7 @@ class FrisbySpec {
 
     this._fetch = fetch(this._request, { timeout: this.timeout() }) // 'timeout' is a node-fetch option
       .then((response) => {
-        this._response = response;
+        this._response = new FrisbyResponse(response);
 
         // Auto-parse JSON
         if (response.headers.has('Content-Type') && ~response.headers.get('Content-Type').indexOf('json')) {
@@ -129,7 +131,7 @@ class FrisbySpec {
 
         return response.text();
       }).then((responseBody) => {
-        this._response._body = responseBody;
+        this._response.setBody(responseBody);
         this._runExpects();
 
         return responseBody;
@@ -200,7 +202,7 @@ class FrisbySpec {
    */
   then(fn) {
     if (fn instanceof FrisbySpec) {
-      return fn
+      return fn;
     }
 
     this._ensureHasFetched();
@@ -217,14 +219,14 @@ class FrisbySpec {
           this._doneFn = null;
         }
       } else {
-        result = fn(responseBody);
+        result = fn(this._response);
         this._lastResult = result;
       }
 
       if (result) {
         return result;
       } else {
-        return responseBody;
+        return this._response;
       }
     }).catch(this._fetchErrorHandler.bind(this));
 
@@ -306,11 +308,11 @@ class FrisbySpec {
   }
 
   inspectBody() {
-    return this.then(() => { this.inspectLog("\nBody:", this._response._body); });
+    return this.then(() => { this.inspectLog("\nBody:", this._response.body); });
   }
 
   inspectJSON() {
-    return this.then(() => { this.inspectLog("\nJSON:", JSON.stringify(this._response._body, null, 4)); });
+    return this.then(() => { this.inspectLog("\nJSON:", JSON.stringify(this._response.body, null, 4)); });
   }
 
   inspectStatus() {
@@ -321,7 +323,7 @@ class FrisbySpec {
     return this.then(() => {
       this.inspectLog("\n");
       this.inspectLog('Headers:');
-      let headers = this._response.headers._headers;
+      let headers = this._response.headers;
       for (let key in headers) {
         this.inspectLog("\t" + key + ': ' + headers[key]);
       }

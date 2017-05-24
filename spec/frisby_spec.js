@@ -51,7 +51,9 @@ describe('Frisby', function() {
     mocks.use(['getUser1']);
 
     frisby.get(testHost + '/users/1')
-      .then(function (json) {
+      .then(function (res) {
+        let json = res.json;
+
         expect(json.id).toBe(1);
         expect(json.email).toBe('joe.schmoe@example.com');
       })
@@ -77,8 +79,8 @@ describe('Frisby', function() {
       .then(frisby.get(testHost + '/users/2')
           .expect('jsonContains', { id: 2 })
       )
-      .then(function (user2) {
-        expect(user2.id).toBe(2);
+      .then(function (res) {
+        expect(res.json.id).toBe(2);
       })
       .done(doneFn);
   });
@@ -92,8 +94,8 @@ describe('Frisby', function() {
         return frisby.get(testHost + '/users/2')
           .expect('jsonContains', { id: 2 });
       })
-      .then(function (user2) {
-        expect(user2.id).toBe(2);
+      .then(function (res) {
+        expect(res.json.id).toBe(2);
       })
       .done(doneFn);
   });
@@ -109,15 +111,15 @@ describe('Frisby', function() {
         return frisby.get(testHost + '/users/1')
           .expect('jsonContains', { id: 1 });
       })
-      .then(function (user1) {
-        expect(user1.id).toBe(1);
+      .then(function (res) {
+        expect(res.json.id).toBe(1);
       })
       .then(function () {
         return frisby.get(testHost + '/users/2')
           .expect('jsonContains', { id: 2 });
       })
-      .then(function (user2) {
-        expect(user2.id).toBe(2);
+      .then(function (res) {
+        expect(res.json.id).toBe(2);
       })
       .done(doneFn);
   });
@@ -188,6 +190,22 @@ describe('Frisby', function() {
       })
       .done(doneFn);
   });
+
+  // it('should use cookies set in previous request for future requests', function(doneFn) {
+  //   mocks.use(['setCookie', 'requireCookie']);
+  //
+  //   // Call path only
+  //   frisby.get(testHost + '/cookies/set')
+  //     .expect('status', 200)
+  //     .expect('header', 'Set-Cookie')
+  //     .then((res) => {
+  //
+  //       return frisby.get(testHost + '/cookies/check')
+  //         .expect('status', 200)
+  //         .expect('header', 'Cookie', /frisbyjs/)
+  //         .done(doneFn);
+  //     });
+  // });
 
   it('baseUrl sets global baseUrl to be used with all relative URLs', function(doneFn) {
     mocks.use(['getUser1']);

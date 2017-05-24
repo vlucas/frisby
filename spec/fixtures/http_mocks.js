@@ -94,6 +94,33 @@ var mocks = {
   },
 
   /**
+   * Cookies
+   */
+  setCookie() {
+    return nock(mockHost, {
+    })
+    .get('/cookies/set')
+      .reply(200, {
+        setcookie: 1
+      }, {
+        'Set-Cookie': 'frisbyjs=1; path=/; expires=Wed, 01 Jan 2199 21:47:33 -0000; secure; HttpOnly'
+      });
+  },
+
+  requireCookie() {
+    return nock(mockHost, {
+      reqheaders: {
+        'Cookie': /frisbyjs/
+      }
+    })
+    .get('/cookies/check')
+      .reply(200, {
+        id: 1,
+        email: 'joe.schmoe@example.com'
+      });
+  },
+
+  /**
    * Errors
    */
   timeout() {

@@ -13,6 +13,7 @@ const version = pkg.version;
 
 let _globalSetupDefaults = {
   request: {
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json'
     }
