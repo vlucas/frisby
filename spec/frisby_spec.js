@@ -191,21 +191,25 @@ describe('Frisby', function() {
       .done(doneFn);
   });
 
-  // it('should use cookies set in previous request for future requests', function(doneFn) {
-  //   mocks.use(['setCookie', 'requireCookie']);
-  //
-  //   // Call path only
-  //   frisby.get(testHost + '/cookies/set')
-  //     .expect('status', 200)
-  //     .expect('header', 'Set-Cookie')
-  //     .then((res) => {
-  //
-  //       return frisby.get(testHost + '/cookies/check')
-  //         .expect('status', 200)
-  //         .expect('header', 'Cookie', /frisbyjs/)
-  //         .done(doneFn);
-  //     });
-  // });
+  it('should allow custom headers to be set for future requests', function(doneFn) {
+    mocks.use(['setCookie', 'requireCookie']);
+
+    // Call path only
+    frisby.get(testHost + '/cookies/set')
+      .expect('status', 200)
+      .expect('header', 'Set-Cookie')
+      .then((res) => {
+        let cookie1 = res.headers.get('Set-Cookie');
+
+        return frisby.get(testHost + '/cookies/check', {
+            headers: {
+              'Cookie': cookie1
+            }
+          })
+          .expect('status', 200)
+          .done(doneFn);
+      });
+  });
 
   it('baseUrl sets global baseUrl to be used with all relative URLs', function(doneFn) {
     mocks.use(['getUser1']);
