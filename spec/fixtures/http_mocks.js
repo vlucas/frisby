@@ -1,0 +1,170 @@
+'use strict';
+
+var nock = require('nock');
+
+var mockHost = 'http://api.example.com';
+var mocks = {
+
+  /**
+   * Users
+   */
+  getUser1() {
+    return nock(mockHost)
+      .get('/users/1')
+      .reply(200, {
+        id: 1,
+        email: 'joe.schmoe@example.com'
+      });
+  },
+
+  getUser1WithAuth() {
+    return nock(mockHost, {
+        reqheaders: { 'authorization': 'Basic Auth' },
+        badheaders: ['authorizationX']
+      })
+      .get('/users/1/auth')
+      .reply(200, {
+        id: 1,
+        email: 'joe.schmoe@example.com'
+      });
+  },
+
+  getUser1WithDelay() {
+    return nock(mockHost)
+      .get('/users/1')
+      .delay(500)
+      .reply(200, {
+        id: 1,
+        email: 'joe.schmoe@example.com'
+      });
+  },
+
+  getUser2() {
+    return nock(mockHost)
+      .get('/users/2')
+      .reply(200, {
+        id: 2,
+        email: 'testy.mctestface@example.com'
+      });
+  },
+
+  getUser2WithDelay() {
+    return nock(mockHost)
+      .get('/users/2')
+      .delay(500)
+      .reply(200, {
+        id: 2,
+        email: 'testy.mctestface@example.com'
+      });
+  },
+
+  deleteUser1() {
+    return nock(mockHost)
+      .delete('/users/1')
+      .reply(204);
+  },
+
+  createUser2() {
+    return nock(mockHost)
+      .post('/users', {
+        email: 'user@example.com',
+        password: 'password'
+      })
+      .reply(201, {
+        id: 2,
+        email: 'user@example.com'
+      });
+  },
+
+  /**
+   * Content
+   */
+  getContent() {
+    return nock(mockHost)
+      .get('/contents/1')
+      .reply(200, 'Something something something something');
+  },
+
+  /**
+   * Headers
+   */
+  twoHeaders() {
+    return nock(mockHost, {
+        reqheaders: {
+          'One': 'one',
+          'Two': 'two'
+        }
+      })
+      .get('/two-headers')
+      .reply(200, {
+        one: 1,
+        two: 2
+      });
+  },
+
+  /**
+   * Cookies
+   */
+  setCookie() {
+    return nock(mockHost, {
+    })
+    .get('/cookies/set')
+      .reply(200, {
+        setcookie: 1
+      }, {
+        'Set-Cookie': 'frisbyjs=1; path=/; expires=Wed, 01 Jan 2199 21:47:33 -0000; secure; HttpOnly'
+      });
+  },
+
+  requireCookie() {
+    return nock(mockHost, {
+      reqheaders: {
+        'Cookie': /frisbyjs/
+      }
+    })
+    .get('/cookies/check')
+      .reply(200, {
+        id: 1,
+        email: 'joe.schmoe@example.com'
+      });
+  },
+
+  /**
+   * Errors
+   */
+  timeout() {
+    return nock(mockHost)
+      .get('/timeout')
+      .delay(500)
+      .reply(200, {
+        timout: 2000
+      });
+  },
+
+  postError() {
+    return nock(mockHost)
+      .post('/error')
+      .reply(400, {
+        result: 'error'
+      });
+  }
+
+};
+
+
+/**
+ * Specify which mocks to setup and use
+ */
+module.exports.use = function (mocksRequested, callback) {
+  mocksRequested.forEach(function(mockName) {
+    if (typeof mocks[mockName] === 'undefined') {
+      throw new Error("Mock '" + mockName + "' is not defined in 'mocks' object. Unknown mock requested.");
+    }
+
+    var result = mocks[mockName].call(this);
+
+    if (callback) {
+      callback.call(this, result);
+    }
+  });
+};

@@ -1,16 +1,12 @@
 {
   "name": "frisby",
-  "version": "0.8.4",
-  "description": "Frisby.js: REST API Endpoint Testing built on Jasmine",
+  "version": "2.0.0-alpha.5",
+  "description": "Frisby.js v2.0: REST API Endpoint Testing built on Jasmine",
   "homepage": "http://frisbyjs.com",
   "author": "Vance Lucas <vance@vancelucas.com>",
   "license": {
     "type": "BSD"
   },
-  "contributors": [
-    "Eric Boehs <ericboehs@gmail.com>",
-    "Kevin Morey"
-  ],
   "repository": {
     "type": "git",
     "url": "http://github.com/vlucas/frisby"
@@ -23,27 +19,20 @@
     "bdd",
     "frisby"
   ],
-  "dependencies": {
-    "request": ">=2.51",
-    "jsonschema": "1.0.0",
-    "stack-trace": "0.0.x",
-    "mock-request": ">= 0.1.2",
-    "nock": "*",
-    "underscore": "1.6.x",
-    "qs": "1.2.x"
-  },
-  "devDependencies": {
-    "form-data": "~0.1.4",
-    "minijasminenode2": "^1.0.0"
-  },
-  "peerDependencies": {
-    "jasmine-node": "^1.14.5"
-  },
-  "main": "./lib/frisby",
+  "main": "./src/frisby",
   "engines": {
-    "node": ">= 0.10.0"
+    "node": ">= 4.4.2"
   },
   "scripts": {
-    "test": "minijasminenode2 spec/*.js"
+    "test": "./node_modules/jasmine/bin/jasmine.js"
+  },
+  "dependencies": {
+    "joi": "^8.4.2",
+    "lodash": "^4.11.1",
+    "node-fetch": "^1.5.2"
+  },
+  "devDependencies": {
+    "jasmine": "^2.4.1",
+    "nock": "^7.7.2"
   }
 }

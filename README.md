@@ -2,90 +2,163 @@
 
 [![NPM](https://nodei.co/npm/frisby.png)](https://nodei.co/npm/frisby/)
 [![Build
-Status](https://travis-ci.org/vlucas/frisby.png?branch=master)](https://travis-ci.org/vlucas/frisby)
+Status](https://travis-ci.org/vlucas/frisby.png?branch=v2)](https://travis-ci.org/vlucas/frisby)
 
-A node.js NPM module that makes testing API endpoints easy, fast and fun.
+## Introduction
 
+Frisby.js an API testing tool built on top of Jasmine that makes testing API
+endpoints easy, fast and fun.
 
 ## Installation
 
-Install Frisby from NPM:
+Install Frisby from NPM into your project:
 
-    npm install frisby
-
+    npm install frisby --save-dev
 
 ## Creating Tests
 
-Frisby tests start with `frisby.create` with a description of the test followed by one of `get`, `post`, `put`, `delete`, `head`, or `options` and ending with `run` to generate the resulting jasmine spec test. There is a `expectStatus` method built in to more easily test HTTP status codes. Any other jasmine `expect` tests should be done inside the `after` callback.
+### Simple Example
 
-Each set of unique sequences or API endpoint tests should be started with new `frisby.toss` method calls instead of trying to chain multiple HTTP requests together.
+The minimum setup to run a single test expectation.
 
 ```javascript
+const frisby = require('frisby');
 
-var frisby = require('frisby');
-
-var URL = 'http://localhost:3000/';
-var URL_AUTH = 'http://username:password@localhost:3000/';
-
-frisby.globalSetup({ // globalSetup is for ALL requests
-  request: {
-    headers: { 'X-Auth-Token': 'fa8426a0-8eaf-4d22-8e13-7c1b16a9370c' }
-  }
+it('should be a teapot', function (done) {
+  frisby.get('http://httpbin.org/status/418')
+    .expect('status', 418)
+    .done(done);
 });
-
-frisby.create('GET user johndoe')
-  .get(URL + '/users/3.json')
-  .expectStatus(200)
-  .expectJSONTypes({
-    id: Number,
-    username: String,
-    is_admin: Boolean
-  })
-  .expectJSON({
-    id: 3,
-    username: 'johndoe',
-    is_admin: false
-  })
-  // 'afterJSON' automatically parses response body as JSON and passes it as an argument
-  .afterJSON(function(user) {
-  	// You can use any normal jasmine-style assertions here
-  	expect(1+1).toEqual(2);
-
-  	// Use data from previous result in next test
-    frisby.create('Update user')
-      .put(URL_AUTH + '/users/' + user.id + '.json', {tags: ['jasmine', 'bdd']})
-      .expectStatus(200)
-    .toss();
-  })
-.toss();
-
 ```
 
-Any of the [Jasmine matchers](https://github.com/pivotal/jasmine/wiki/Matchers) can be used inside the `after` and `afterJSON` callbacks to perform additional or custom tests on the response data.
+### Nested Dependent HTTP Calls
 
-To run only one of the tests, replace `toss` to `ttoss`.
+A more complex example with nested dependent frisby tests with Frisby's Promise-style `then` method.
+
+```javascript
+const frisby = require('frisby');
+const Joi = frisby.Joi; // Frisby exposes Joi for convenince
+
+describe('Posts', function () {
+  it('should return all posts and first post should have comments', function (done) {
+    frisby.get('http://jsonplaceholder.typicode.com/posts')
+      .expect('status', 200)
+      .expect('jsonTypes', '*', {
+        userId: Joi.number(),
+        id: Joi.number(),
+        title: Joi.string(),
+        body: Joi.string()
+      })
+      .then(function (json) {
+        let postId = json[0].id;
+
+        // Get first post's comments
+        // RETURN the FrisbySpec object so the 'done' function waits on it to finish - just like a Promise chain
+        reutrn frisby.get('http://jsonplaceholder.typicode.com/posts/' + postId + '/comments')
+          .expect('status', 200)
+          .expect('json', '*', {
+            postId: postId
+          })
+          .expect('jsonTypes', '*', {
+            postId: Joi.number(),
+            id: Joi.number(),
+            name: Joi.string(),
+            email: Joi.string().email(),
+            body: Joi.string()
+          });
+      })
+      .done(done);
+  });
+});
+```
+
+## Built-In Expect Handlers
+
+Frisby comes with many handy built-in expect handlers to help you test the HTTP
+response of your API.
+
+ * `status` - Check HTTP status
+ * `header` - Check HTTP header key + value
+ * `json` - Match json structure + values
+ * `jsonTypes` - Match json structure + values
+ * `bodyContains` - Match partial body content (string or regex)
+
+## Define Custom Expect Handlers
+
+When Frisby's built-in expect handlers are not enough, or if you find yourself
+running the same expectations in multiple places in your tests, you can define
+your own custom expect handler once, and then run it from anywhere in your
+tests.
+
+```javascript
+// Add our custom expect handler
+frisby.addExpectHandler('isUser1', function (response) {
+  let json = response._body;
+
+  // Run custom Jasmine matchers here
+  expect(json.id).toBe(1);
+  expect(json.email).toBe('testy.mctesterpants@example.com');
+});
+
+// Use our new custom expect handler
+it('should allow custom expect handlers to be registered and used', function (doneFn) {
+  frisby.get('https://api.example.com/users/1')
+    .expect('isUser1')
+    .done(doneFn);
+});
+
+// Remove said custom handler (if needed)
+frisby.removeExpectHandler('isUser1');
+```
+
+## Using Jasmine Matchers Directly
+
+Any of the [Jasmine matchers](http://jasmine.github.io/2.4/introduction.html)
+can be used inside the `then` method to perform additional or custom tests on
+the response data.
+
+```javascript
+const frisby = require('frisby');
+
+it('should be user 1', function (done) {
+  frisby.get('https://api.example.com/users/1')
+    .then(function (json) {
+      expect(json.id).toBe(1);
+      expect(json.email).toBe('testy.mctesterpants@example.com');
+    })
+    .done(done);
+});
+```
 
 ## Running Tests
 
-Frisby is built on top of the jasmine BDD spec framework, and uses the excellent [jasmine-node test runner](https://github.com/mhevery/jasmine-node) to run spec tests in a specified target directory.  
+Frisby uses Jasmine style assertion syntax, and uses
+[Jest](https://facebook.github.io/jest/) to run tests.
 
-### File naming conventions
+Jest can run sandboxed tests in parallel, which fits the concept of HTTP
+testing very nicely so your tests run much faster.
 
-Files must end with `spec.js` to run with jasmine-node.
+### Install Jest
 
-Suggested file naming is to append the filename with `_spec`, like `mytests_spec.js` and `moretests_spec.js`
+    npm install --save-dev jest
 
-### Install jasmine-node
+### Create your tests
 
-    npm install -g jasmine-node
+    mkdir __tests__
+    touch __tests__/api_spec.js
 
-### Run it from the CLI
+### Run your tests from the CLI
 
     cd your/project
-    jasmine-node .
-    
+    jest
+
 ### Documentation
-Documentation is hosted at [frisbyjs.com](http://frisbyjs.com/), the documentation pages has separate [repository](https://github.com/vlucas/frisby-site).
+
+Documentation is hosted at [frisbyjs.com](http://frisbyjs.com/), the
+documentation pages has separate
+[repositiory](https://github.com/vlucas/frisby-site).
 
 ## License
-Licensed under the [MIT](http://opensource.org/licenses/MIT)/[BSD](http://opensource.org/licenses/BSD-3-Clause) license.
+
+Licensed under the [BSD 3-Clause](http://opensource.org/licenses/BSD-3-Clause)
+license.
