@@ -77,6 +77,15 @@ var mocks = {
   },
 
   /**
+   * Content
+   */
+  getContent() {
+    return nock(mockHost)
+      .get('/contents/1')
+      .reply(200, 'Something something something something');
+  },
+
+  /**
    * Headers
    */
   twoHeaders() {

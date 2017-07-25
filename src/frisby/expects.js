@@ -25,6 +25,18 @@ const expects = {
     assert.strictEqual(response.status, statusCode);
   },
 
+  bodyContains(response, value) {
+    incrementAssertionCount();
+    let body = response.body;
+
+    if (value instanceof RegExp) {
+      // RegExp
+      assert.notEqual(body.match(value), null, `Value '${value}' not found in response body`);
+    } else {
+      assert.ok(body.indexOf(value) !== -1, `Value '${value}' not found in response body`);
+    }
+  },
+
   header(response, header, headerValue) {
     let headers = response.headers;
     let responseHeader = headers.get(header);

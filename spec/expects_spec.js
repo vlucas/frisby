@@ -63,4 +63,20 @@ describe('Frisby', function() {
       .done(doneFn);
   });
 
+  it('expectBodyContains should match string', function(doneFn) {
+    mocks.use(['getContent']);
+
+    frisby.fetch(testHost + '/contents/1')
+      .expect('bodyContains', 'something')
+      .done(doneFn);
+  });
+
+  it('expectBodyContains should match regex', function(doneFn) {
+    mocks.use(['getContent']);
+
+    frisby.fetch(testHost + '/contents/1')
+      .expect('bodyContains', /something/)
+      .done(doneFn);
+  });
+
 });
