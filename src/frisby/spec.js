@@ -102,7 +102,7 @@ class FrisbySpec {
   }
 
   _formatUrl(url) {
-    let newUrl = url;
+    let newUrl = encodeURI(url);
     let baseUrl = this.getBaseUrl();
 
     // Prepend baseUrl if set, and if URL supplied is a path
