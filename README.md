@@ -11,11 +11,9 @@ endpoints easy, fast and fun.
 
 ## Installation
 
-**Frisby v2 is currently in alpha. You must install `frisby@next` to get the latest alpha version.**
+Install Frisby v2.x from NPM into your project:
 
-Install Frisby from NPM into your project:
-
-    npm install frisby@next --save-dev
+    npm install frisby --save-dev
 
 ## Creating Tests
 
