@@ -82,7 +82,9 @@ response of your API.
  * `status` - Check HTTP status
  * `header` - Check HTTP header key + value
  * `json` - Match json structure + values
- * `jsonTypes` - Match json structure + values
+ * `jsonStrict` - Match EXACT json structure + values (extra keys not tested for cause test failures)
+ * `jsonTypes` - Match json structure + value types
+ * `jsonTypesStrict` - Match EXACT json structure + value types (extra keys not tested for cause test failures)
  * `bodyContains` - Match partial body content (string or regex)
 
 ## Define Custom Expect Handlers
