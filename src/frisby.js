@@ -101,8 +101,20 @@ function removeExpectHandler(expectName, expectFn) {
 }
 
 module.exports = {
+  addExpectHandler,
   baseUrl,
-  del, fetch, fromJSON, get: get, globalSetup, Joi, patch, post, put, setup, timeout, use,
+  del,
+  fetch,
+  fromJSON,
+  get: get,
+  globalSetup,
+  Joi,
+  patch,
+  post,
+  put,
+  removeExpectHandler,
+  setup,
+  timeout,
+  use,
   version,
-  addExpectHandler, removeExpectHandler,
 };

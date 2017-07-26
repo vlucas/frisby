@@ -75,9 +75,9 @@ describe('Frisby', function() {
     mocks.use(['getUser1', 'getUser2WithDelay']);
 
     frisby.get(testHost + '/users/1')
-      .expect('jsonContains', { id: 1 })
+      .expect('json', { id: 1 })
       .then(frisby.get(testHost + '/users/2')
-          .expect('jsonContains', { id: 2 })
+          .expect('json', { id: 2 })
       )
       .then(function (res) {
         expect(res.json.id).toBe(2);
@@ -89,10 +89,10 @@ describe('Frisby', function() {
     mocks.use(['getUser1', 'getUser2WithDelay']);
 
     frisby.get(testHost + '/users/1')
-      .expect('jsonContains', { id: 1 })
+      .expect('json', { id: 1 })
       .then(function () {
         return frisby.get(testHost + '/users/2')
-          .expect('jsonContains', { id: 2 });
+          .expect('json', { id: 2 });
       })
       .then(function (res) {
         expect(res.json.id).toBe(2);
@@ -104,19 +104,19 @@ describe('Frisby', function() {
     mocks.use(['getUser1', 'getUser2WithDelay']);
 
     frisby.get(testHost + '/users/1')
-      .expect('jsonContains', { id: 1 })
+      .expect('json', { id: 1 })
       .then(function () {
         mocks.use(['getUser1WithDelay']);
 
         return frisby.get(testHost + '/users/1')
-          .expect('jsonContains', { id: 1 });
+          .expect('json', { id: 1 });
       })
       .then(function (res) {
         expect(res.json.id).toBe(1);
       })
       .then(function () {
         return frisby.get(testHost + '/users/2')
-          .expect('jsonContains', { id: 2 });
+          .expect('json', { id: 2 });
       })
       .then(function (res) {
         expect(res.json.id).toBe(2);
