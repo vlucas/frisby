@@ -6,7 +6,7 @@ const mocks = require('./fixtures/http_mocks');
 
 const testHost = 'http://api.example.com';
 
-describe('Frisby expect jsonTypes', function() {
+describe('expect(\'jsonTypes\')', function() {
 
   it('should match exact JSON', function(doneFn) {
     mocks.use(['getUser1']);
@@ -155,6 +155,24 @@ describe('Frisby expect jsonTypes', function() {
         "foo": "bar"
       })
       .expect('jsonTypes', {
+        "name": Joi.string()
+      })
+      .done(doneFn);
+  });
+});
+
+describe('expect(\'jsonTypesStrict\')', function() {
+
+  it('should error on additional JSON keys not accounted for', function (doneFn) {
+    frisby.fromJSON({
+        "name": "john",
+        "foo": "bar"
+      })
+      .expect('jsonTypesStrict', {
+        "name": Joi.string(),
+        "foo": Joi.string()
+      })
+      .expectNot('jsonTypesStrict', {
         "name": Joi.string()
       })
       .done(doneFn);
