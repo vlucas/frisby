@@ -22,7 +22,7 @@ const expects = {
   status(response, statusCode) {
     incrementAssertionCount();
 
-    assert.strictEqual(response.status, statusCode);
+    assert.strictEqual(response.status, statusCode, `HTTP status ${statusCode} !== ${response.status}`);
   },
 
   bodyContains(response, value) {
@@ -50,11 +50,14 @@ const expects = {
         // RegExp
         assert.notEqual(responseHeader.match(headerValue), null, 'Header regex did not match for header ' + header);
       } else {
+        headerValue = headerValue.toLowerCase();
+        let resHeader = responseHeader.toLowerCase();
+
         // String
-        assert.equal(responseHeader.toLowerCase(), headerValue.toLowerCase());
+        assert.equal(resHeader, headerValue, `Header value did not match for '${header}': '${resHeader}' !== '${headerValue}'`);
       }
     } else {
-      throw new Error("Header '" + header + "' not present in HTTP response");
+      throw new Error(`Header '${header}' not present in HTTP response`);
     }
   },
 
