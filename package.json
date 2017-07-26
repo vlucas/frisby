@@ -1,6 +1,6 @@
 {
   "name": "frisby",
-  "version": "2.0.0-alpha.5",
+  "version": "2.0.0-alpha.6",
   "description": "Frisby.js v2.0: REST API Endpoint Testing built on Jasmine",
   "homepage": "http://frisbyjs.com",
   "author": "Vance Lucas <vance@vancelucas.com>",
@@ -21,10 +21,10 @@
   ],
   "main": "./src/frisby",
   "engines": {
-    "node": ">= 4.4.2"
+    "node": ">= 6.0.0"
   },
   "scripts": {
-    "test": "./node_modules/jasmine/bin/jasmine.js"
+    "test": "./node_modules/jest/bin/jest.js"
   },
   "dependencies": {
     "joi": "^8.4.2",
@@ -32,7 +32,15 @@
     "node-fetch": "^1.5.2"
   },
   "devDependencies": {
-    "jasmine": "^2.4.1",
+    "jest": "^20.0.4",
     "nock": "^7.7.2"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/__tests__/fixtures/",
+      "/node_modules/",
+      "/src/"
+    ],
+    "verbose": false
   }
 }
