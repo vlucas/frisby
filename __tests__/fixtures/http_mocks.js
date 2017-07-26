@@ -130,6 +130,15 @@ var mocks = {
   },
 
   /**
+   * Multibyte
+   */
+   multibyte() {
+     return nock(mockHost)
+       .get('/%E3%81%93%E3%82%93%E3%81%AB%E3%81%A1%E3%81%AF') // こんにちは
+       .reply(200, 'hello');
+   },
+
+  /**
    * Errors
    */
   timeout() {
