@@ -222,4 +222,13 @@ describe('Frisby', function() {
       .expect('status', 200)
       .done(doneFn);
   });
+
+  it('should accept urls which include multibyte characterss', function(doneFn) {
+    mocks.use(['multibyte']);
+
+    // Call path only
+    frisby.fetch(testHost + '/こんにちは')
+      .expect('status', 200)
+      .done(doneFn);
+   });
 });
