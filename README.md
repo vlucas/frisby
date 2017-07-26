@@ -2,7 +2,7 @@
 
 [![NPM](https://nodei.co/npm/frisby.png)](https://nodei.co/npm/frisby/)
 [![Build
-Status](https://travis-ci.org/vlucas/frisby.png?branch=v2)](https://travis-ci.org/vlucas/frisby)
+Status](https://travis-ci.org/vlucas/frisby.png?branch=master)](https://travis-ci.org/vlucas/frisby)
 
 ## Introduction
 
@@ -49,8 +49,8 @@ describe('Posts', function () {
         title: Joi.string(),
         body: Joi.string()
       })
-      .then(function (json) {
-        let postId = json[0].id;
+      .then(function (res) { // res = FrisbyResponse object
+        let postId = res.json[0].id;
 
         // Get first post's comments
         // RETURN the FrisbySpec object so the 'done' function waits on it to finish - just like a Promise chain

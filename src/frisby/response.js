@@ -21,18 +21,6 @@ class FrisbyResponse {
     // @TODO: Just return body for now, but should check header or something to ensure we actually have a JSON response...
     return this._body;
   }
-
-  setFetchResponse(res) {
-    this._response = res;
-  }
-
-  setBody(body) {
-    this._body = body;
-  }
-
-  getBody() {
-    return this._body;
-  }
 }
 
 module.exports = FrisbyResponse;

@@ -88,7 +88,7 @@ class FrisbySpec {
     this._fetch = fetch.Promise.resolve(fetchResponse)
       .then(response => response.json())
       .then((responseBody) => {
-        this._response.setBody(responseBody);
+        this._response._body = responseBody;
         this._runExpects();
 
         return responseBody;
@@ -131,7 +131,7 @@ class FrisbySpec {
 
         return response.text();
       }).then((responseBody) => {
-        this._response.setBody(responseBody);
+        this._response._body = responseBody;
         this._runExpects();
 
         return responseBody;
