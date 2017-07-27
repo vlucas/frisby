@@ -234,8 +234,6 @@ describe('Frisby', function() {
 
 
   it('should throw an error and a deprecation warning if you try to call v0.x frisby.create()', function() {
-    mocks.use(['multibyte']);
-
     assert.throws(function(err) {
       // OLD style of Frisby - will not work (throws error)
       frisby.create('this will surely throw an error!')
