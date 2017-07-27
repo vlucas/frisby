@@ -23,12 +23,33 @@ let _globalSetupDefaults = {
 let _globalSetup = _.cloneDeep(_globalSetupDefaults);
 
 /**
- * Global setup for Frisby
- *
- * @param {Object} opts
+ * Set global base URL for all your frisby tests
  */
-function globalSetup(opts) {
-  _globalSetup = _.merge(_.cloneDeep(_globalSetupDefaults), opts);
+function baseUrl(url) {
+  globalSetup({
+    request: {
+      baseUrl: url
+    }
+  });
+}
+
+/**
+ * Throw custom error for those who didn't lock their 'frisby' versions, and get v2 instead of v0.8.5... tsk tsk
+ *
+ * @throws Error
+ */
+function create(name) {
+  throw new Error(`
+    [ERROR] frisby.create() has been removed from Frisby v2.x. If you want
+    to continue using the previous latest version of Frisby 0.x, lock your
+    package.json version of frisby to "0.8.5".
+
+    To install and continue using v0.8.5 (unsupported):
+    npm install frisby@0.8.5 --save-dev
+
+    If you would like to upgrade to v2, see:
+    https://github.com/vlucas/frisby/wiki/Upgrading
+  `);
 }
 
 /**
@@ -46,14 +67,12 @@ function createWithAction(action, args) {
 }
 
 /**
- * Set global base URL for all your frisby tests
+ * Global setup for Frisby
+ *
+ * @param {Object} opts
  */
-function baseUrl(url) {
-  globalSetup({
-    request: {
-      baseUrl: url
-    }
-  });
+function globalSetup(opts) {
+  _globalSetup = _.merge(_.cloneDeep(_globalSetupDefaults), opts);
 }
 
 /**
@@ -103,6 +122,7 @@ function removeExpectHandler(expectName, expectFn) {
 module.exports = {
   addExpectHandler,
   baseUrl,
+  create,
   del,
   fetch,
   fromJSON,

@@ -1,5 +1,6 @@
 'use strict';
 
+const assert = require('assert');
 const frisby = require('../src/frisby');
 const mocks = require('./fixtures/http_mocks');
 
@@ -226,9 +227,20 @@ describe('Frisby', function() {
   it('should accept urls which include multibyte characterss', function(doneFn) {
     mocks.use(['multibyte']);
 
-    // Call path only
     frisby.fetch(testHost + '/こんにちは')
       .expect('status', 200)
       .done(doneFn);
-   });
+  });
+
+
+  it('should throw an error and a deprecation warning if you try to call v0.x frisby.create()', function() {
+    mocks.use(['multibyte']);
+
+    assert.throws(function(err) {
+      // OLD style of Frisby - will not work (throws error)
+      frisby.create('this will surely throw an error!')
+        .expectStatus(200)
+        .toss();
+    }, /ERROR/i);
+  });
 });
