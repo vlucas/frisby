@@ -232,6 +232,21 @@ describe('Frisby', function() {
       .done(doneFn);
   });
 
+  it('should auto encode URIs that do not use fetch() with the urlEncode: false option set', function(doneFn) {
+    mocks.use(['urlEncoded']);
+
+    frisby.get(testHost + '/ftp//etc/os-release%00.md')
+      .expect('status', 200)
+      .done(doneFn);
+  });
+
+  it('should not encode URIs that use fetch() with the urlEncode: false option set', function(doneFn) {
+    mocks.use(['notUrlEncoded']);
+
+    frisby.fetch(testHost + '/ftp//etc/os-release%00.md', {}, { urlEncode: false })
+      .expect('status', 200)
+      .done(doneFn);
+  });
 
   it('should throw an error and a deprecation warning if you try to call v0.x frisby.create()', function() {
     assert.throws(function(err) {

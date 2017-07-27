@@ -101,8 +101,8 @@ class FrisbySpec {
     return this._setupDefaults.request.baseUrl ? this._setupDefaults.request.baseUrl : false;
   }
 
-  _formatUrl(url) {
-    let newUrl = encodeURI(url);
+  _formatUrl(url, urlEncode = true) {
+    let newUrl = urlEncode ? encodeURI(url) : url;
     let baseUrl = this.getBaseUrl();
 
     // Prepend baseUrl if set, and if URL supplied is a path
@@ -116,16 +116,16 @@ class FrisbySpec {
   /**
    * Fetch given URL with params (passthru to 'fetch' API)
    */
-  fetch(url, params) {
+  fetch(url, params, options = {}) {
     let fetchParams = Object.assign({}, this._setupDefaults.request, params || {});
-    this._request = new fetch.Request(this._formatUrl(url), fetchParams);
+    this._request = new fetch.Request(this._formatUrl(url, options.urlEncode), fetchParams);
 
     this._fetch = fetch(this._request, { timeout: this.timeout() }) // 'timeout' is a node-fetch option
       .then((response) => {
         this._response = new FrisbyResponse(response);
 
         // Auto-parse JSON
-        if (response.headers.has('Content-Type') && ~response.headers.get('Content-Type').indexOf('json')) {
+        if (response.headers.has('Content-Type') && response.headers.get('Content-Type').includes('json')) {
           return response.json();
         }
 

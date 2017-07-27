@@ -139,6 +139,21 @@ var mocks = {
    },
 
   /**
+   * URL encoding option
+   */
+  urlEncoded() {
+    return nock(mockHost)
+      .get('/ftp//etc/os-release%2500.md')
+      .reply(200, 'hello');
+  },
+
+  notUrlEncoded() {
+    return nock(mockHost)
+      .get('/ftp//etc/os-release%00.md')
+      .reply(200, 'hello');
+  },
+
+  /**
    * Errors
    */
   timeout() {
