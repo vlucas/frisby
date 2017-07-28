@@ -27,6 +27,7 @@
     "test": "./node_modules/jest/bin/jest.js"
   },
   "dependencies": {
+    "form-data": "^2.2.0",
     "joi": "^8.4.2",
     "lodash": "^4.11.1",
     "node-fetch": "^1.5.2"

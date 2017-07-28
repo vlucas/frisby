@@ -3,6 +3,7 @@
 const _ = require('lodash');
 const Joi = require('joi');
 const pkg = require('../package.json');
+const FormData = require('form-data');
 const FrisbySpec = require('./frisby/spec.js');
 
 
@@ -15,10 +16,11 @@ let _globalSetupDefaults = {
   request: {
     credentials: 'include',
     headers: {
-      'Content-Type': 'application/json'
-    }
+      'Content-Type': 'application/json',
+      'User-Agent': 'frisby/' + version + ' (+https://github.com/vlucas/frisby)',
+    },
+    timeout: 5000,
   },
-  timeout: 5000
 };
 let _globalSetup = _.cloneDeep(_globalSetupDefaults);
 
@@ -28,8 +30,8 @@ let _globalSetup = _.cloneDeep(_globalSetupDefaults);
 function baseUrl(url) {
   globalSetup({
     request: {
-      baseUrl: url
-    }
+      baseUrl: url,
+    },
   });
 }
 
@@ -64,6 +66,13 @@ function createWithAction(action, args) {
   // Call action with given args
   let params = Array.prototype.slice.call(args);
   return frisby[action].apply(frisby, params);
+}
+
+/**
+ * Create and return new FormData instance
+ */
+function formData() {
+  return new FormData();
 }
 
 /**
@@ -125,6 +134,7 @@ module.exports = {
   create,
   del,
   fetch,
+  formData,
   fromJSON,
   get: get,
   globalSetup,

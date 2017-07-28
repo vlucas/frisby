@@ -3,6 +3,7 @@
 // NPM
 const _ = require('lodash');
 const fetch = require('node-fetch');
+const FormData = require('form-data');
 const TIMEOUT_DEFAULT = 5000;
 
 // Frisby
@@ -113,11 +114,22 @@ class FrisbySpec {
     return newUrl;
   }
 
+  _fetchParams(params = {}) {
+    let fetchParams = Object.assign({}, this._setupDefaults.request, params);
+
+    // Form handling - send correct form headers
+    if (params.body instanceof FormData) {
+      fetchParams.headers = fetchParams.body.getHeaders();
+    }
+
+    return fetchParams;
+  }
+
   /**
    * Fetch given URL with params (passthru to 'fetch' API)
    */
-  fetch(url, params, options = {}) {
-    let fetchParams = Object.assign({}, this._setupDefaults.request, params || {});
+  fetch(url, params = {}, options = {}) {
+    let fetchParams = this._fetchParams(params);
     this._request = new fetch.Request(this._formatUrl(url, options.urlEncode), fetchParams);
 
     this._fetch = fetch(this._request, { timeout: this.timeout() }) // 'timeout' is a node-fetch option
@@ -184,9 +196,11 @@ class FrisbySpec {
   _requestWithBody(method, url, params) {
     let postParams = { method };
 
-    // Auto-encode JSON body
+    // Auto-encode JSON body if NOT FormData
     if (params && _.isObject(params.body)) {
-      params.body = JSON.stringify(params.body);
+      if (!(params.body instanceof FormData)) {
+        params.body = JSON.stringify(params.body);
+      }
     }
 
     // Auto-set 'body' from 'params' JSON if 'body' and 'headers' are not provided (assume sending raw body only)
@@ -307,6 +321,18 @@ class FrisbySpec {
     return this.then(() => { this.inspectLog("\nRequest:", this._request); });
   }
 
+  inspectRequestHeaders() {
+    return this.then(() => {
+      this.inspectLog("\n");
+      this.inspectLog('Request Headers:');
+      let headers = this._request.headers.raw();
+
+      for (let key in headers) {
+          this.inspectLog("\t" + key + ': ' + headers[key]);
+      }
+    });
+  }
+
   inspectBody() {
     return this.then(() => { this.inspectLog("\nBody:", this._response.body); });
   }
@@ -322,8 +348,9 @@ class FrisbySpec {
   inspectHeaders() {
     return this.then(() => {
       this.inspectLog("\n");
-      this.inspectLog('Headers:');
-      let headers = this._response.headers;
+      this.inspectLog('Response Headers:');
+      let headers = this._response.headers.raw();
+
       for (let key in headers) {
         this.inspectLog("\t" + key + ': ' + headers[key]);
       }
@@ -332,7 +359,8 @@ class FrisbySpec {
 
   inspectLog() {
     let params = Array.prototype.slice.call(arguments);
-    console.log.apply(null, params);
+
+    console.log.apply(null, params); // eslint-disable-line no-console
     return this;
   }
 
