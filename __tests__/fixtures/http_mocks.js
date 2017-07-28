@@ -1,9 +1,10 @@
 'use strict';
 
-var nock = require('nock');
+const nock = require('nock');
+const fs = require('fs');
 
-var mockHost = 'http://api.example.com';
-var mocks = {
+const mockHost = 'http://api.example.com';
+const mocks = {
 
   /**
    * Users
@@ -83,6 +84,27 @@ var mocks = {
     return nock(mockHost)
       .get('/contents/1')
       .reply(200, 'Something something something something');
+  },
+
+  /**
+   * File handling
+   */
+  fileContents() {
+    let logoImage = __dirname + '/frisby-logo.png';
+
+    return nock(mockHost)
+      .get('/files/logo.png')
+      .replyWithFile(200, logoImage, {
+        'Content-Type': 'image/png'
+      });
+  },
+
+  fileUploadPng() {
+    return nock(mockHost)
+      .post('/upload')
+      .reply(200, 'File Uploaded!', {
+        'Content-Type': 'image/png'
+      });
   },
 
   /**
