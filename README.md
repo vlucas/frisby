@@ -37,7 +37,7 @@ A more complex example with nested dependent frisby tests with Frisby's Promise-
 
 ```javascript
 const frisby = require('frisby');
-const Joi = frisby.Joi; // Frisby exposes Joi for convenince
+const Joi = frisby.Joi; // Frisby exposes Joi for convenience
 
 describe('Posts', function () {
   it('should return all posts and first post should have comments', function (done) {
@@ -158,7 +158,7 @@ testing very nicely so your tests run much faster.
 
 Documentation is hosted at [frisbyjs.com](http://frisbyjs.com/), the
 documentation pages has separate
-[repositiory](https://github.com/vlucas/frisby-site).
+[repository](https://github.com/vlucas/frisby-site).
 
 ## License
 
