@@ -39,25 +39,25 @@ const expects = {
 
   header(response, header, headerValue) {
     let headers = response.headers;
-    let responseHeader = headers.get(header);
 
     incrementAssertionCount();
 
-    if (responseHeader) {
-      if (!headerValue) {
-        assert.ok(headers.has(header));
-      } else if (headerValue instanceof RegExp) {
-        // RegExp
-        assert.notEqual(responseHeader.match(headerValue), null, 'Header regex did not match for header ' + header);
-      } else {
-        headerValue = headerValue.toLowerCase();
-        let resHeader = responseHeader.toLowerCase();
+    assert.ok(headers.has(header), `Header '${header}' not present in HTTP response`);
 
+    if (headerValue) {
+      let responseHeader = headers.getAll(header);
+
+      if (headerValue instanceof RegExp) {
+        // RegExp
+        assert.ok(responseHeader.some(function (resHeader) {
+          return headerValue.test(resHeader);
+        }), `Header regex did not match for header '${header}': '${responseHeader}'`);
+      } else {
         // String
-        assert.equal(resHeader, headerValue, `Header value did not match for '${header}': '${resHeader}' !== '${headerValue}'`);
+        assert.ok(responseHeader.some(function (resHeader) {
+          return resHeader.toLowerCase() == headerValue.toLowerCase();
+        }), `Header value '${headerValue}' did not match for header '${header}': '${responseHeader}'`);
       }
-    } else {
-      throw new Error(`Header '${header}' not present in HTTP response`);
     }
   },
 
