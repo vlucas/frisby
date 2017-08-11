@@ -115,8 +115,7 @@ class FrisbySpec {
   }
 
   _fetchParams(params = {}) {
-    let fetchParams = Object.assign({}, this._setupDefaults.request);
-    _.merge(fetchParams, params);
+    let fetchParams = _.merge({}, this._setupDefaults.request, params);
 
     // Form handling - send correct form headers
     if (params.body instanceof FormData) {
