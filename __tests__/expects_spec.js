@@ -63,6 +63,24 @@ describe('Frisby', function() {
       .done(doneFn);
   });
 
+  it('expectHeader should match array header', function(doneFn) {
+    mocks.use(['arrayHeader']);
+
+    frisby.fetch(testHost + '/array-header')
+      .expect('header', 'array', 'one')
+      .expect('header', 'array', /one|two/)
+      .done(doneFn);
+  });
+
+  it('expectHeader should not match array header', function(doneFn) {
+    mocks.use(['arrayHeader']);
+
+    frisby.fetch(testHost + '/array-header')
+      .expectNot('header', 'array', 'three')
+      .expectNot('header', 'array', /three|four/)
+      .done(doneFn);
+  });
+
   it('expectBodyContains should match string', function(doneFn) {
     mocks.use(['getContent']);
 

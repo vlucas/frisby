@@ -124,6 +124,14 @@ const mocks = {
       });
   },
 
+  arrayHeader() {
+    return nock(mockHost)
+      .get('/array-header')
+      .reply(200, 'Array Header.', {
+        array: ['zero', 'one', 'two']
+      });
+  },
+
   /**
    * Cookies
    */
