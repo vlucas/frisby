@@ -28,7 +28,7 @@ let _globalSetup = _.cloneDeep(_globalSetupDefaults);
  * Set global base URL for all your frisby tests
  */
 function baseUrl(url) {
-  globalSetup({
+  _.merge(_globalSetup, {
     request: {
       baseUrl: url,
     },
