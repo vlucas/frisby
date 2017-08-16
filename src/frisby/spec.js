@@ -20,7 +20,7 @@ class FrisbySpec {
     this._expects = [];
     this._expectError;
 
-    this._timeout = TIMEOUT_DEFAULT;
+    this._timeout;
     this._setupDefaults = {};
     this._lastResult;
   }
@@ -38,7 +38,6 @@ class FrisbySpec {
    */
   setup(opts, replace) {
     this._setupDefaults = replace ? opts : _.merge(this._setupDefaults, opts);
-    this._timeout = this._setupDefaults.request.timeout || TIMEOUT_DEFAULT;
     return this;
   }
 
@@ -50,11 +49,7 @@ class FrisbySpec {
   timeout(timeout) {
     // GETTER
     if (!timeout) {
-      if (this._setupDefaults.request && this._setupDefaults.request.timeout) {
-        return this._setupDefaults.request.timeout;
-      }
-
-      return this._timeout;
+      return this._timeout || (this._setupDefaults.request && this._setupDefaults.request.timeout) || TIMEOUT_DEFAULT;
     }
 
     // SETTER

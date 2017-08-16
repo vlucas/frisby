@@ -185,6 +185,9 @@ describe('Frisby', function() {
 
     // Test timeout by catching timeout error and running assertions on it
     frisby.timeout(10)
+      .use(function (spec) {
+        expect(spec.timeout()).toBe(10);
+      })
       .fetch(testHost + '/timeout')
       .catch(function (err) {
         expect(err.name).toBe('FetchError');
