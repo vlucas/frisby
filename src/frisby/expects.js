@@ -31,7 +31,7 @@ const expects = {
 
     if (value instanceof RegExp) {
       // RegExp
-      assert.notEqual(body.match(value), null, `Value '${value}' not found in response body`);
+      assert.ok(value.test(body), `Value '${value}' not found in response body`);
     } else {
       assert.ok(body.indexOf(value) !== -1, `Value '${value}' not found in response body`);
     }
