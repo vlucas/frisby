@@ -180,7 +180,7 @@ describe('Frisby', function() {
       .done(doneFn);
   });
 
-  it('frisy timeout is configurable per spec', function(doneFn) {
+  it('frisby timeout is configurable per spec', function(doneFn) {
     mocks.use(['timeout']);
 
     // Test timeout by catching timeout error and running assertions on it
@@ -227,7 +227,7 @@ describe('Frisby', function() {
       .done(doneFn);
   });
 
-  it('should accept urls which include multibyte characterss', function(doneFn) {
+  it('should accept urls which include multibyte characters', function(doneFn) {
     mocks.use(['multibyte']);
 
     frisby.fetch(testHost + '/こんにちは')
