@@ -93,13 +93,15 @@ your own custom expect handler once, and then run it from anywhere in your
 tests.
 
 ```javascript
-// Add our custom expect handler
-frisby.addExpectHandler('isUser1', function (response) {
-  let json = response._body;
+beforeAll(function () {
+  // Add our custom expect handler
+  frisby.addExpectHandler('isUser1', function (response) {
+    let json = response._body;
 
-  // Run custom Jasmine matchers here
-  expect(json.id).toBe(1);
-  expect(json.email).toBe('testy.mctesterpants@example.com');
+    // Run custom Jasmine matchers here
+    expect(json.id).toBe(1);
+    expect(json.email).toBe('testy.mctesterpants@example.com');
+  });
 });
 
 // Use our new custom expect handler
@@ -109,8 +111,10 @@ it('should allow custom expect handlers to be registered and used', function (do
     .done(doneFn);
 });
 
-// Remove said custom handler (if needed)
-frisby.removeExpectHandler('isUser1');
+afterAll(function () {
+  // Remove said custom handler (if needed)
+  frisby.removeExpectHandler('isUser1');
+});
 ```
 
 ## Using Jasmine Matchers Directly
