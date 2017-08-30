@@ -50,7 +50,7 @@ describe('expect(\'json\', <path>, <value>)', function() {
   });
 
   describe('jsonTypes', function() {
-    it(doneFn) {
+    it('should test every object in an array', function(doneFn) {
       mocks.use(['getUsers']);
 
       frisby.fetch(testHost + '/users')
