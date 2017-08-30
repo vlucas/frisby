@@ -9,6 +9,23 @@ const mocks = {
   /**
    * Users
    */
+  getUsers() {
+    return nock(mockHost)
+      .get('/users')
+      .reply(200, {
+        data: [
+          {
+            id: 1,
+            email: 'joe.schmoe@example.com'
+          },
+          {
+            id: 2,
+            email: 'testy.mctestface@example.com'
+          }
+        ]
+      });
+  },
+
   getUser1() {
     return nock(mockHost)
       .get('/users/1')

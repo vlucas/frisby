@@ -151,4 +151,12 @@ describe('expect(\'jsonStrict\')', function() {
       .done(doneFn);
   });
 
+  it('should match single value using json', function(doneFn) {
+    mocks.use(['getUser1']);
+
+    frisby.fetch(testHost + '/users/1')
+      .expect('json', 'id', 1)
+      .done(doneFn);
+  });
+
 });

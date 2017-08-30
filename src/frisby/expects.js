@@ -68,7 +68,16 @@ const expects = {
     incrementAssertionCount();
 
     utils.withPath(path, response._body, function jsonContainsAssertion(jsonChunk) {
+      let chunkType = typeof jsonChunk;
       let failMsg = "Response [ " + JSON.stringify(jsonChunk) + " ] does not contain provided JSON [ " + JSON.stringify(json) + " ]";
+
+      // Single value test
+      if (chunkType !== 'object' && chunkType !== 'array') {
+        assert.equal(jsonChunk, json);
+        return;
+      }
+
+      // Object/aray test
       assert.ok(_.some([jsonChunk], json), failMsg);
     });
   },
