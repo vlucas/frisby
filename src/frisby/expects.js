@@ -62,29 +62,27 @@ const expects = {
   },
 
   json(response, _path, _json) {
-    let json = _json ? _json : _path;
-    let path = _json ? _path : false;
+    let json = _.isUndefined(_json) ? _path : _json;
+    let path = _.isUndefined(_json) ? false : _path;
 
     incrementAssertionCount();
 
     utils.withPath(path, response._body, function jsonContainsAssertion(jsonChunk) {
-      let chunkType = typeof jsonChunk;
       let failMsg = "Response [ " + JSON.stringify(jsonChunk) + " ] does not contain provided JSON [ " + JSON.stringify(json) + " ]";
 
-      // Single value test
-      if (chunkType !== 'object' && chunkType !== 'array') {
+      if (_.isObject(json)) {
+        // Object/aray test
+        assert.ok(_.some([jsonChunk], json), failMsg);
+      } else {
+        // Single value test
         assert.equal(jsonChunk, json);
-        return;
       }
-
-      // Object/aray test
-      assert.ok(_.some([jsonChunk], json), failMsg);
     });
   },
 
   jsonStrict(response, _path, _json) {
-    let json = _json ? _json : _path;
-    let path = _json ? _path : false;
+    let json = _.isUndefined(_json) ? _path : _json;
+    let path = _.isUndefined(_json) ? false : _path;
 
     incrementAssertionCount();
 
@@ -94,8 +92,8 @@ const expects = {
   },
 
   jsonTypes(response, _path, _json) {
-    let json = _json ? _json : _path;
-    let path = _json ? _path : false;
+    let json = _.isUndefined(_json) ? _path : _json;
+    let path = _.isUndefined(_json) ? false : _path;
 
     incrementAssertionCount();
 
@@ -109,8 +107,8 @@ const expects = {
   },
 
   jsonTypesStrict(response, _path, _json) {
-    let json = _json ? _json : _path;
-    let path = _json ? _path : false;
+    let json = _.isUndefined(_json) ? _path : _json;
+    let path = _.isUndefined(_json) ? false : _path;
 
     incrementAssertionCount();
 
