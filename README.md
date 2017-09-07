@@ -54,7 +54,7 @@ describe('Posts', function () {
 
         // Get first post's comments
         // RETURN the FrisbySpec object so the 'done' function waits on it to finish - just like a Promise chain
-        reutrn frisby.get('http://jsonplaceholder.typicode.com/posts/' + postId + '/comments')
+        return frisby.get('http://jsonplaceholder.typicode.com/posts/' + postId + '/comments')
           .expect('status', 200)
           .expect('json', '*', {
             postId: postId
