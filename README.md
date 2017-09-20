@@ -151,7 +151,7 @@ testing very nicely so your tests run much faster.
 ### Create your tests
 
     mkdir __tests__
-    touch __tests__/api_spec.js
+    touch __tests__/api.spec.js
 
 ### Run your tests from the CLI
 
