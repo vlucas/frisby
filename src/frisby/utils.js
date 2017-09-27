@@ -12,7 +12,6 @@ function withPath(path, jsonBody, callback) {
   }
 
   // Use given path to check deep objects
-  let pathParts = path.split('.');
   _.each(path.split('.'), function (segment) {
     let jt = typeof jsonBody;
     // Must be array if special characters are present
@@ -47,7 +46,7 @@ function withPath(path, jsonBody, callback) {
 
     for (var i = 0; i < itemCount; i++) {
       try {
-        var result = callback(jsonBody[i]);
+        callback(jsonBody[i]);
       } catch (e) {
         errorCount++;
         errorLast = e;
@@ -67,7 +66,7 @@ function withPath(path, jsonBody, callback) {
   } else {
     return callback(jsonBody);
   }
-};
+}
 
 
 module.exports = { withPath };

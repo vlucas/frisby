@@ -323,7 +323,7 @@ class FrisbySpec {
       let headers = this._request.headers.raw();
 
       for (let key in headers) {
-          this.inspectLog("\t" + key + ': ' + headers[key]);
+        this.inspectLog("\t" + key + ': ' + headers[key]);
       }
     });
   }
