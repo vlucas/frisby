@@ -58,7 +58,7 @@ function create(name) {
  * Create a new FrisbySpec test with specified name
  */
 function createWithAction(action, args) {
-  let frisby = new FrisbySpec();
+  let frisby = new module.exports.FrisbySpec();
 
   // Use current global setup options
   frisby.setup(_globalSetup);
@@ -122,10 +122,10 @@ function use() {
  * Global expect handlers for custom expectations
  */
 function addExpectHandler(expectName, expectFn) {
-  return FrisbySpec.addExpectHandler(expectName, expectFn);
+  return module.exports.FrisbySpec.addExpectHandler(expectName, expectFn);
 }
 function removeExpectHandler(expectName, expectFn) {
-  return FrisbySpec.removeExpectHandler(expectName, expectFn);
+  return module.exports.FrisbySpec.removeExpectHandler(expectName, expectFn);
 }
 
 module.exports = {
@@ -134,6 +134,7 @@ module.exports = {
   create,
   del,
   fetch,
+  FrisbySpec,
   formData,
   fromJSON,
   get: get,

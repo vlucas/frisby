@@ -259,4 +259,25 @@ describe('Frisby', function() {
         .toss();
     }, /ERROR/i);
   });
+
+  it('should be able to extend FrisbySpec with a custom class', function() {
+    let OriginalFrisbySpec = frisby.FrisbySpec;
+
+    class FrisbySpecExtended extends OriginalFrisbySpec {
+      customMethod() {
+        return true;
+      }
+    }
+
+    // Have frisby use our class
+    frisby.FrisbySpec = FrisbySpecExtended;
+
+    let actual = frisby.fromJSON({}).customMethod();
+    let expected = true;
+
+    assert.equal(actual, expected);
+
+    // Restore original FrisbySpec class
+    frisby.FrisbySpec = OriginalFrisbySpec;
+  });
 });
