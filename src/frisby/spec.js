@@ -114,7 +114,7 @@ class FrisbySpec {
 
     // Form handling - send correct form headers
     if (params.body instanceof FormData) {
-      fetchParams.headers = fetchParams.body.getHeaders();
+      fetchParams.headers = _.merge(fetchParams.headers, fetchParams.body.getHeaders());
     }
 
     return fetchParams;
