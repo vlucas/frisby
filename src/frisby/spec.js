@@ -294,11 +294,9 @@ class FrisbySpec {
     this._ensureHasFetched();
 
     // Run all expectations
-    this.then(() => {
-      for(let i = 0; i < this._expects.length; i++) {
-        this._expects[i].call(this, this._response);
-      }
-    });
+    for(let i = 0; i < this._expects.length; i++) {
+      this._expects[i].call(this, this._response);
+    }
 
     return this;
   }
