@@ -210,9 +210,9 @@ describe('Frisby', function() {
               'Cookie': cookie1
             }
           })
-          .expect('status', 200)
-          .done(doneFn);
-      });
+          .expect('status', 200);
+      })
+      .done(doneFn);
   });
 
   it('baseUrl sets global baseUrl to be used with all relative URLs', function(doneFn) {
