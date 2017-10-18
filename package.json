@@ -33,7 +33,7 @@
     "node-fetch": "^1.5.2"
   },
   "devDependencies": {
-    "jest": "^20.0.4",
+    "jest": "^21.2.1",
     "nock": "^7.7.2"
   },
   "jest": {
