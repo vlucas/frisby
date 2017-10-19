@@ -97,6 +97,12 @@ const mocks = {
   /**
    * Content
    */
+  noContent() {
+    return nock(mockHost)
+      .get('/contents/none')
+      .reply(204);
+  },
+
   getContent() {
     return nock(mockHost)
       .get('/contents/1')
