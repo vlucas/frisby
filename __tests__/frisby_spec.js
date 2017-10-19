@@ -16,6 +16,25 @@ describe('Frisby', function() {
       .done(doneFn);
   });
 
+  it('should handle a 204 response with no content', function(doneFn) {
+    mocks.use(['noContent']);
+
+    frisby.fetch(testHost + '/contents/none')
+      .expect('status', 204)
+      .done(doneFn);
+  });
+
+  it('should handle a 204 response with no content and then()', function(doneFn) {
+    mocks.use(['noContent']);
+
+    frisby.fetch(testHost + '/contents/none')
+      .expect('status', 204)
+      .then((res) => {
+        expect(res.body).toEqual('');
+      })
+      .done(doneFn);
+  });
+
   it('should support JSON natively', function (doneFn) {
     mocks.use(['createUser2']);
 
