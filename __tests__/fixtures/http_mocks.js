@@ -1,7 +1,6 @@
 'use strict';
 
 const nock = require('nock');
-const fs = require('fs');
 
 const mockHost = 'http://api.example.com';
 const mocks = {
