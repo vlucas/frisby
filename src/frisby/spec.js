@@ -88,7 +88,7 @@ class FrisbySpec {
         this._runExpects();
 
         return responseBody;
-      }).catch(this._fetchErrorHandler);
+      }).catch(this._fetchErrorHandler.bind(this));
 
     return this;
   }
