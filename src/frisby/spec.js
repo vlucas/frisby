@@ -405,7 +405,7 @@ class FrisbySpec {
 
       if (!expectPass && !didFail) {
         let fnArgs = expectArgs.map(a => a.toString()).join(', ');
-        this._fetchErrorHandler(new Error('expectNot(\'' + expectName + '\', ' + fnArgs + ') passed and was supposed to fail'));
+        throw new Error(`expectNot('${expectName}', ${fnArgs}) passed and was supposed to fail`);
       }
     });
   }
