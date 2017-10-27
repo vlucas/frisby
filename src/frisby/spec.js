@@ -281,8 +281,6 @@ class FrisbySpec {
    * Run test expectations
    */
   _runExpects() {
-    this._ensureHasFetched();
-
     // Run all expectations
     for(let i = 0; i < this._expects.length; i++) {
       this._expects[i].call(this, this._response);
