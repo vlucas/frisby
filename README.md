@@ -96,7 +96,7 @@ tests.
 beforeAll(function () {
   // Add our custom expect handler
   frisby.addExpectHandler('isUser1', function (response) {
-    let json = response._body;
+    let json = response.body;
 
     // Run custom Jasmine matchers here
     expect(json.id).toBe(1);
@@ -128,9 +128,9 @@ const frisby = require('frisby');
 
 it('should be user 1', function (done) {
   frisby.get('https://api.example.com/users/1')
-    .then(function (json) {
-      expect(json.id).toBe(1);
-      expect(json.email).toBe('testy.mctesterpants@example.com');
+    .then(function (res) {
+      expect(res.json.id).toBe(1);
+      expect(res.json.email).toBe('testy.mctesterpants@example.com');
     })
     .done(done);
 });
