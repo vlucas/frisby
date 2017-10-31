@@ -14,15 +14,12 @@ const expectHandlers = require('./expects');
 class FrisbySpec {
   constructor() {
     this._fetch;
-    this._doneFn;
     this._request;
     this._response;
     this._expects = [];
-    this._expectError;
 
     this._timeout;
     this._setupDefaults = {};
-    this._lastResult;
   }
 
   /**
@@ -83,12 +80,12 @@ class FrisbySpec {
     // Resolve as promise
     this._fetch = fetch.Promise.resolve(fetchResponse)
       .then(response => response.json())
-      .then((responseBody) => {
+      .then(responseBody => {
         this._response._body = responseBody;
         this._runExpects();
 
-        return responseBody;
-      }).catch(this._fetchErrorHandler.bind(this));
+        return this._response;
+      });
 
     return this;
   }
@@ -128,7 +125,7 @@ class FrisbySpec {
     this._request = new fetch.Request(this._formatUrl(url, options.urlEncode), fetchParams);
 
     this._fetch = fetch(this._request, { timeout: this.timeout() }) // 'timeout' is a node-fetch option
-      .then((response) => {
+      .then(response => {
         this._response = new FrisbyResponse(response);
 
         // Auto-parse JSON
@@ -137,12 +134,12 @@ class FrisbySpec {
         }
 
         return response.text();
-      }).then((responseBody) => {
+      }).then(responseBody => {
         this._response._body = responseBody;
         this._runExpects();
 
-        return responseBody;
-      }).catch(this._fetchErrorHandler.bind(this));
+        return this._response;
+      });
 
     return this;
   }
@@ -215,30 +212,15 @@ class FrisbySpec {
     }
 
     this._ensureHasFetched();
-    this._fetch = this._fetch.then((responseBody) => {
-      let result;
-
-      if (this._lastResult && (this._lastResult instanceof FrisbySpec || this._lastResult instanceof Promise)) {
-        result = this._lastResult.then(fn);
-
-        // Move 'done' to new promise and remove it from this one
-        let doneFn = this._doneFn;
-        if (doneFn) {
-          this._lastResult.then(() => doneFn());
-          this._doneFn = null;
-        }
-      } else {
-        result = fn(this._response);
-        this._lastResult = result;
-      }
+    this._fetch = this._fetch.then(response => {
+      let result = fn(response);
 
       if (result) {
         return result;
       } else {
-        return this._response;
+        return response;
       }
-    }).catch(this._fetchErrorHandler.bind(this));
-
+    });
     return this;
   }
 
@@ -247,8 +229,8 @@ class FrisbySpec {
    * Ensures any errors get pass
    */
   done(doneFn) {
-    this._doneFn = doneFn;
-    this._fetch.then(() => this._doneFn ? doneFn() : null);
+    this._ensureHasFetched();
+    this._fetch = this._fetch.then(() => doneFn());
     return this;
   }
 
@@ -256,7 +238,8 @@ class FrisbySpec {
    * Custom error handler (Promise catch)
    */
   catch(fn) {
-    this._expectError = fn;
+    this._ensureHasFetched();
+    this._fetch = this._fetch.catch(err => fn(err));
     return this;
   }
 
@@ -266,15 +249,6 @@ class FrisbySpec {
    */
   promise() {
     return this._fetch;
-  }
-
-  _fetchErrorHandler(err) {
-    // User can handle expected errors manually if desired
-    if (this._expectError) {
-      return this._expectError(err);
-    }
-
-    throw err;
   }
 
   /**
@@ -387,7 +361,7 @@ class FrisbySpec {
       }
     }
 
-    return this._addExpect((response) => {
+    return this._addExpect(response => {
       let didFail = false;
 
       try {
