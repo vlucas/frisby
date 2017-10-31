@@ -299,4 +299,22 @@ describe('Frisby', function() {
     // Restore original FrisbySpec class
     frisby.FrisbySpec = OriginalFrisbySpec;
   });
+
+  it('should use new responseBody when returning another Frisby spec inside catch()', function (doneFn) {
+    mocks.use(['getUser1', 'getUser2WithDelay']);
+
+    frisby.get(testHost + '/users/10')
+      .expect('json', { id: 10 })
+      .then(function (res) {
+        fail('this function will never be called.');
+      })
+      .catch(function (err) {
+        return frisby.get(testHost + '/users/2')
+          .expect('json', { id: 2 });
+      })
+      .then(function (res) {
+        expect(res.json.id).toBe(2);
+      })
+      .done(doneFn);
+  });
 });
