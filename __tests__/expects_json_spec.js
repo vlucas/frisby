@@ -110,6 +110,62 @@ describe('expect(\'json\')', function() {
       .done(doneFn);
   });
 
+  it('should match array using json', function(doneFn) {
+    frisby.fromJSON(['a', 1, true, null])
+      .expect('json', ['a', 1, true, null])
+      .then(function() {
+        return frisby.fromJSON(['a', 1, true, null])
+          .expect('json', ['a', 1, true])
+      })
+      .then(function() {
+        return frisby.fromJSON(['a', 1, true, null])
+          .expect('json', [1, null])
+      })
+      .then(function() {
+        return frisby.fromJSON([{a: 0}, {b: 1}, {c: 2}, [0, 1, 2]])
+          .expect('json', [{a: 0}, {b: 1}, {c: 2}, [0, 1, 2]])
+      })
+      .then(function() {
+        return frisby.fromJSON([{a: 0}, {b: 1}, {c: 2}, [0, 1, 2]])
+          .expect('json', [{a: 0}, {b: 1}, {c: 2}])
+      })
+      .then(function() {
+        return frisby.fromJSON([{a: 0}, {b: 1}, {c: 2}, [0, 1, 2]])
+          .expect('json', [{b: 1}, [0, 1, 2]])
+      })
+      .done(doneFn);
+  });
+
+  it('should error different array using json', function(doneFn) {
+    frisby.fromJSON(['a', 1, true, null])
+      .expectNot('json', ['a', 0, true, null])
+      .then(function() {
+        return frisby.fromJSON(['a', 1, true, null])
+          .expectNot('json', ['a', 1, true, null, false])
+      })
+      .then(function() {
+        return frisby.fromJSON(['a', 1, true, null])
+          .expectNot('json', [0, null])
+      })
+      .then(function() {
+        return frisby.fromJSON([{a: 0}, {b: 1}, {c: 2}, [0, 1, 2]])
+          .expectNot('json', [{a: 0}, {b: 1}, {c: 1}, [0, 1, 2]])
+      })
+      .then(function() {
+        return frisby.fromJSON([{a: 0}, {b: 1}, {c: 2}, [0, 1, 2]])
+          .expectNot('json', [{a: 0}, {b: 1}, {c: 1}])
+      })
+      .then(function() {
+        return frisby.fromJSON([{a: 0}, {b: 1}, {c: 2}, [0, 1, 2]])
+          .expectNot('json', [{b: 1}, [0, 1, 1]])
+      })
+      .then(function() {
+        return frisby.fromJSON({a: 0})
+          .expectNot('json', [{a: 0}])
+      })
+      .done(doneFn);
+  });
+
 });
 
 describe('expect(\'jsonStrict\')', function() {
