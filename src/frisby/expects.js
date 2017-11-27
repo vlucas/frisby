@@ -11,7 +11,7 @@ const utils = require('./utils');
  * Jasmine and others
  */
 function incrementAssertionCount() {
-  if (_.isFunction(expect)) {
+  if (typeof expect !== 'undefined' && _.isFunction(expect)) {
     // Jasmine
     expect(true).toBe(true);
   }
