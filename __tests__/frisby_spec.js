@@ -309,6 +309,13 @@ describe('Frisby', function() {
         fail('this function will never be called.');
       })
       .catch(function (err) {
+        return frisby.get(testHost + '/users/1')
+          .expect('json', { id: 10 });
+      })
+      .then(function (res) {
+        fail('this function will never be called.');
+      })
+      .catch(function (err) {
         return frisby.get(testHost + '/users/2')
           .expect('json', { id: 2 });
       })

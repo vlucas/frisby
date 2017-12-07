@@ -206,21 +206,21 @@ class FrisbySpec {
   /**
    * Chain calls to execute after fetch()
    */
-  then(fn) {
-    if (fn instanceof FrisbySpec) {
-      return fn;
+  then(onFulfilled, onRejected) {
+    if (onFulfilled instanceof FrisbySpec) {
+      return onFulfilled;
     }
 
     this._ensureHasFetched();
     this._fetch = this._fetch.then(response => {
-      let result = fn(response);
+      let result = onFulfilled ? onFulfilled(response) : null;
 
       if (result) {
         return result;
       } else {
         return response;
       }
-    });
+    }, err => onRejected ? onRejected(err) : Promise.reject(err));
     return this;
   }
 
@@ -237,9 +237,9 @@ class FrisbySpec {
   /**
    * Custom error handler (Promise catch)
    */
-  catch(fn) {
+  catch(onRejected) {
     this._ensureHasFetched();
-    this._fetch = this._fetch.catch(err => fn(err));
+    this._fetch = this._fetch.catch(err => onRejected ? onRejected(err) : Promise.reject(err));
     return this;
   }
 
