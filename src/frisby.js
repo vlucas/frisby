@@ -12,7 +12,7 @@ const FrisbySpec = require('./frisby/spec.js');
  */
 const version = pkg.version;
 
-let _globalSetupDefaults = {
+const _globalSetupDefaults = {
   request: {
     credentials: 'include',
     headers: {
