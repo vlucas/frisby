@@ -159,6 +159,41 @@ describe('expect(\'jsonTypes\')', function() {
       })
       .done(doneFn);
   });
+
+  it('should output path in error message (1)', function (doneFn) {
+    frisby.fromJSON({
+        "name": "john"
+      })
+      .expect('jsonTypes', 'name', Joi.number())
+      .catch(function (err) {
+        expect(err.message).toMatch(/\bname\b/);
+        expect(err.message).not.toMatch(/\bvalue\b/);
+      })
+      .done(doneFn);
+  });
+
+  it('should output path in error message (2)', function (doneFn) {
+    frisby.fromJSON({
+        "user": {
+          "name": "john"
+        }
+      })
+      .expect('jsonTypes', 'user.name', Joi.number())
+      .catch(function (err) {
+        expect(err.message).toMatch(/\buser\.name\b/);
+        expect(err.message).not.toMatch(/\bvalue\b/);
+      })
+      .done(doneFn);
+  });
+
+  it('should output default label in error message', function (doneFn) {
+    frisby.fromJSON("john")
+      .expect('jsonTypes', Joi.number())
+      .catch(function (err) {
+        expect(err.message).toMatch(/\bvalue\b/);
+      })
+      .done(doneFn);
+  });
 });
 
 describe('expect(\'jsonTypesStrict\')', function() {
