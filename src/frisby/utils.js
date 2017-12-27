@@ -13,7 +13,7 @@ function withPath(path, jsonBody, callback) {
   let jsonChunks = [jsonBody];
 
   // Use given path to check deep objects
-  _.each(path.split('.'), segment => {
+  _.each(_.toPath(path), segment => {
     _.each(jsonChunks.splice(0), jsonChunk => {
       let jt = typeof jsonChunk;
 
