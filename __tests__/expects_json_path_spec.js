@@ -39,14 +39,13 @@ describe('expect(\'json\', <path>, <value>)', function() {
         .done(doneFn);
     });
 
-    // @TODO: Cannot do this off of a question mark yet...
-    // it('should test one of the values in an array for a single field', function(doneFn) {
-    //   mocks.use(['getUsers']);
-    //
-    //   frisby.fetch(testHost + '/users')
-    //     .expect('json', 'data.?.email', 'joe.schmoe@example.com')
-    //     .done(doneFn);
-    // });
+    it('should test one of the values in an array for a single field', function(doneFn) {
+      mocks.use(['getUsers']);
+
+      frisby.fetch(testHost + '/users')
+        .expect('json', 'data.?.email', 'joe.schmoe@example.com')
+        .done(doneFn);
+    });
   });
 
   describe('jsonTypes', function() {
