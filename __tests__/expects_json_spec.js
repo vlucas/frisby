@@ -115,23 +115,23 @@ describe('expect(\'json\')', function() {
       .expect('json', ['a', 1, true, null])
       .then(function() {
         return frisby.fromJSON(['a', 1, true, null])
-          .expect('json', ['a', 1, true])
+          .expect('json', ['a', 1, true]);
       })
       .then(function() {
         return frisby.fromJSON(['a', 1, true, null])
-          .expect('json', [1, null])
+          .expect('json', [1, null]);
       })
       .then(function() {
         return frisby.fromJSON([{a: 0}, {b: 1}, {c: 2}, [0, 1, 2]])
-          .expect('json', [{a: 0}, {b: 1}, {c: 2}, [0, 1, 2]])
+          .expect('json', [{a: 0}, {b: 1}, {c: 2}, [0, 1, 2]]);
       })
       .then(function() {
         return frisby.fromJSON([{a: 0}, {b: 1}, {c: 2}, [0, 1, 2]])
-          .expect('json', [{a: 0}, {b: 1}, {c: 2}])
+          .expect('json', [{a: 0}, {b: 1}, {c: 2}]);
       })
       .then(function() {
         return frisby.fromJSON([{a: 0}, {b: 1}, {c: 2}, [0, 1, 2]])
-          .expect('json', [{b: 1}, [0, 1, 2]])
+          .expect('json', [{b: 1}, [0, 1, 2]]);
       })
       .done(doneFn);
   });
@@ -141,27 +141,27 @@ describe('expect(\'json\')', function() {
       .expectNot('json', ['a', 0, true, null])
       .then(function() {
         return frisby.fromJSON(['a', 1, true, null])
-          .expectNot('json', ['a', 1, true, null, false])
+          .expectNot('json', ['a', 1, true, null, false]);
       })
       .then(function() {
         return frisby.fromJSON(['a', 1, true, null])
-          .expectNot('json', [0, null])
+          .expectNot('json', [0, null]);
       })
       .then(function() {
         return frisby.fromJSON([{a: 0}, {b: 1}, {c: 2}, [0, 1, 2]])
-          .expectNot('json', [{a: 0}, {b: 1}, {c: 1}, [0, 1, 2]])
+          .expectNot('json', [{a: 0}, {b: 1}, {c: 1}, [0, 1, 2]]);
       })
       .then(function() {
         return frisby.fromJSON([{a: 0}, {b: 1}, {c: 2}, [0, 1, 2]])
-          .expectNot('json', [{a: 0}, {b: 1}, {c: 1}])
+          .expectNot('json', [{a: 0}, {b: 1}, {c: 1}]);
       })
       .then(function() {
         return frisby.fromJSON([{a: 0}, {b: 1}, {c: 2}, [0, 1, 2]])
-          .expectNot('json', [{b: 1}, [0, 1, 1]])
+          .expectNot('json', [{b: 1}, [0, 1, 1]]);
       })
       .then(function() {
         return frisby.fromJSON({a: 0})
-          .expectNot('json', [{a: 0}])
+          .expectNot('json', [{a: 0}]);
       })
       .done(doneFn);
   });
