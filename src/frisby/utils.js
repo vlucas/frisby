@@ -1,52 +1,61 @@
 'use strict';
 
-const _ = require('lodash/core');
+const _ = require('lodash');
 
 // Path execution method
 function withPath(path, jsonBody, callback) {
-  let type = false;
-
   // Execute immediately with no path
   if (!path) {
     return callback(jsonBody);
   }
 
+  let type = false;
+  let jsonChunks = [jsonBody];
+
   // Use given path to check deep objects
-  _.each(path.split('.'), function (segment) {
-    let jt = typeof jsonBody;
-    // Must be array if special characters are present
-    if ("*" === segment || "?" === segment) {
-      type = segment;
+  _.each(_.toPath(path), segment => {
+    _.each(jsonChunks.splice(0), jsonChunk => {
+      let jt = typeof jsonChunk;
 
-      if (!_.isArray(jsonBody)) {
-        throw new TypeError("Expected '" + path + "' to be Array (got '" + jt + "' from JSON response)");
-      }
-    } else if ("&" === segment) {
-      type = segment;
+      if ('*' === segment || '?' === segment) {
+        // Must be array if special characters are present
+        if (!_.isArray(jsonChunk)) {
+          throw new TypeError(`Expected '${path}' to be Array (got '${jt}' from JSON response)`);
+        }
 
-      if (!_.isObject(jsonBody)) {
-        throw new TypeError("Expected '" + path + "' to be Object (got '" + jt + "' from JSON response)");
+        type = segment;
+        _.each(jsonChunk, value => {
+          jsonChunks.push(value);
+        });
+      } else if ('&' === segment) {
+        // Must be object if special character is present
+        if (!_.isObject(jsonChunk)) {
+          throw new TypeError(`Expected '${path}' to be Object (got '${jt}' from JSON response)`);
+        }
+
+        type = segment;
+        _.each(jsonChunk, value => {
+          jsonChunks.push(value);
+        });
+      } else {
+        if (!_.has(jsonChunk, segment)) {
+          throw new Error(`Expected '${segment}' not found (path '${path}')`);
+        }
+
+        jsonChunks.push(_.get(jsonChunk, segment));
       }
-    } else {
-      jsonBody = jsonBody[segment];
-    }
+    });
   });
 
-  // EACH item in array should match
-  if ("*" === type || "&" === type) {
-    _.each(jsonBody, function (json) {
-      callback(json);
-    });
+  if ('?' === type) {
+    // ONE item in array should match
+    let itemCount = jsonChunks.length;
+    let errorCount = 0;
+    let errorLast;
 
-  // ONE item in array should match
-  } else if ("?" === type) {
-    var itemCount = jsonBody.length;
-    var errorCount = 0;
-    var errorLast;
-
-    for (var i = 0; i < itemCount; i++) {
+    for (let i = 0; i < itemCount; i++) {
       try {
-        callback(jsonBody[i]);
+        callback(jsonChunks[i]);
       } catch (e) {
         errorCount++;
         errorLast = e;
@@ -55,18 +64,15 @@ function withPath(path, jsonBody, callback) {
 
     // If all errors, test fails
     if (itemCount === errorCount) {
-      if (errorLast) {
-        throw errorLast;
-      } else {
-        throw new Error("Expected one object in path '" + path + "' to match provided JSON values");
-      }
+      throw errorLast || new Error(`Expected one object in path '${path}' to match provided JSON values`);
     }
-
-  // Normal matcher
   } else {
-    return callback(jsonBody);
+    // EACH item in array should match
+    // Normal matcher
+    _.each(jsonChunks, jsonChunk => {
+      callback(jsonChunk);
+    });
   }
 }
-
 
 module.exports = { withPath };

@@ -20,6 +20,17 @@ describe('expect(\'json\', <path>, <value>)', function() {
         .done(doneFn);
     });
 
+    it('should get single array object at known position using bracket', function(doneFn) {
+      mocks.use(['getUsers']);
+
+      frisby.fetch(testHost + '/users')
+        .expect('json', 'data[0]', {
+          id: 1,
+          email: 'joe.schmoe@example.com'
+        })
+        .done(doneFn);
+    });
+
     it('should get single array object at known position and test for single value', function(doneFn) {
       mocks.use(['getUsers']);
 
@@ -39,14 +50,13 @@ describe('expect(\'json\', <path>, <value>)', function() {
         .done(doneFn);
     });
 
-    // @TODO: Cannot do this off of a question mark yet...
-    // it('should test one of the values in an array for a single field', function(doneFn) {
-    //   mocks.use(['getUsers']);
-    //
-    //   frisby.fetch(testHost + '/users')
-    //     .expect('json', 'data.?.email', 'joe.schmoe@example.com')
-    //     .done(doneFn);
-    // });
+    it('should test one of the values in an array for a single field', function(doneFn) {
+      mocks.use(['getUsers']);
+
+      frisby.fetch(testHost + '/users')
+        .expect('json', 'data.?.email', 'joe.schmoe@example.com')
+        .done(doneFn);
+    });
   });
 
   describe('jsonTypes', function() {
