@@ -53,7 +53,7 @@ describe('Frisby', function() {
 
     // Add our custom expect handler
     frisby.addExpectHandler('customUserResponse', function(response) {
-      let json = response._body;
+      let json = response.json;
       expect(json.id).toBe(1);
       expect(json.email).toBe('joe.schmoe@example.com');
     });

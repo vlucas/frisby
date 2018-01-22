@@ -293,7 +293,7 @@ class FrisbySpec {
   }
 
   inspectJSON() {
-    return this.then(() => { this.inspectLog("\nJSON:", JSON.stringify(this._response.body, null, 4)); });
+    return this.then(() => { this.inspectLog("\nJSON:", JSON.stringify(this._response.json, null, 4)); });
   }
 
   inspectStatus() {

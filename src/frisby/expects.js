@@ -67,7 +67,7 @@ const expects = {
 
     incrementAssertionCount();
 
-    utils.withPath(path, response._body, function jsonContainsAssertion(jsonChunk) {
+    utils.withPath(path, response.json, function jsonContainsAssertion(jsonChunk) {
       let failMsg = `Response [ ${JSON.stringify(jsonChunk)} ] does not contain provided JSON [ ${JSON.stringify(json)} ]`;
 
       if (_.isArray(json)) {
@@ -89,7 +89,7 @@ const expects = {
 
     incrementAssertionCount();
 
-    utils.withPath(path, response._body, function jsonAssertion(jsonChunk) {
+    utils.withPath(path, response.json, function jsonAssertion(jsonChunk) {
       assert.deepEqual(json, jsonChunk);
     });
   },
@@ -105,7 +105,7 @@ const expects = {
       options.language = { label: path };
     }
 
-    utils.withPath(path, response._body, function jsonTypesAssertion(jsonChunk) {
+    utils.withPath(path, response.json, function jsonTypesAssertion(jsonChunk) {
       let result = Joi.validate(jsonChunk, json, options);
 
       if (result.error) {
@@ -125,7 +125,7 @@ const expects = {
       options.language = { label: path };
     }
 
-    utils.withPath(path, response._body, function jsonTypesAssertion(jsonChunk) {
+    utils.withPath(path, response.json, function jsonTypesAssertion(jsonChunk) {
       let result = Joi.validate(jsonChunk, json, options);
 
       if (result.error) {
