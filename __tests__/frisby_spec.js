@@ -324,4 +324,19 @@ describe('Frisby', function() {
       })
       .done(doneFn);
   });
+
+  it('should output invalid body and reason in error message', function(doneFn) {
+    mocks.use(['invalidJSON']);
+
+    frisby.get(testHost + '/res/invalid')
+      .then(function (res) {
+        fail('this function will never be called.');
+      })
+      .catch(function (err) {
+        expect(err.message).toMatch(/^Invalid json response /);
+        expect(err.message).toMatch(/body: '.*'/);
+        expect(err.message).toMatch(/reason: '.+'/);
+      })
+      .done(doneFn);
+  });
 });
