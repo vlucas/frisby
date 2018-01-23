@@ -75,13 +75,17 @@ class FrisbySpec {
       size: jsonString.length,
       timeout: 0
     });
-    this._response = new FrisbyResponse(fetchResponse);
 
     // Resolve as promise
     this._fetch = fetch.Promise.resolve(fetchResponse)
-      .then(response => response.json())
-      .then(responseBody => {
-        this._response._body = responseBody;
+      .then(response => {
+        this._response = new FrisbyResponse(fetchResponse);
+        return response.text();
+      }).then(responseBody => {
+        let response = this._response;
+        response._body = responseBody;
+        response._json = JSON.parse(responseBody);
+      }).then(() => {
         this._runExpects();
 
         return this._response;
@@ -127,15 +131,19 @@ class FrisbySpec {
     this._fetch = fetch(this._request, { timeout: this.timeout() }) // 'timeout' is a node-fetch option
       .then(response => {
         this._response = new FrisbyResponse(response);
-
-        // Auto-parse JSON
-        if (response.headers.has('Content-Type') && response.headers.get('Content-Type').includes('json') && response.status !== 204) {
-          return response.json();
-        }
-
         return response.text();
       }).then(responseBody => {
-        this._response._body = responseBody;
+        let response = this._response;
+        response._body = responseBody;
+        // Auto-parse JSON
+        if (response.headers.has('Content-Type') && response.headers.get('Content-Type').includes('json') && response.status !== 204) {
+          try {
+            response._json = JSON.parse(responseBody);
+          } catch(e) {
+            return Promise.reject(new TypeError(`Invalid json response body: '${responseBody}' at ${this._request.url} reason: '${e.message}'`));
+          }
+        }
+      }).then(() => {
         this._runExpects();
 
         return this._response;
@@ -293,7 +301,7 @@ class FrisbySpec {
   }
 
   inspectJSON() {
-    return this.then(() => { this.inspectLog("\nJSON:", JSON.stringify(this._response.body, null, 4)); });
+    return this.then(() => { this.inspectLog("\nJSON:", JSON.stringify(this._response.json, null, 4)); });
   }
 
   inspectStatus() {

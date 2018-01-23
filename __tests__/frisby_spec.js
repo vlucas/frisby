@@ -53,7 +53,7 @@ describe('Frisby', function() {
 
     // Add our custom expect handler
     frisby.addExpectHandler('customUserResponse', function(response) {
-      let json = response._body;
+      let json = response.json;
       expect(json.id).toBe(1);
       expect(json.email).toBe('joe.schmoe@example.com');
     });
@@ -321,6 +321,21 @@ describe('Frisby', function() {
       })
       .then(function (res) {
         expect(res.json.id).toBe(2);
+      })
+      .done(doneFn);
+  });
+
+  it('should output invalid body and reason in error message', function(doneFn) {
+    mocks.use(['invalidJSON']);
+
+    frisby.get(testHost + '/res/invalid')
+      .then(function (res) {
+        fail('this function will never be called.');
+      })
+      .catch(function (err) {
+        expect(err.message).toMatch(/^Invalid json response /);
+        expect(err.message).toMatch(/body: '.*'/);
+        expect(err.message).toMatch(/reason: '.+'/);
       })
       .done(doneFn);
   });

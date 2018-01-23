@@ -223,6 +223,14 @@ const mocks = {
       .reply(400, {
         result: 'error'
       });
+  },
+
+  invalidJSON() {
+    return nock(mockHost)
+      .get('/res/invalid')
+      .reply(200, '{"aaa":}', {
+        'Content-Type': 'application/json'
+      });
   }
 
 };

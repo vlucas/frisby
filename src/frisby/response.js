@@ -18,8 +18,7 @@ class FrisbyResponse {
   }
 
   get json() {
-    // @TODO: Just return body for now, but should check header or something to ensure we actually have a JSON response...
-    return this._body;
+    return this._json;
   }
 }
 
