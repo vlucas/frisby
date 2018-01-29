@@ -136,7 +136,7 @@ class FrisbySpec {
         let response = this._response;
         response._body = responseBody;
         // Auto-parse JSON
-        if (response.headers.has('Content-Type') && response.headers.get('Content-Type').includes('json') && response.status !== 204) {
+        if (response.headers.has('Content-Type') && response.headers.get('Content-Type').includes('json') && response.status !== 204 && responseBody.length > 0) {
           try {
             response._json = JSON.parse(responseBody);
           } catch(e) {
