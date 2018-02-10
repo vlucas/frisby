@@ -185,7 +185,7 @@ class FrisbySpec {
    */
   del(url, params) {
     params = params || {};
-    params.method = 'delete';
+    params.method = 'DELETE';
 
     return this.fetch(url, params);
   }
