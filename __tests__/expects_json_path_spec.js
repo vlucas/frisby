@@ -57,6 +57,33 @@ describe('expect(\'json\', <path>, <value>)', function() {
         .expect('json', 'data.?.email', 'joe.schmoe@example.com')
         .done(doneFn);
     });
+
+    it('should error on an empty array (1)', function(doneFn) {
+      frisby.fromJSON([])
+        .expect('json', '*', 1)
+        .catch(function (err) {
+          expect(err.message).toContain("Expected '*' not found");
+        })
+        .done(doneFn);
+    });
+
+    it('should error in an empty array (2)', function(doneFn) {
+      frisby.fromJSON([])
+        .expect('json', '?', 1)
+        .catch(function (err) {
+          expect(err.message).toContain("Expected '?' not found");
+        })
+        .done(doneFn);
+    });
+
+    it('should error in an empty object', function(doneFn) {
+      frisby.fromJSON({})
+        .expect('json', '&', 1)
+        .catch(function (err) {
+          expect(err.message).toContain("Expected '&' not found");
+        })
+        .done(doneFn);
+    });
   });
 
   describe('jsonTypes', function() {

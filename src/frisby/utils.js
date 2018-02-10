@@ -38,13 +38,15 @@ function withPath(path, jsonBody, callback) {
           jsonChunks.push(value);
         });
       } else {
-        if (!_.has(jsonChunk, segment)) {
-          throw new Error(`Expected '${segment}' not found (path '${path}')`);
+        if (_.has(jsonChunk, segment)) {
+          jsonChunks.push(_.get(jsonChunk, segment));
         }
-
-        jsonChunks.push(_.get(jsonChunk, segment));
       }
     });
+
+    if (_.isEmpty(jsonChunks)) {
+      throw new Error(`Expected '${segment}' not found (path '${path}')`);
+    }
   });
 
   if ('?' === type) {
