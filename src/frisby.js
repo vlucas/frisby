@@ -133,6 +133,7 @@ module.exports = {
   baseUrl,
   create,
   del,
+  delete: del,
   fetch,
   FrisbySpec,
   formData,
