@@ -102,7 +102,7 @@ const expects = {
 
     let options = { allowUnknown: true };
     if (path) {
-      options.language = { label: path };
+      options.language = { root: path };
     }
 
     utils.withPath(path, response.json, function jsonTypesAssertion(jsonChunk) {
@@ -122,7 +122,7 @@ const expects = {
 
     let options = {};
     if (path) {
-      options.language = { label: path };
+      options.language = { root: path };
     }
 
     utils.withPath(path, response.json, function jsonTypesAssertion(jsonChunk) {
