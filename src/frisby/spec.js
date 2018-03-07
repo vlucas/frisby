@@ -228,7 +228,7 @@ class FrisbySpec {
       } else {
         return response;
       }
-    }, err => onRejected ? onRejected(err) : Promise.reject(err));
+    }, this._handleError(onRejected));
     return this;
   }
 
@@ -247,8 +247,22 @@ class FrisbySpec {
    */
   catch(onRejected) {
     this._ensureHasFetched();
-    this._fetch = this._fetch.catch(err => onRejected ? onRejected(err) : Promise.reject(err));
+    this._fetch = this._fetch.catch(this._handleError(onRejected));
     return this;
+  }
+
+  _handleError(onRejected) {
+    return (err) => {
+      if (onRejected) {
+        return onRejected(err);
+      }
+
+      if (this._setupDefaults.request.inspectOnFailure) {
+        this.inspectLog("\nFAILURE JSON:", JSON.stringify(this._response.json, null, 4));
+      }
+
+      return Promise.reject(err);
+    }
   }
 
   /**
@@ -320,10 +334,8 @@ class FrisbySpec {
     });
   }
 
-  inspectLog() {
-    let params = Array.prototype.slice.call(arguments);
-
-    console.log.apply(null, params); // eslint-disable-line no-console
+  inspectLog(...args) {
+    console.log.call(null, ...args); // eslint-disable-line no-console
     return this;
   }
 
