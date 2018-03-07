@@ -19,6 +19,7 @@ const _globalSetupDefaults = {
       'Content-Type': 'application/json',
       'User-Agent': 'frisby/' + version + ' (+https://github.com/vlucas/frisby)',
     },
+    inspectOnFailure: true,
     timeout: 5000,
   },
 };

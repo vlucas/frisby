@@ -5,7 +5,7 @@
   "homepage": "http://frisbyjs.com",
   "author": "Vance Lucas <vance@vancelucas.com>",
   "license": {
-    "type": "BSD"
+    "type": "BSD-3-Clause"
   },
   "repository": {
     "type": "git",
