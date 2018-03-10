@@ -328,7 +328,8 @@ describe('Frisby', function() {
   it('should output invalid body and reason in error message', function(doneFn) {
     mocks.use(['invalidJSON']);
 
-    frisby.get(testHost + '/res/invalid')
+    frisby.setup({ request: { inspectOnFailure: false } })
+      .get(testHost + '/res/invalid')
       .then(function (res) {
         fail('this function will never be called.');
       })

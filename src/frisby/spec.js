@@ -95,7 +95,7 @@ class FrisbySpec {
   }
 
   getBaseUrl() {
-    return this._setupDefaults.request.baseUrl ? this._setupDefaults.request.baseUrl : false;
+    return this._setupDefaults.request && this._setupDefaults.request.baseUrl ? this._setupDefaults.request.baseUrl : false;
   }
 
   _formatUrl(url, urlEncode = true) {
@@ -257,7 +257,7 @@ class FrisbySpec {
         return onRejected(err);
       }
 
-      if (this._setupDefaults.request.inspectOnFailure) {
+      if (this._setupDefaults.request && this._setupDefaults.request.inspectOnFailure) {
         this.inspectLog("\nFAILURE JSON:", JSON.stringify(this._response.json, null, 4));
       }
 
