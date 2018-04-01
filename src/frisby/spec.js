@@ -16,7 +16,6 @@ class FrisbySpec {
     this._fetch;
     this._request;
     this._response;
-    this._expects = [];
 
     this._timeout;
     this._setupDefaults = {};
@@ -85,10 +84,7 @@ class FrisbySpec {
         let response = this._response;
         response._body = responseBody;
         response._json = JSON.parse(responseBody);
-      }).then(() => {
-        this._runExpects();
-
-        return this._response;
+        return response;
       });
 
     return this;
@@ -143,10 +139,7 @@ class FrisbySpec {
             return Promise.reject(new TypeError(`Invalid json response body: '${responseBody}' at ${this._request.url} reason: '${e.message}'`));
           }
         }
-      }).then(() => {
-        this._runExpects();
-
-        return this._response;
+        return response;
       });
 
     return this;
@@ -274,18 +267,6 @@ class FrisbySpec {
   }
 
   /**
-   * Run test expectations
-   */
-  _runExpects() {
-    // Run all expectations
-    for(let i = 0; i < this._expects.length; i++) {
-      this._expects[i].call(this, this._response);
-    }
-
-    return this;
-  }
-
-  /**
    * Inspectors (to inspect data that the test is returning)
    * ==========================================================================
    */
@@ -349,7 +330,7 @@ class FrisbySpec {
    */
   expect(expectName) {
     let expectArgs = Array.prototype.slice.call(arguments).slice(1);
-    return this._getExpectRunner(expectName, expectArgs, true);
+    return this.then(this._getExpectRunner(expectName, expectArgs, true));
   }
 
   /**
@@ -357,7 +338,7 @@ class FrisbySpec {
    */
   expectNot(expectName) {
     let expectArgs = Array.prototype.slice.call(arguments).slice(1);
-    return this._getExpectRunner(expectName, expectArgs, false);
+    return this.then(this._getExpectRunner(expectName, expectArgs, false));
   }
 
   /**
@@ -367,7 +348,7 @@ class FrisbySpec {
    */
 
   /**
-   * Used internally for expect and expectNot to add expectations and then run them
+   * Used internally for expect and expectNot to return expectation function and then run it
    */
   _getExpectRunner(expectName, expectArgs, expectPass) {
     let expectHandler;
@@ -381,7 +362,7 @@ class FrisbySpec {
       }
     }
 
-    return this._addExpect(response => {
+    return response => {
       let didFail = false;
 
       try {
@@ -399,7 +380,7 @@ class FrisbySpec {
         let fnArgs = expectArgs.map(a => a.toString()).join(', ');
         throw new Error(`expectNot('${expectName}', ${fnArgs}) passed and was supposed to fail`);
       }
-    });
+    };
   }
 
   /**
@@ -409,14 +390,6 @@ class FrisbySpec {
     if (typeof this._fetch === 'undefined') {
       throw new Error('Frisby spec not started. You must call fetch() first to begin a Frisby test.');
     }
-  }
-
-  /**
-   * Add expectation to execute after HTTP call is done
-   */
-  _addExpect(fn) {
-    this._expects.push(fn);
-    return this;
   }
 
   /**
