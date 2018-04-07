@@ -251,7 +251,14 @@ class FrisbySpec {
       }
 
       if (this._setupDefaults.request && this._setupDefaults.request.inspectOnFailure) {
-        this.inspectLog("\nFAILURE JSON:", JSON.stringify(this._response.json, null, 4));
+        if (this._response) {
+          let response = this._response;
+          if (response.json) {
+            this.inspectLog("\nFAILURE JSON:", JSON.stringify(response.json, null, 4));
+          } else {
+            this.inspectLog("\nFAILURE Body:", response.body);
+          }
+        }
       }
 
       return Promise.reject(err);
