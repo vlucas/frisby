@@ -309,6 +309,8 @@ describe('Frisby', function() {
         fail('this function will never be called.');
       })
       .catch(function (err) {
+        expect(err.name).toContain('FetchError');
+
         return frisby.get(testHost + '/users/1')
           .expect('json', { id: 10 });
       })
@@ -316,6 +318,8 @@ describe('Frisby', function() {
         fail('this function will never be called.');
       })
       .catch(function (err) {
+        expect(err.name).toContain('AssertionError');
+
         return frisby.get(testHost + '/users/2')
           .expect('json', { id: 2 });
       })
