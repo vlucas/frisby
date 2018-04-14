@@ -24,7 +24,7 @@
     "node": ">= 6.0.0"
   },
   "scripts": {
-    "test": "./node_modules/jest/bin/jest.js"
+    "test": "jest"
   },
   "dependencies": {
     "form-data": "^2.2.0",
