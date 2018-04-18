@@ -81,6 +81,14 @@ const mocks = {
       .reply(204);
   },
 
+  deleteUsers() {
+    return nock(mockHost)
+      .delete('/users')
+      .reply(200, (uri, requestBody) => {
+        return requestBody;
+      });
+  },
+
   createUser2() {
     return nock(mockHost)
       .post('/users', {
@@ -106,6 +114,14 @@ const mocks = {
     return nock(mockHost)
       .get('/contents/1')
       .reply(200, 'Something something something something');
+  },
+
+  deleteContent() {
+    return nock(mockHost)
+      .delete('/contents/1')
+      .reply(200, (uri, requestBody) => {
+        return requestBody;
+      });
   },
 
   /**
