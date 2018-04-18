@@ -91,6 +91,42 @@ describe('Frisby', function() {
       .done(doneFn);
   });
 
+  it('should allow DELETE with request body', function (doneFn) {
+    mocks.use(['deleteUsers']);
+
+    frisby.delete(testHost + '/users', {
+        body: {
+          data: [
+            {id: 2},
+            {id: 3}
+          ]
+        }
+      })
+      .expect('status', 200)
+      .expect('json', {
+        data: [
+          {id: 2},
+          {id: 3}
+        ]
+      })
+      .done(doneFn);
+  });
+
+  it('should allow DELETE with text request body', function (doneFn) {
+    mocks.use(['deleteContent']);
+
+    frisby.delete(testHost + '/contents/1', {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: 'something something'
+      })
+      .inspectBody()
+      .expect('status', 200)
+      .expect('bodyContains', 'something something')
+      .done(doneFn);
+  });
+
   it('should use new responseBody when returning another Frisby spec from then()', function (doneFn) {
     mocks.use(['getUser1', 'getUser2WithDelay']);
 

@@ -177,10 +177,7 @@ class FrisbySpec {
    * DELETE convenience wrapper
    */
   del(url, params) {
-    params = params || {};
-    params.method = 'DELETE';
-
-    return this.fetch(url, params);
+    return this._requestWithBody('DELETE', url, params);
   }
 
   /**
