@@ -4,8 +4,10 @@
 [![Build
 Status](https://travis-ci.org/vlucas/frisby.png?branch=master)](https://travis-ci.org/vlucas/frisby)
 
-[!(https://www.frisbyjs.com/assets/frisbyjs.png)]
+![Frisby.js](https://www.frisbyjs.com/assets/frisbyjs.png)
+
 [![Sponsored by Okta](https://www.frisbyjs.com/assets/okta-sm.png)](https://developer.okta.com/signup/?utm_source=Frisby&utm_medium=logo&utm_campaign=Sponsor)
+Sponsored by Okta
 
 ## Introduction
 
