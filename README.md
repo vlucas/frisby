@@ -4,10 +4,14 @@
 [![Build
 Status](https://travis-ci.org/vlucas/frisby.png?branch=master)](https://travis-ci.org/vlucas/frisby)
 
+[!(https://www.frisbyjs.com/assets/frisbyjs.png)]
+[![Sponsored by Okta](https://www.frisbyjs.com/assets/okta-sm.png)](https://developer.okta.com/signup/?utm_source=Frisby&utm_medium=logo&utm_campaign=Sponsor)
+
 ## Introduction
 
-Frisby.js an API testing tool built on top of Jasmine that makes testing API
-endpoints easy, fast and fun.
+Frisby.js an API testing tool built on top of
+[Jest](https://facebook.github.io/jest/) that makes testing API endpoints easy,
+fast and fun.
 
 ## Installation
 
@@ -33,7 +37,7 @@ it('should be a teapot', function (done) {
 
 ### Nested Dependent HTTP Calls
 
-A more complex example with nested dependent frisby tests with Frisby's Promise-style `then` method.
+A more complex example with nested dependent Frisby tests with Frisby's Promise-style `then` method.
 
 ```javascript
 const frisby = require('frisby');
