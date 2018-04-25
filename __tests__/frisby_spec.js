@@ -121,7 +121,6 @@ describe('Frisby', function() {
         },
         body: 'something something'
       })
-      .inspectBody()
       .expect('status', 200)
       .expect('bodyContains', 'something something')
       .done(doneFn);
