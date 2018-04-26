@@ -30,10 +30,10 @@ The minimum setup to run a single test expectation.
 ```javascript
 const frisby = require('frisby');
 
-it('should be a teapot', function (done) {
-  frisby.get('http://httpbin.org/status/418')
-    .expect('status', 418)
-    .done(done);
+it('should be a teapot', function () {
+  // Return the Frisby.js Spec in the 'it()' (just like a promise)
+  return frisby.get('http://httpbin.org/status/418')
+    .expect('status', 418);
 });
 ```
 
@@ -46,8 +46,8 @@ const frisby = require('frisby');
 const Joi = frisby.Joi; // Frisby exposes Joi for convenience
 
 describe('Posts', function () {
-  it('should return all posts and first post should have comments', function (done) {
-    frisby.get('http://jsonplaceholder.typicode.com/posts')
+  it('should return all posts and first post should have comments', function () {
+    return frisby.get('http://jsonplaceholder.typicode.com/posts')
       .expect('status', 200)
       .expect('jsonTypes', '*', {
         userId: Joi.number(),
@@ -59,7 +59,7 @@ describe('Posts', function () {
         let postId = res.json[0].id;
 
         // Get first post's comments
-        // RETURN the FrisbySpec object so the 'done' function waits on it to finish - just like a Promise chain
+        // RETURN the FrisbySpec object so function waits on it to finish - just like a Promise chain
         return frisby.get('http://jsonplaceholder.typicode.com/posts/' + postId + '/comments')
           .expect('status', 200)
           .expect('json', '*', {
@@ -72,8 +72,7 @@ describe('Posts', function () {
             email: Joi.string().email(),
             body: Joi.string()
           });
-      })
-      .done(done);
+      });
   });
 });
 ```
@@ -111,10 +110,9 @@ beforeAll(function () {
 });
 
 // Use our new custom expect handler
-it('should allow custom expect handlers to be registered and used', function (doneFn) {
-  frisby.get('https://api.example.com/users/1')
+it('should allow custom expect handlers to be registered and used', function () {
+  return frisby.get('https://api.example.com/users/1')
     .expect('isUser1')
-    .done(doneFn);
 });
 
 afterAll(function () {
@@ -132,13 +130,12 @@ the response data.
 ```javascript
 const frisby = require('frisby');
 
-it('should be user 1', function (done) {
-  frisby.get('https://api.example.com/users/1')
+it('should be user 1', function () {
+  return frisby.get('https://api.example.com/users/1')
     .then(function (res) {
       expect(res.json.id).toBe(1);
       expect(res.json.email).toBe('testy.mctesterpants@example.com');
-    })
-    .done(done);
+    });
 });
 ```
 
