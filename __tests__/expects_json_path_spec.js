@@ -105,6 +105,14 @@ describe('expect(\'json\', <path>, <value>)', function() {
         .expect('jsonTypes', 'data.*.id', Joi.number())
         .done(doneFn);
     });
+
+    it('should test every object property for a single value', function(doneFn) {
+      mocks.use(['getHeaders']);
+
+      frisby.fetch(testHost + '/headers')
+        .expect('jsonTypes', 'headers.*', Joi.string())
+        .done(doneFn);
+    });
   });
 
 });

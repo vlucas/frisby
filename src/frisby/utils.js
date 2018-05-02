@@ -18,6 +18,11 @@ function withPath(path, jsonBody, callback) {
       let jt = typeof jsonChunk;
 
       if ('*' === segment || '?' === segment) {
+        // If object, get array of values
+        if (_.isObject(jsonChunk)) {
+          jsonChunk = Object.values(jsonChunk);
+        }
+
         // Must be array if special characters are present
         if (!_.isArray(jsonChunk)) {
           throw new TypeError(`Expected '${path}' to be Array (got '${jt}' from JSON response)`);
