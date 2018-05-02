@@ -5,6 +5,7 @@ const Joi = require('joi');
 const pkg = require('../package.json');
 const FormData = require('form-data');
 const FrisbySpec = require('./frisby/spec.js');
+const utils = require('./frisby/utils.js');
 
 
 /**
@@ -149,5 +150,6 @@ module.exports = {
   setup,
   timeout,
   use,
+  utils,
   version,
 };
