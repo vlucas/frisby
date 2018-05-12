@@ -251,15 +251,15 @@ class FrisbySpec {
         if (this._response) {
           let response = this._response;
           if (response.json) {
-            this.inspectLog("\nFAILURE JSON:", JSON.stringify(response.json, null, 4));
+            this.inspectLog('\nFAILURE JSON:', JSON.stringify(response.json, null, 4));
           } else {
-            this.inspectLog("\nFAILURE Body:", response.body);
+            this.inspectLog('\nFAILURE Body:', response.body);
           }
         }
       }
 
       return Promise.reject(err);
-    }
+    };
   }
 
   /**
@@ -276,45 +276,45 @@ class FrisbySpec {
    */
 
   inspectResponse() {
-    return this.then(() => { this.inspectLog("\nResponse:", this._response); });
+    return this.then(() => { this.inspectLog('\nResponse:', this._response); });
   }
 
   inspectRequest() {
-    return this.then(() => { this.inspectLog("\nRequest:", this._request); });
+    return this.then(() => { this.inspectLog('\nRequest:', this._request); });
   }
 
   inspectRequestHeaders() {
     return this.then(() => {
-      this.inspectLog("\n");
+      this.inspectLog('\n');
       this.inspectLog('Request Headers:');
       let headers = this._request.headers.raw();
 
       for (let key in headers) {
-        this.inspectLog("\t" + key + ': ' + headers[key]);
+        this.inspectLog(`\t${key}: ${headers[key]}`);
       }
     });
   }
 
   inspectBody() {
-    return this.then(() => { this.inspectLog("\nBody:", this._response.body); });
+    return this.then(() => { this.inspectLog('\nBody:', this._response.body); });
   }
 
   inspectJSON() {
-    return this.then(() => { this.inspectLog("\nJSON:", JSON.stringify(this._response.json, null, 4)); });
+    return this.then(() => { this.inspectLog('\nJSON:', JSON.stringify(this._response.json, null, 4)); });
   }
 
   inspectStatus() {
-    return this.then(() => { this.inspectLog("\nStatus:", this._response.status); });
+    return this.then(() => { this.inspectLog('\nStatus:', this._response.status); });
   }
 
   inspectHeaders() {
     return this.then(() => {
-      this.inspectLog("\n");
+      this.inspectLog('\n');
       this.inspectLog('Response Headers:');
       let headers = this._response.headers.raw();
 
       for (let key in headers) {
-        this.inspectLog("\t" + key + ': ' + headers[key]);
+        this.inspectLog(`\t${key}: ${headers[key]}`);
       }
     });
   }
