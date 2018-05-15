@@ -54,8 +54,8 @@ describe('expect(\'jsonTypes\')', function() {
 
   it('should match from data via fromJSON', function(doneFn) {
     frisby.fromJSON({
-        foo: 'bar'
-      })
+      foo: 'bar'
+    })
       .expect('jsonTypes', {
         foo: Joi.string()
       })
@@ -64,12 +64,12 @@ describe('expect(\'jsonTypes\')', function() {
 
   it('should match JSON in using provided path', function(doneFn) {
     frisby.fromJSON({
-        one: {
-          two: {
-            three: 3
-          }
+      one: {
+        two: {
+          three: 3
         }
-      })
+      }
+    })
       .expect('jsonTypes', 'one.two', {
         three: Joi.number()
       })
@@ -78,13 +78,13 @@ describe('expect(\'jsonTypes\')', function() {
 
   it('should match JSON with nested structure and no path', function(doneFn) {
     frisby.fromJSON({
-        one: {
-          foo: 'bar',
-          two: {
-            three: 3
-          }
+      one: {
+        foo: 'bar',
+        two: {
+          three: 3
         }
-      })
+      }
+    })
       .expect('jsonTypes', {
         one: {
           foo: Joi.string(),
@@ -98,13 +98,13 @@ describe('expect(\'jsonTypes\')', function() {
 
   it('should match JSON with nested structure and single path', function(doneFn) {
     frisby.fromJSON({
-        one: {
-          foo: 'bar',
-          two: {
-            three: 3
-          }
+      one: {
+        foo: 'bar',
+        two: {
+          three: 3
         }
-      })
+      }
+    })
       .expect('jsonTypes', 'one', {
         foo: Joi.string(),
         two: {
@@ -116,10 +116,10 @@ describe('expect(\'jsonTypes\')', function() {
 
   it('should fail JSON with nested structure and incorrect type', function(doneFn) {
     frisby.fromJSON({
-        one: {
-          foo: 'bar',
-        }
-      })
+      one: {
+        foo: 'bar',
+      }
+    })
       .expectNot('jsonTypes', 'one', {
         foo: Joi.number()
       })
@@ -128,42 +128,42 @@ describe('expect(\'jsonTypes\')', function() {
 
   it('should validate JSON with single value', function(doneFn) {
     frisby.fromJSON({
-        one: {
-          foo: 'bar',
-          two: {
-            three: 3
-          }
+      one: {
+        foo: 'bar',
+        two: {
+          three: 3
         }
-      })
+      }
+    })
       .expect('jsonTypes', 'one.two.three', Joi.number())
       .done(doneFn);
   });
 
   it('should match JSON with array of objects and asterisk path (each)', function (doneFn) {
     frisby.fromJSON({
-        "offers": [{"name": "offer1"}, {"name": "offer2"}]
-      })
+      offers: [{name: 'offer1'}, {name: 'offer2'}]
+    })
       .expect('jsonTypes', 'offers.*', {
-        "name": Joi.string()
+        name: Joi.string()
       })
       .done(doneFn);
   });
 
   it('should ignore additional JSON keys', function (doneFn) {
     frisby.fromJSON({
-        "name": "john",
-        "foo": "bar"
-      })
+      name: 'john',
+      foo: 'bar'
+    })
       .expect('jsonTypes', {
-        "name": Joi.string()
+        name: Joi.string()
       })
       .done(doneFn);
   });
 
   it('should output path in error message (1)', function (doneFn) {
     frisby.fromJSON({
-        "name": "john"
-      })
+      name: 'john'
+    })
       .expect('jsonTypes', 'name', Joi.number())
       .catch(function (err) {
         expect(err.message).toMatch(/\bname\b/);
@@ -174,10 +174,10 @@ describe('expect(\'jsonTypes\')', function() {
 
   it('should output path in error message (2)', function (doneFn) {
     frisby.fromJSON({
-        "user": {
-          "name": "john"
-        }
-      })
+      user: {
+        name: 'john'
+      }
+    })
       .expect('jsonTypes', 'user.name', Joi.number())
       .catch(function (err) {
         expect(err.message).toMatch(/\buser\.name\b/);
@@ -187,7 +187,7 @@ describe('expect(\'jsonTypes\')', function() {
   });
 
   it('should output default label in error message', function (doneFn) {
-    frisby.fromJSON("john")
+    frisby.fromJSON('john')
       .expect('jsonTypes', Joi.number())
       .catch(function (err) {
         expect(err.message).toMatch(/\bvalue\b/);
@@ -200,15 +200,15 @@ describe('expect(\'jsonTypesStrict\')', function() {
 
   it('should error on additional JSON keys not accounted for', function (doneFn) {
     frisby.fromJSON({
-        "name": "john",
-        "foo": "bar"
-      })
+      name: 'john',
+      foo: 'bar'
+    })
       .expect('jsonTypesStrict', {
-        "name": Joi.string(),
-        "foo": Joi.string()
+        name: Joi.string(),
+        foo: Joi.string()
       })
       .expectNot('jsonTypesStrict', {
-        "name": Joi.string()
+        name: Joi.string()
       })
       .done(doneFn);
   });

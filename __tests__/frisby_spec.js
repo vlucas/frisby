@@ -39,11 +39,11 @@ describe('Frisby', function() {
     mocks.use(['createUser2']);
 
     frisby.post(testHost + '/users', {
-        body: {
-          email: 'user@example.com',
-          password: 'password'
-        }
-      })
+      body: {
+        email: 'user@example.com',
+        password: 'password'
+      }
+    })
       .expect('status', 201)
       .done(doneFn);
   });
@@ -95,13 +95,13 @@ describe('Frisby', function() {
     mocks.use(['deleteUsers']);
 
     frisby.delete(testHost + '/users', {
-        body: {
-          data: [
-            {id: 2},
-            {id: 3}
-          ]
-        }
-      })
+      body: {
+        data: [
+          {id: 2},
+          {id: 3}
+        ]
+      }
+    })
       .expect('status', 200)
       .expect('json', {
         data: [
@@ -116,11 +116,11 @@ describe('Frisby', function() {
     mocks.use(['deleteContent']);
 
     frisby.delete(testHost + '/contents/1', {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: 'something something'
-      })
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: 'something something'
+    })
       .expect('status', 200)
       .expect('bodyContains', 'something something')
       .done(doneFn);
@@ -132,7 +132,7 @@ describe('Frisby', function() {
     frisby.get(testHost + '/users/1')
       .expect('json', { id: 1 })
       .then(frisby.get(testHost + '/users/2')
-          .expect('json', { id: 2 })
+        .expect('json', { id: 2 })
       )
       .then(function (res) {
         expect(res.json.id).toBe(2);
@@ -201,10 +201,10 @@ describe('Frisby', function() {
 
     // Should merge headers so both are present
     frisby.setup({
-        request: {
-          headers: { 'One': 'one' }
-        }
-      })
+      request: {
+        headers: { 'One': 'one' }
+      }
+    })
       .setup({
         request: {
           headers: { 'Two': 'two' }
@@ -220,10 +220,10 @@ describe('Frisby', function() {
 
     // Second call uses 'true' as 2nd argument, so it should overwrite options
     frisby.setup({
-        request: {
-          headers: { 'authorizationX': 'Basic AuthX' }
-        }
-      })
+      request: {
+        headers: { 'authorizationX': 'Basic AuthX' }
+      }
+    })
       .setup({
         request: {
           headers: { 'authorization': 'Basic Auth' }
@@ -260,10 +260,10 @@ describe('Frisby', function() {
         let cookie1 = res.headers.get('Set-Cookie');
 
         return frisby.get(testHost + '/cookies/check', {
-            headers: {
-              'Cookie': cookie1
-            }
-          })
+          headers: {
+            'Cookie': cookie1
+          }
+        })
           .expect('status', 200);
       })
       .done(doneFn);

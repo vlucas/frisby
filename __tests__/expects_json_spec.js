@@ -53,9 +53,9 @@ describe('expect(\'json\')', function() {
 
   it('should match from data via fromJSON', function(doneFn) {
     frisby.fromJSON({
-        foo: 'bar',
-        bar: 'baz'
-      })
+      foo: 'bar',
+      bar: 'baz'
+    })
       .expect('json', {
         foo: 'bar'
       })
@@ -64,12 +64,12 @@ describe('expect(\'json\')', function() {
 
   it('should error with incorrect nested key value', function(doneFn) {
     frisby.fromJSON({
-        one: {
-          two: {
-            three: 3
-          }
+      one: {
+        two: {
+          three: 3
         }
-      })
+      }
+    })
       .expectNot('json', {
         one: {
           two: {
@@ -88,9 +88,9 @@ describe('expect(\'json\')', function() {
         }
       }
     })
-    .expect('json', 'one.two', {
-      three: 3
-    })
+      .expect('json', 'one.two', {
+        three: 3
+      })
       .done(doneFn);
   });
 
@@ -104,8 +104,8 @@ describe('expect(\'json\')', function() {
 
   it('should match single null value using json', function(doneFn) {
     frisby.fromJSON({
-        foo: null
-      })
+      foo: null
+    })
       .expect('json', 'foo', null)
       .done(doneFn);
   });
@@ -215,8 +215,8 @@ describe('expect(\'jsonStrict\')', function() {
 
   it('should match from data via fromJSON', function(doneFn) {
     frisby.fromJSON({
-        foo: 'bar'
-      })
+      foo: 'bar'
+    })
       .expect('jsonStrict', {
         foo: 'bar'
       })
@@ -233,8 +233,8 @@ describe('expect(\'jsonStrict\')', function() {
 
   it('should match single null value using json', function(doneFn) {
     frisby.fromJSON({
-        foo: null
-      })
+      foo: null
+    })
       .expect('jsonStrict', 'foo', null)
       .done(doneFn);
   });

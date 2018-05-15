@@ -36,9 +36,9 @@ const mocks = {
 
   getUser1WithAuth() {
     return nock(mockHost, {
-        reqheaders: { 'authorization': 'Basic Auth' },
-        badheaders: ['authorizationX']
-      })
+      reqheaders: { 'authorization': 'Basic Auth' },
+      badheaders: ['authorizationX']
+    })
       .get('/users/1/auth')
       .reply(200, {
         id: 1,
@@ -150,11 +150,11 @@ const mocks = {
    */
   twoHeaders() {
     return nock(mockHost, {
-        reqheaders: {
-          'One': 'one',
-          'Two': 'two'
-        }
-      })
+      reqheaders: {
+        'One': 'one',
+        'Two': 'two'
+      }
+    })
       .get('/two-headers')
       .reply(200, {
         one: 1,
@@ -176,7 +176,7 @@ const mocks = {
   setCookie() {
     return nock(mockHost, {
     })
-    .get('/cookies/set')
+      .get('/cookies/set')
       .reply(200, {
         setcookie: 1
       }, {
@@ -190,7 +190,7 @@ const mocks = {
         'Cookie': /frisbyjs/
       }
     })
-    .get('/cookies/check')
+      .get('/cookies/check')
       .reply(200, {
         id: 1,
         email: 'joe.schmoe@example.com'
@@ -200,11 +200,11 @@ const mocks = {
   /**
    * Multibyte
    */
-   multibyte() {
-     return nock(mockHost)
-       .get('/%E3%81%93%E3%82%93%E3%81%AB%E3%81%A1%E3%81%AF') // こんにちは
-       .reply(200, 'hello');
-   },
+  multibyte() {
+    return nock(mockHost)
+      .get('/%E3%81%93%E3%82%93%E3%81%AB%E3%81%A1%E3%81%AF') // こんにちは
+      .reply(200, 'hello');
+  },
 
   /**
    * URL encoding option
