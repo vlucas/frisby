@@ -80,7 +80,8 @@ class FrisbySpec {
       .then(response => {
         this._response = new FrisbyResponse(fetchResponse);
         return response.text();
-      }).then(responseBody => {
+      })
+      .then(responseBody => {
         let response = this._response;
         response._body = responseBody;
         response._json = JSON.parse(responseBody);
@@ -128,7 +129,8 @@ class FrisbySpec {
       .then(response => {
         this._response = new FrisbyResponse(response);
         return response.text();
-      }).then(responseBody => {
+      })
+      .then(responseBody => {
         let response = this._response;
         response._body = responseBody;
         // Auto-parse JSON
@@ -136,7 +138,7 @@ class FrisbySpec {
           try {
             response._json = JSON.parse(responseBody);
           } catch(e) {
-            return Promise.reject(new TypeError(`Invalid json response body: '${responseBody}' at ${this._request.url} reason: '${e.message}'`));
+            return fetch.Promise.reject(new TypeError(`Invalid json response body: '${responseBody}' at ${this._request.url} reason: '${e.message}'`));
           }
         }
         return response;
@@ -218,7 +220,7 @@ class FrisbySpec {
       } else {
         return response;
       }
-    }, this._handleError(onRejected));
+    }, err => onRejected ? onRejected(err) : fetch.Promise.reject(err));
     return this;
   }
 
@@ -237,29 +239,8 @@ class FrisbySpec {
    */
   catch(onRejected) {
     this._ensureHasFetched();
-    this._fetch = this._fetch.catch(this._handleError(onRejected));
+    this._fetch = this._fetch.catch(err => onRejected ? onRejected(err) : fetch.Promise.reject(err));
     return this;
-  }
-
-  _handleError(onRejected) {
-    return (err) => {
-      if (onRejected) {
-        return onRejected(err);
-      }
-
-      if (this._setupDefaults.request && this._setupDefaults.request.inspectOnFailure) {
-        if (this._response) {
-          let response = this._response;
-          if (response.json) {
-            this.inspectLog('\nFAILURE JSON:', JSON.stringify(response.json, null, 4));
-          } else {
-            this.inspectLog('\nFAILURE Body:', response.body);
-          }
-        }
-      }
-
-      return Promise.reject(err);
-    };
   }
 
   /**
@@ -285,8 +266,7 @@ class FrisbySpec {
 
   inspectRequestHeaders() {
     return this.then(() => {
-      this.inspectLog('\n');
-      this.inspectLog('Request Headers:');
+      this.inspectLog('\nRequest Headers:');
       let headers = this._request.headers.raw();
 
       for (let key in headers) {
@@ -309,8 +289,7 @@ class FrisbySpec {
 
   inspectHeaders() {
     return this.then(() => {
-      this.inspectLog('\n');
-      this.inspectLog('Response Headers:');
+      this.inspectLog('\nResponse Headers:');
       let headers = this._response.headers.raw();
 
       for (let key in headers) {
@@ -322,6 +301,19 @@ class FrisbySpec {
   inspectLog(...args) {
     console.log.call(null, ...args); // eslint-disable-line no-console
     return this;
+  }
+
+  _inspectOnFailure() {
+    if (this._setupDefaults.request && this._setupDefaults.request.inspectOnFailure) {
+      if (this._response) {
+        let response = this._response;
+        if (response.json) {
+          this.inspectLog('\nFAILURE Status:', response.status, '\nJSON:', JSON.stringify(response.json, null, 4));
+        } else {
+          this.inspectLog('\nFAILURE Status:', response.status, '\nBody:', response.body);
+        }
+      }
+    }
   }
 
   /**
@@ -376,11 +368,14 @@ class FrisbySpec {
 
         // Re-throw error if pass is expected; else bury it
         if (expectPass === true) {
+          this._inspectOnFailure();
           throw e;
         }
       }
 
       if (!expectPass && !didFail) {
+        this._inspectOnFailure();
+
         let fnArgs = expectArgs.map(a => a.toString()).join(', ');
         throw new Error(`expectNot('${expectName}', ${fnArgs}) passed and was supposed to fail`);
       }
