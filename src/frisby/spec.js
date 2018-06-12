@@ -76,7 +76,7 @@ class FrisbySpec {
     });
 
     // Resolve as promise
-    this._fetch = fetch.Promise.resolve(fetchResponse)
+    this._fetch = Promise.resolve(fetchResponse)
       .then(response => {
         this._response = new FrisbyResponse(fetchResponse);
         return response.text();
@@ -138,7 +138,7 @@ class FrisbySpec {
           try {
             response._json = JSON.parse(responseBody);
           } catch(e) {
-            return fetch.Promise.reject(new TypeError(`Invalid json response body: '${responseBody}' at ${this._request.url} reason: '${e.message}'`));
+            return Promise.reject(new TypeError(`Invalid json response body: '${responseBody}' at ${this._request.url} reason: '${e.message}'`));
           }
         }
         return response;
@@ -220,7 +220,7 @@ class FrisbySpec {
       } else {
         return response;
       }
-    }, err => onRejected ? onRejected(err) : fetch.Promise.reject(err));
+    }, err => onRejected ? onRejected(err) : Promise.reject(err));
     return this;
   }
 
@@ -239,7 +239,7 @@ class FrisbySpec {
    */
   catch(onRejected) {
     this._ensureHasFetched();
-    this._fetch = this._fetch.catch(err => onRejected ? onRejected(err) : fetch.Promise.reject(err));
+    this._fetch = this._fetch.catch(err => onRejected ? onRejected(err) : Promise.reject(err));
     return this;
   }
 
