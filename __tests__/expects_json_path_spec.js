@@ -59,7 +59,8 @@ describe('expect(\'json\', <path>, <value>)', function() {
     });
 
     it('should error on an empty array (1)', function(doneFn) {
-      frisby.fromJSON([])
+      frisby.setup({ request: { inspectOnFailure: false } })
+        .fromJSON([])
         .expect('json', '*', 1)
         .catch(function (err) {
           expect(err.message).toContain("Expected '*' not found");
@@ -68,7 +69,8 @@ describe('expect(\'json\', <path>, <value>)', function() {
     });
 
     it('should error in an empty array (2)', function(doneFn) {
-      frisby.fromJSON([])
+      frisby.setup({ request: { inspectOnFailure: false } })
+        .fromJSON([])
         .expect('json', '?', 1)
         .catch(function (err) {
           expect(err.message).toContain("Expected '?' not found");
@@ -77,7 +79,8 @@ describe('expect(\'json\', <path>, <value>)', function() {
     });
 
     it('should error in an empty object', function(doneFn) {
-      frisby.fromJSON({})
+      frisby.setup({ request: { inspectOnFailure: false } })
+        .fromJSON({})
         .expect('json', '&', 1)
         .catch(function (err) {
           expect(err.message).toContain("Expected '&' not found");

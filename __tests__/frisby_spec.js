@@ -346,7 +346,8 @@ describe('Frisby', function() {
       .catch(function (err) {
         expect(err.name).toContain('FetchError');
 
-        return frisby.get(testHost + '/users/1')
+        return frisby.setup({ request: { inspectOnFailure: false } })
+          .get(testHost + '/users/1')
           .expect('json', { id: 10 });
       })
       .then(function (res) {
