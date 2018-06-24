@@ -128,7 +128,7 @@ class FrisbySpec {
     this._fetch = fetch(this._request, { timeout: this.timeout() }) // 'timeout' is a node-fetch option
       .then(response => {
         this._response = new FrisbyResponse(response);
-        return response.text();
+        return response.textConverted();
       })
       .then(responseBody => {
         let response = this._response;
