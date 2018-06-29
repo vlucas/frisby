@@ -45,7 +45,7 @@ const expects = {
     assert.ok(headers.has(header), `Header '${header}' not present in HTTP response`);
 
     if (headerValue) {
-      let responseHeader = headers.getAll(header);
+      let responseHeader = headers.get(header).split(/, */);
 
       if (headerValue instanceof RegExp) {
         // RegExp
