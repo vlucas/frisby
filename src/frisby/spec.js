@@ -78,14 +78,16 @@ class FrisbySpec {
     // Resolve as promise
     this._fetch = Promise.resolve(fetchResponse)
       .then(response => {
-        this._response = new FrisbyResponse(fetchResponse);
-        return response.text();
+        this._response = new FrisbyResponse(response);
+        return response.text()
+          .then(text => {
+            let response = this._response;
+            response._body = text;
+            response._json = JSON.parse(text);
+          });
       })
-      .then(responseBody => {
-        let response = this._response;
-        response._body = responseBody;
-        response._json = JSON.parse(responseBody);
-        return response;
+      .then(() => {
+        return this._response;
       });
 
     return this;
@@ -128,20 +130,29 @@ class FrisbySpec {
     this._fetch = fetch(this._request, { timeout: this.timeout() }) // 'timeout' is a node-fetch option
       .then(response => {
         this._response = new FrisbyResponse(response);
-        return response.textConverted();
-      })
-      .then(responseBody => {
-        let response = this._response;
-        response._body = responseBody;
-        // Auto-parse JSON
-        if (response.headers.has('Content-Type') && response.headers.get('Content-Type').includes('json') && response.status !== 204 && responseBody.length > 0) {
-          try {
-            response._json = JSON.parse(responseBody);
-          } catch(e) {
-            return Promise.reject(new TypeError(`Invalid json response body: '${responseBody}' at ${this._request.url} reason: '${e.message}'`));
-          }
+        if (this._setupDefaults.request && this._setupDefaults.request.rawBody) {
+          return response.arrayBuffer()
+            .then(buffer => {
+              this._response._body = buffer;
+            });
         }
-        return response;
+
+        return response.textConverted()
+          .then(text => {
+            let response = this._response;
+            response._body = text;
+            // Auto-parse JSON
+            if (response.headers.has('Content-Type') && response.headers.get('Content-Type').includes('json') && response.status !== 204 && text.length > 0) {
+              try {
+                response._json = JSON.parse(text);
+              } catch(e) {
+                return Promise.reject(new TypeError(`Invalid json response body: '${text}' at ${this._request.url} reason: '${e.message}'`));
+              }
+            }
+          });
+      })
+      .then(() => {
+        return this._response;
       });
 
     return this;
