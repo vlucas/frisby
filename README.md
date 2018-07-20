@@ -84,7 +84,7 @@ response of your API.
 
  * `status` - Check HTTP status
  * `header` - Check HTTP header key + value
- * `json` - Match json structure + values
+ * `json` - Match json structure + values (RegExp can be used)
  * `jsonStrict` - Match EXACT json structure + values (extra keys not tested for cause test failures)
  * `jsonTypes` - Match json structure + value types
  * `jsonTypesStrict` - Match EXACT json structure + value types (extra keys not tested for cause test failures)

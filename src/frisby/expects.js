@@ -69,10 +69,14 @@ const expects = {
 
     utils.withPath(path, response.json, function jsonContainsAssertion(jsonChunk) {
       let failMsg = `Response [ ${JSON.stringify(jsonChunk)} ] does not contain provided JSON [ ${JSON.stringify(json)} ]`;
+      let regExpFailMsg = `Response [ ${JSON.stringify(jsonChunk)} ] does not match provided RegExp [ ${json} ]`;
 
       if (_.isArray(json)) {
         // Aaray test
         assert.ok(_.differenceWith(json, jsonChunk, _.isEqual).length === 0, failMsg);
+      } else if (json instanceof RegExp) {
+        // RegExp test
+        assert.ok(json.test(jsonChunk), regExpFailMsg);
       } else if (_.isObject(json)) {
         // Object test
         assert.ok(_.some([jsonChunk], json), failMsg);
