@@ -102,6 +102,14 @@ describe('expect(\'json\')', function() {
       .done(doneFn);
   });
 
+  it('should match single value using RegExp', function(doneFn) {
+    mocks.use(['getUser1']);
+
+    frisby.fetch(testHost + '/users/1')
+      .expect('json', 'email', /joe\.\w+@\w+\.\w{3}/)
+      .done(doneFn);
+  });
+
   it('should match single null value using json', function(doneFn) {
     frisby.fromJSON({
       foo: null
