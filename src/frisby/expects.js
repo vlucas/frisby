@@ -72,7 +72,7 @@ const expects = {
       let regExpFailMsg = `Response [ ${JSON.stringify(jsonChunk)} ] does not match provided RegExp [ ${json} ]`;
 
       if (_.isArray(json)) {
-        // Aaray test
+        // Array test
         assert.ok(_.differenceWith(json, jsonChunk, _.isEqual).length === 0, failMsg);
       } else if (json instanceof RegExp) {
         // RegExp test
