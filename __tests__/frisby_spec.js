@@ -380,4 +380,22 @@ describe('Frisby', function() {
       })
       .done(doneFn);
   });
+
+  it('receive response body as raw buffer', function(doneFn) {
+    mocks.use(['getUser1']);
+
+    frisby.setup({ request: { rawBody: true } })
+      .get(testHost + '/users/1')
+      .expect('status', 200)
+      .expect('header', 'Content-Type', /json/)
+      .then(res => {
+        expect(res.json).toBeUndefined();
+        expect(res.body).not.toBeInstanceOf(String);
+        return String.fromCharCode.apply(null, new Uint8Array(res.body));
+      })
+      .then(text => {
+        expect(text).toContain('joe.schmoe@example.com');
+      })
+      .done(doneFn);
+  });
 });
