@@ -6,9 +6,6 @@ Status](https://travis-ci.org/vlucas/frisby.png?branch=master)](https://travis-c
 
 ![Frisby.js](https://www.frisbyjs.com/assets/frisbyjs.png)
 
-[![Sponsored by Okta](https://www.frisbyjs.com/assets/okta-sm.png)](https://developer.okta.com/signup/?utm_source=Frisby&utm_medium=logo&utm_campaign=Sponsor)
-Sponsored by Okta
-
 ## Introduction
 
 Frisby.js an API testing tool built on top of
