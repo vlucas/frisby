@@ -160,6 +160,24 @@ describe('expect(\'jsonTypes\')', function() {
       .done(doneFn);
   });
 
+  it('should override joi global options', function (doneFn) {
+    frisby.setup({ request: { inspectOnFailure: false } })
+      .fromJSON('1')
+      .expect('jsonTypes', Joi.number())
+      .catch(function (err) {
+        fail('this function will never be called.');
+      })
+      .expect('jsonTypes', Joi.number().options({
+        convert: false
+      }))
+      .then(function (res) {
+        fail('this function will never be called.');
+      })
+      .catch(function (err) {
+      })
+      .done(doneFn);
+  });
+
   it('should output path in error message (1)', function (doneFn) {
     frisby.setup({ request: { inspectOnFailure: false } })
       .fromJSON({
