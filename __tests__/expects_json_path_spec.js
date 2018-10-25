@@ -108,6 +108,25 @@ describe('expect(\'json\', <path>, <value>)', function() {
         .expect('jsonTypes', 'data.*.id', Joi.number())
         .done(doneFn);
     });
+
+    it('should test every object in an object', function(doneFn) {
+      mocks.use(['getUsersName']);
+
+      frisby.fetch(testHost + '/users.name')
+        .expect('jsonTypes', 'data.&', {
+          id: Joi.number(),
+          email: Joi.string().email()
+        })
+        .done(doneFn);
+    });
+
+    it('should test every object in an object for a single value', function(doneFn) {
+      mocks.use(['getUsersName']);
+
+      frisby.fetch(testHost + '/users.name')
+        .expect('jsonTypes', 'data.&.id', Joi.number())
+        .done(doneFn);
+    });
   });
 
 });

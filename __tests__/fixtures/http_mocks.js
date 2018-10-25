@@ -25,6 +25,23 @@ const mocks = {
       });
   },
 
+  getUsersName() {
+    return nock(mockHost)
+      .get('/users.name')
+      .reply(200, {
+        data: {
+          joe: {
+            id: 1,
+            email: 'joe.schmoe@example.com'
+          },
+          testy: {
+            id: 2,
+            email: 'testy.mctestface@example.com'
+          }
+        }
+      });
+  },
+
   getUser1() {
     return nock(mockHost)
       .get('/users/1')
