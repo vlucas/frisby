@@ -4,9 +4,7 @@
   "description": "Frisby.js v2.0: REST API Endpoint Testing built on Jasmine",
   "homepage": "http://frisbyjs.com",
   "author": "Vance Lucas <vance@vancelucas.com>",
-  "license": {
-    "type": "BSD-3-Clause"
-  },
+  "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
     "url": "http://github.com/vlucas/frisby"
