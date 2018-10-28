@@ -58,6 +58,25 @@ describe('expect(\'json\', <path>, <value>)', function() {
         .done(doneFn);
     });
 
+    it('should test one of the values in an object', function(doneFn) {
+      mocks.use(['getUsersName']);
+
+      frisby.fetch(testHost + '/users.name')
+        .expect('json', 'data.?', {
+          id: 1,
+          email: 'joe.schmoe@example.com'
+        })
+        .done(doneFn);
+    });
+
+    it('should test one of the values in an object for a single field', function(doneFn) {
+      mocks.use(['getUsersName']);
+
+      frisby.fetch(testHost + '/users.name')
+        .expect('json', 'data.?.email', 'joe.schmoe@example.com')
+        .done(doneFn);
+    });
+
     it('should error on an empty array (1)', function(doneFn) {
       frisby.setup({ request: { inspectOnFailure: false } })
         .fromJSON([])
@@ -125,6 +144,25 @@ describe('expect(\'json\', <path>, <value>)', function() {
 
       frisby.fetch(testHost + '/users.name')
         .expect('jsonTypes', 'data.&.id', Joi.number())
+        .done(doneFn);
+    });
+
+    it('should test every object in an object (2)', function(doneFn) {
+      mocks.use(['getUsersName']);
+
+      frisby.fetch(testHost + '/users.name')
+        .expect('jsonTypes', 'data.*', {
+          id: Joi.number(),
+          email: Joi.string().email()
+        })
+        .done(doneFn);
+    });
+
+    it('should test every object in an object for a single value (2)', function(doneFn) {
+      mocks.use(['getUsersName']);
+
+      frisby.fetch(testHost + '/users.name')
+        .expect('jsonTypes', 'data.*.id', Joi.number())
         .done(doneFn);
     });
   });
