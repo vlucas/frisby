@@ -193,6 +193,10 @@ class FrisbySpec {
     return this._requestWithBody('DELETE', url, params);
   }
 
+  delete(url, params) {
+    return this.del(url, params);
+  }
+
   /**
    *
    */
