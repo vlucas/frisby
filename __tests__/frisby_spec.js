@@ -126,6 +126,15 @@ describe('Frisby', function() {
       .done(doneFn);
   });
 
+  it('should call Frisby spec delete()', function(doneFn) {
+    mocks.use(['deleteUser1']);
+
+    frisby.setup({ request: { inspectOnFailure: false } })
+      .delete(testHost + '/users/1')
+      .expect('status', 204)
+      .done(doneFn);
+  });
+
   it('should use new responseBody when returning another Frisby spec from then()', function (doneFn) {
     mocks.use(['getUser1', 'getUser2WithDelay']);
 
