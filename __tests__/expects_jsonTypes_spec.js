@@ -143,6 +143,7 @@ describe('expect(\'jsonTypes\')', function() {
     frisby.fromJSON({
       offers: [{name: 'offer1'}, {name: 'offer2'}]
     })
+      .expect('jsonTypes', 'offers', Joi.array())
       .expect('jsonTypes', 'offers.*', {
         name: Joi.string()
       })

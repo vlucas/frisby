@@ -15,22 +15,10 @@ function withPath(path, jsonBody, callback) {
   // Use given path to check deep objects
   _.each(_.toPath(path), segment => {
     _.each(jsonChunks.splice(0), jsonChunk => {
-      let jt = typeof jsonChunk;
-
-      if ('*' === segment || '?' === segment) {
-        // Must be array if special characters are present
-        if (!_.isArray(jsonChunk)) {
-          throw new TypeError(`Expected '${path}' to be Array (got '${jt}' from JSON response)`);
-        }
-
-        type = segment;
-        _.each(jsonChunk, value => {
-          jsonChunks.push(value);
-        });
-      } else if ('&' === segment) {
+      if (_.includes(['*', '?', '&'], segment)) {
         // Must be object if special character is present
         if (!_.isObject(jsonChunk)) {
-          throw new TypeError(`Expected '${path}' to be Object (got '${jt}' from JSON response)`);
+          throw new TypeError(`Expected '${path}' to be Object (got '${typeof jsonChunk}' from JSON response)`);
         }
 
         type = segment;
@@ -50,7 +38,7 @@ function withPath(path, jsonBody, callback) {
   });
 
   if ('?' === type) {
-    // ONE item in array should match
+    // ONE item in object and array should match
     let itemCount = jsonChunks.length;
     let errorCount = 0;
     let errorLast;
@@ -69,7 +57,7 @@ function withPath(path, jsonBody, callback) {
       throw errorLast || new Error(`Expected one object in path '${path}' to match provided JSON values`);
     }
   } else {
-    // EACH item in array should match
+    // EACH item in object and array should match
     // Normal matcher
     _.each(jsonChunks, jsonChunk => {
       callback(jsonChunk);
