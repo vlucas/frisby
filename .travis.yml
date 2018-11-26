@@ -6,8 +6,9 @@ cache:
 
 node_js:
   - "6"
-  - "7"
   - "8"
+  - "10"
+  - "11"
 
 install:
   - npm install
