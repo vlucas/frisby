@@ -110,14 +110,14 @@ class FrisbySpec {
   }
 
   _fetchParams(params = {}) {
-    let fetchParams = _.merge({}, this._setupDefaults.request, params);
+    let fetchParams = _.cloneDeep(this._setupDefaults.request);
 
     // Form handling - send correct form headers
     if (params.body instanceof FormData) {
-      fetchParams.headers = _.merge(fetchParams.headers, fetchParams.body.getHeaders());
+      delete fetchParams.headers['Content-Type'];
     }
 
-    return fetchParams;
+    return _.merge(fetchParams, params);
   }
 
   /**
