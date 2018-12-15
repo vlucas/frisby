@@ -264,7 +264,13 @@ const mocks = {
       .reply(200, '{"aaa":}', {
         'Content-Type': 'application/json'
       });
-  }
+  },
+
+  networkError() {
+    return nock(mockHost)
+      .get('/bad-network')
+      .replyWithError('Network failed.');
+  },
 
 };
 

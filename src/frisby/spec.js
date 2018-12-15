@@ -226,16 +226,20 @@ class FrisbySpec {
       return onFulfilled;
     }
 
-    this._ensureHasFetched();
-    this._fetch = this._fetch.then(response => {
-      let result = onFulfilled ? onFulfilled(response) : null;
+    if (this._fetch) {
+      this._fetch = this._fetch.then(response => {
+        let result = onFulfilled ? onFulfilled(response) : null;
 
-      if (result) {
-        return result;
-      } else {
-        return response;
-      }
-    }, err => onRejected ? onRejected(err) : Promise.reject(err));
+        if (result) {
+          return result;
+        } else {
+          return response;
+        }
+      }, err => onRejected ? onRejected(err) : Promise.reject(err));
+    } else {
+      onFulfilled(this);
+    }
+
     return this;
   }
 
