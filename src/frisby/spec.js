@@ -71,7 +71,7 @@ class FrisbySpec {
       status: 200,
       statusText: 'OK',
       headers: headers,
-      size: jsonString.length,
+      size: _.isUndefined(jsonString) ? 0 : jsonString.length,
       timeout: 0
     });
 
@@ -83,7 +83,9 @@ class FrisbySpec {
           .then(text => {
             let response = this._response;
             response._body = text;
-            response._json = JSON.parse(text);
+            if (text.length > 0) {
+              response._json = JSON.parse(text);
+            }
           });
       })
       .then(() => {

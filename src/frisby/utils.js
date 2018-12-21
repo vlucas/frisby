@@ -4,6 +4,10 @@ const _ = require('lodash');
 
 // Path execution method
 function withPath(path, jsonBody, callback) {
+  if (_.isUndefined(jsonBody)) {
+    throw new Error('jsonBody is undefined');
+  }
+
   // Execute immediately with no path
   if (!path) {
     return callback(jsonBody);

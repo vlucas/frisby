@@ -216,6 +216,17 @@ describe('expect(\'jsonTypes\')', function() {
       })
       .done(doneFn);
   });
+
+  it('should error in undefined JSON', function (doneFn) {
+    frisby.setup({ request: { inspectOnFailure: false } })
+      .fromJSON(undefined)
+      .expect('jsonTypes', Joi.string())
+      .catch(function (err) {
+        expect(err.name).toBe('Error');
+        expect(err.message).toContain('jsonBody is undefined');
+      })
+      .done(doneFn);
+  });
 });
 
 describe('expect(\'jsonTypesStrict\')', function() {
