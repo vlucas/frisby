@@ -261,6 +261,15 @@ class FrisbySpec {
   }
 
   /**
+   * Custom finally handler (Promise finally)
+   */
+  finally(onFinally) {
+    this._ensureHasFetched();
+    this._fetch = this._fetch.finally(() => onFinally ? onFinally() : undefined);
+    return this;
+  }
+
+  /**
    * Return internal promise used by Frisby.js
    * Note: Using this will break the chainability of Frisby.js method calls
    */
