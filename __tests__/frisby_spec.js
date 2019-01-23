@@ -407,4 +407,14 @@ describe('Frisby', function() {
       })
       .done(doneFn);
   });
+
+  it('Test FrisbySpec finally', function(doneFn) {
+    mocks.use(['getUser1']);
+
+    frisby.fetch(testHost + '/users/1')
+      .expect('status', 200)
+      .finally(() => {
+      })
+      .done(doneFn);
+  });
 });
