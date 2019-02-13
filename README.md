@@ -81,10 +81,10 @@ response of your API.
 
  * `status` - Check HTTP status
  * `header` - Check HTTP header key + value
- * `json` - Match json structure + values (RegExp can be used)
- * `jsonStrict` - Match EXACT json structure + values (extra keys not tested for cause test failures)
- * `jsonTypes` - Match json structure + value types
- * `jsonTypesStrict` - Match EXACT json structure + value types (extra keys not tested for cause test failures)
+ * `json` - Match JSON structure + values (RegExp can be used)
+ * `jsonStrict` - Match EXACT JSON structure + values (extra keys not tested for cause test failures)
+ * `jsonTypes` - Match JSON structure + value types
+ * `jsonTypesStrict` - Match EXACT JSON structure + value types (extra keys not tested for cause test failures)
  * `bodyContains` - Match partial body content (string or regex)
 
 ## Define Custom Expect Handlers
@@ -120,7 +120,7 @@ afterAll(function () {
 
 ### Expecting JSON types using Joi
 
-With Frisby, you can use [Joi](https://github.com/hapijs/joi) to set the expectation that the json body response from the HTTP call meets a defined schema. Check out the [Joi API](https://github.com/hapijs/joi/blob/master/API.md) for more details.
+With Frisby, you can use [Joi](https://github.com/hapijs/joi) to set the expectation that the JSON body response from the HTTP call meets a defined schema. Check out the [Joi API](https://github.com/hapijs/joi/blob/master/API.md) for more details.
 
 ## Using Jasmine Matchers Directly
 
