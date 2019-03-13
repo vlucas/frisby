@@ -417,6 +417,15 @@ describe('Frisby', function() {
       .done(doneFn);
   });
 
+  it('should support http method HEAD', function(doneFn) {
+    mocks.use(['head']);
+
+    frisby.head(testHost + '/')
+      .expect('status', 200)
+      .expect('header', 'Content-Type', /charset=utf-8/)
+      .done(doneFn);
+  });
+
   it('Test FrisbySpec finally', function(doneFn) {
     mocks.use(['getUser1']);
 

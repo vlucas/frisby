@@ -175,6 +175,13 @@ class FrisbySpec {
   }
 
   /**
+   * HEAD convenience wrapper
+   */
+  head(url, params = {}) {
+    return this.fetch(url, Object.assign(params, {method: 'HEAD'}));
+  }
+
+  /**
    * PATCH convenience wrapper
    */
   patch(url, params) {

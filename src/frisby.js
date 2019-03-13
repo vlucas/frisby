@@ -105,6 +105,9 @@ function options() {
 function get() {
   return createWithAction('get', arguments);
 }
+function head() {
+  return createWithAction('head', arguments);
+}
 function patch() {
   return createWithAction('patch', arguments);
 }
@@ -146,6 +149,7 @@ module.exports = {
   fromJSON,
   get: get,
   globalSetup,
+  head,
   Joi,
   options,
   patch,
