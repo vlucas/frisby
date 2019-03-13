@@ -161,6 +161,13 @@ class FrisbySpec {
   }
 
   /**
+   * OPTIONS convenience wrapper
+   */
+  options(url, params) {
+    return this._requestWithBody('OPTIONS', url, params);
+  }
+
+  /**
    * GET convenience wrapper
    */
   get(url, params) {

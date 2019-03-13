@@ -99,6 +99,9 @@ function fetch() {
 function fromJSON() {
   return createWithAction('fromJSON', arguments);
 }
+function options() {
+  return createWithAction('options', arguments);
+}
 function get() {
   return createWithAction('get', arguments);
 }
@@ -144,6 +147,7 @@ module.exports = {
   get: get,
   globalSetup,
   Joi,
+  options,
   patch,
   post,
   put,
