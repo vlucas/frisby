@@ -163,8 +163,8 @@ class FrisbySpec {
   /**
    * OPTIONS convenience wrapper
    */
-  options(url, params) {
-    return this._requestWithBody('OPTIONS', url, params);
+  options(url, params = {}) {
+    return this.fetch(url, Object.assign(params, {method: 'OPTIONS'}));
   }
 
   /**
