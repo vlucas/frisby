@@ -408,6 +408,15 @@ describe('Frisby', function() {
       .done(doneFn);
   });
 
+  it('should support http method OPTIONS', function(doneFn) {
+    mocks.use(['options']);
+
+    frisby.options(testHost + '/')
+      .expect('status', 204)
+      .expect('header', 'Access-Control-Allow-Methods', /GET/)
+      .done(doneFn);
+  });
+
   it('Test FrisbySpec finally', function(doneFn) {
     mocks.use(['getUser1']);
 

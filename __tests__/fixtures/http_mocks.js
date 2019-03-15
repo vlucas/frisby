@@ -187,6 +187,14 @@ const mocks = {
       });
   },
 
+  options() {
+    return nock(mockHost)
+      .options('/')
+      .reply(204, '', {
+        'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE'
+      });
+  },
+
   /**
    * Cookies
    */
