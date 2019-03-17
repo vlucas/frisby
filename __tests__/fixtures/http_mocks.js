@@ -198,7 +198,7 @@ const mocks = {
   head() {
     return nock(mockHost)
       .head('/')
-      .reply(200, null, {
+      .reply(200, '', {
         'Content-Type': 'text/plain; charset=utf-8'
       });
   },
