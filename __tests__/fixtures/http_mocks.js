@@ -12,7 +12,7 @@ const mocks = {
     return nock(mockHost)
       .head('/users')
       .reply(200, '', {
-        'Content-Type': 'text/plain; charset=utf-8',
+        'Content-Type': 'application/json; charset=utf-8',
         'Content-Length': 92
       });
   },

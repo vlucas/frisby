@@ -34,9 +34,8 @@ describe('Frisby nested calls', function() {
 
     frisby.head(testHost + '/users')
       .expect('status', 200)
-      .inspectHeaders()
       .then(function(response) {
-        var length = Number(response.headers.get('Content-Length'));
+        let length = Number(response.headers.get('Content-Length'));
         expect(length).toBeLessThan(1000);
 
         frisby.get(testHost + '/users')
