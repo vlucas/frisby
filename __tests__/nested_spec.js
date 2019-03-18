@@ -28,4 +28,20 @@ describe('Frisby nested calls', function() {
       });
   });
 
+  // HEAD and GET
+  it('should support http method HEAD', function(doneFn) {
+    mocks.use(['headUsers', 'getUsers']);
+
+    frisby.head(testHost + '/users')
+      .expect('status', 200)
+      .inspectHeaders()
+      .then(function(response) {
+        var length = Number(response.headers.get('Content-Length'));
+        expect(length).toBeLessThan(1000);
+
+        frisby.get(testHost + '/users')
+          .expect('status', 200);
+      })
+      .done(doneFn);
+  });
 });

@@ -8,6 +8,15 @@ const mocks = {
   /**
    * Users
    */
+  headUsers() {
+    return nock(mockHost)
+      .head('/users')
+      .reply(200, '', {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Content-Length': 92
+      });
+  },
+
   getUsers() {
     return nock(mockHost)
       .get('/users')
@@ -192,14 +201,6 @@ const mocks = {
       .options('/')
       .reply(204, '', {
         'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE'
-      });
-  },
-
-  head() {
-    return nock(mockHost)
-      .head('/')
-      .reply(200, '', {
-        'Content-Type': 'text/plain; charset=utf-8'
       });
   },
 
