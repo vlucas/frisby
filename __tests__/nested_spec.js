@@ -39,8 +39,8 @@ describe('Frisby nested calls', function() {
         expect(length).toBeLessThan(1000);
 
         frisby.get(testHost + '/users')
-          .expect('status', 200);
-      })
-      .done(doneFn);
+          .expect('status', 200)
+          .done(doneFn);
+      });
   });
 });

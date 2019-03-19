@@ -161,13 +161,6 @@ class FrisbySpec {
   }
 
   /**
-   * OPTIONS convenience wrapper
-   */
-  options(url, params = {}) {
-    return this.fetch(url, Object.assign(params, {method: 'OPTIONS'}));
-  }
-
-  /**
    * GET convenience wrapper
    */
   get(url, params) {
@@ -179,6 +172,13 @@ class FrisbySpec {
    */
   head(url, params = {}) {
     return this.fetch(url, Object.assign(params, {method: 'HEAD'}));
+  }
+
+  /**
+   * OPTIONS convenience wrapper
+   */
+  options(url, params = {}) {
+    return this.fetch(url, Object.assign(params, {method: 'OPTIONS'}));
   }
 
   /**

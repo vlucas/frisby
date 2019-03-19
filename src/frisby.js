@@ -99,14 +99,14 @@ function fetch() {
 function fromJSON() {
   return createWithAction('fromJSON', arguments);
 }
-function options() {
-  return createWithAction('options', arguments);
-}
 function get() {
   return createWithAction('get', arguments);
 }
 function head() {
   return createWithAction('head', arguments);
+}
+function options() {
+  return createWithAction('options', arguments);
 }
 function patch() {
   return createWithAction('patch', arguments);
