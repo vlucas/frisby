@@ -39,9 +39,9 @@
   },
   "jest": {
     "testPathIgnorePatterns": [
-      "/__tests__/fixtures/",
+      "<rootDir>/__tests__/fixtures/",
       "/node_modules/",
-      "/src/"
+      "<rootDir>/src/"
     ],
     "verbose": false
   }
