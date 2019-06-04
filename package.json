@@ -33,15 +33,15 @@
     "encoding": "^0.1.12"
   },
   "devDependencies": {
-    "jest": "^21.2.1",
-    "nock": "^9.3.3",
-    "eslint": "^4.19.1"
+    "eslint": "^4.19.1",
+    "jest": "^24.6.0",
+    "nock": "^9.3.3"
   },
   "jest": {
     "testPathIgnorePatterns": [
-      "/__tests__/fixtures/",
+      "<rootDir>/__tests__/fixtures/",
       "/node_modules/",
-      "/src/"
+      "<rootDir>/src/"
     ],
     "verbose": false
   }
