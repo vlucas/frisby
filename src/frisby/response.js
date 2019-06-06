@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 class FrisbyResponse {
   constructor(fetchResponse) {
@@ -19,6 +19,10 @@ class FrisbyResponse {
 
   get json() {
     return this._json;
+  }
+
+  get responseTime() {
+    return this._responseTimeMs;
   }
 }
 

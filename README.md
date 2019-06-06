@@ -86,6 +86,7 @@ response of your API.
  * `jsonTypes` - Match JSON structure + value types
  * `jsonTypesStrict` - Match EXACT JSON structure + value types (extra keys not tested for cause test failures)
  * `bodyContains` - Match partial body content (string or regex)
+  * `responseTime` - Check if request completes within a specified duration (ms)
 
 ## Define Custom Expect Handlers
 
