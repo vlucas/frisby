@@ -28,7 +28,6 @@ const expects = {
     );
   },
 
-
   status(response, statusCode) {
     incrementAssertionCount();
 
