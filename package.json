@@ -23,14 +23,17 @@
   },
   "scripts": {
     "test": "jest",
-    "lint": "eslint src/** __tests__/**"
+    "lint": "eslint src/** __tests__/**",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
     "form-data": "^2.2.0",
     "joi": "^13.0.0",
     "lodash": "^4.17.10",
     "node-fetch": "^2.1.2",
-    "encoding": "^0.1.12"
+    "encoding": "^0.1.12",
+    "snyk": "^1.189.0"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
@@ -44,5 +47,6 @@
       "<rootDir>/src/"
     ],
     "verbose": false
-  }
+  },
+  "snyk": true
 }
