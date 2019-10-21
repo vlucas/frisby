@@ -79,6 +79,7 @@ class FrisbySpec {
     this._fetch = Promise.resolve(fetchResponse)
       .then(response => {
         this._response = new FrisbyResponse(response);
+        this._response._responseTimeMs = 0;
         return response.text()
           .then(text => {
             let response = this._response;
@@ -129,9 +130,11 @@ class FrisbySpec {
     let fetchParams = this._fetchParams(params);
     this._request = new fetch.Request(this._formatUrl(url, options.urlEncode), fetchParams);
 
+    let requestStartTime = Date.now();
     this._fetch = fetch(this._request, { timeout: this.timeout() }) // 'timeout' is a node-fetch option
       .then(response => {
         this._response = new FrisbyResponse(response);
+        this._response._responseTimeMs = Date.now() - requestStartTime;
         if (this._setupDefaults.request && this._setupDefaults.request.rawBody) {
           return response.arrayBuffer()
             .then(buffer => {

@@ -20,6 +20,10 @@ class FrisbyResponse {
   get json() {
     return this._json;
   }
+
+  get responseTime() {
+    return this._responseTimeMs;
+  }
 }
 
 module.exports = FrisbyResponse;

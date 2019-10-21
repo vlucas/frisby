@@ -19,6 +19,15 @@ function incrementAssertionCount() {
 
 const expects = {
 
+  responseTime(response, maxResponseTime) {
+    incrementAssertionCount();
+
+    assert.ok(
+      maxResponseTime >= response.responseTime,
+      `Request took longer than ${maxResponseTime}ms: (${response.responseTime}ms).`
+    );
+  },
+
   status(response, statusCode) {
     incrementAssertionCount();
 
