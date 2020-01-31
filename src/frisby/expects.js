@@ -2,7 +2,7 @@
 
 const assert = require('assert');
 const _ = require('lodash');
-const Joi = require('joi');
+const Joi = require('@hapi/joi');
 const utils = require('./utils');
 
 /**

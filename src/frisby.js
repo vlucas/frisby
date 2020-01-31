@@ -1,7 +1,7 @@
 'use strict';
 
 const _ = require('lodash');
-const Joi = require('joi');
+const Joi = require('@hapi/joi');
 const pkg = require('../package.json');
 const FormData = require('form-data');
 const FrisbySpec = require('./frisby/spec.js');
