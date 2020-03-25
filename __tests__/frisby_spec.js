@@ -426,4 +426,12 @@ describe('Frisby', function() {
       })
       .done(doneFn);
   });
+
+  it('use WHATWG URL API', function(doneFn) {
+    mocks.use(['getUser1']);
+
+    frisby.fetch(new URL('/users/1', testHost))
+      .expect('status', 200)
+      .done(doneFn);
+  });
 });
