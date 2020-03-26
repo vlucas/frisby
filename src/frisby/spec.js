@@ -103,6 +103,8 @@ class FrisbySpec {
   _formatUrl(url, urlEncode = true) {
     let baseUrl = this.getBaseUrl();
     let newUrl = urlEncode && _.isString(url) ? encodeURI(url) : url;
+    // Legacy urlObject cannot be set to URL.
+    newUrl = newUrl.href ? newUrl.href : newUrl;
     return baseUrl ? new URL(newUrl, baseUrl) : new URL(newUrl);
   }
 
