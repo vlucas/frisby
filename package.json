@@ -13,7 +13,7 @@
     "testing",
     "api",
     "REST",
-    "jasmine",
+    "jest",
     "bdd",
     "frisby"
   ],
