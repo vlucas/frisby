@@ -166,13 +166,13 @@ describe('expect(\'jsonTypes\')', function() {
       .fromJSON('1')
       .expect('jsonTypes', Joi.number())
       .catch(function (err) {
-        fail('this function will never be called.');
+        throw new Error('this function will never be called.');
       })
       .expect('jsonTypes', Joi.number().options({
         convert: false
       }))
       .then(function (res) {
-        fail('this function will never be called.');
+        throw new Error('this function will never be called.');
       })
       .catch(function (err) {
       })

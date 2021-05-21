@@ -350,7 +350,7 @@ describe('Frisby', function() {
     frisby.get(testHost + '/users/10')
       .expect('json', { id: 10 })
       .then(function (res) {
-        fail('this function will never be called.');
+        throw new Error('this function will never be called.');
       })
       .catch(function (err) {
         expect(err.name).toContain('FetchError');
@@ -360,7 +360,7 @@ describe('Frisby', function() {
           .expect('json', { id: 10 });
       })
       .then(function (res) {
-        fail('this function will never be called.');
+        throw new Error('this function will never be called.');
       })
       .catch(function (err) {
         expect(err.name).toContain('AssertionError');
@@ -380,7 +380,7 @@ describe('Frisby', function() {
     frisby.setup({ request: { inspectOnFailure: false } })
       .get(testHost + '/res/invalid')
       .then(function (res) {
-        fail('this function will never be called.');
+        throw new Error('this function will never be called.');
       })
       .catch(function (err) {
         expect(err.message).toMatch(/^Invalid json response /);

@@ -13,13 +13,13 @@
     "testing",
     "api",
     "REST",
-    "jasmine",
+    "jest",
     "bdd",
     "frisby"
   ],
   "main": "./src/frisby",
   "engines": {
-    "node": ">= 8.0.0"
+    "node": ">= 10.0.0"
   },
   "scripts": {
     "test": "jest",
@@ -33,9 +33,9 @@
     "encoding": "^0.1.12"
   },
   "devDependencies": {
-    "eslint": "^4.19.1",
-    "jest": "^24.6.0",
-    "nock": "^11.6.0"
+    "eslint": "^7.10.0",
+    "jest": "^26.4.2",
+    "nock": "^13.0.4"
   },
   "jest": {
     "testPathIgnorePatterns": [
