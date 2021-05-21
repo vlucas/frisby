@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "form-data": "^2.2.0",
-    "joi": "^13.0.0",
+    "joi": "^17.4.0",
     "lodash": "^4.17.21",
     "node-fetch": "^2.6.1",
     "encoding": "^0.1.13"
