@@ -112,11 +112,11 @@ const expects = {
 
     let options = { allowUnknown: true };
     if (path) {
-      options.language = { root: path };
+      options.messages = { root: path };
     }
 
     utils.withPath(path, response.json, function jsonTypesAssertion(jsonChunk) {
-      let result = Joi.validate(jsonChunk, json, options);
+      const result = Joi.compile(json).validate(jsonChunk, options);
 
       if (result.error) {
         throw result.error;
@@ -132,11 +132,11 @@ const expects = {
 
     let options = {};
     if (path) {
-      options.language = { root: path };
+      options.messages = { root: path };
     }
 
     utils.withPath(path, response.json, function jsonTypesAssertion(jsonChunk) {
-      let result = Joi.validate(jsonChunk, json, options);
+      const result = Joi.compile(json).validate(jsonChunk, options);
 
       if (result.error) {
         throw result.error;
