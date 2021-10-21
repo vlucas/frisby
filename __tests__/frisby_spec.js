@@ -426,4 +426,22 @@ describe('Frisby', function() {
       })
       .done(doneFn);
   });
+
+  it('use WHATWG URL API', function(doneFn) {
+    mocks.use(['getUser1']);
+
+    frisby.fetch(new URL('/users/1', testHost))
+      .expect('status', 200)
+      .done(doneFn);
+  });
+
+  it('use Legacy URL API', function(doneFn) {
+    mocks.use(['getUser1']);
+
+    const url = require('url');
+
+    frisby.fetch(url.parse(testHost + '/users/1'))
+      .expect('status', 200)
+      .done(doneFn);
+  });
 });

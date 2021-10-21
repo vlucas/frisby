@@ -1,8 +1,7 @@
 # Frisby
 
 [![NPM](https://nodei.co/npm/frisby.png)](https://nodei.co/npm/frisby/)
-[![Build
-Status](https://travis-ci.org/vlucas/frisby.png?branch=master)](https://travis-ci.org/vlucas/frisby)
+[![CI](https://github.com/vlucas/frisby/actions/workflows/ci.yml/badge.svg)](https://github.com/vlucas/frisby/actions/workflows/ci.yml)
 
 ![Frisby.js](https://www.frisbyjs.com/assets/frisbyjs.png)
 

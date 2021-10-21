@@ -63,6 +63,18 @@ describe('Frisby', function() {
       .done(doneFn);
   });
 
+  it('expectHeader should match comma separated header', function(doneFn) {
+    mocks.use(['options']);
+
+    frisby.options(testHost + '/')
+      .expect('status', 204)
+      .expect('header', 'Access-Control-Allow-Methods', /GET/)
+      .expect('header', 'Access-Control-Allow-Methods', /GET,HEAD,PUT,PATCH,POST,DELETE/)
+      .expect('header', 'Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE')
+      .done(doneFn);
+  });
+
+
   it('expectHeader should match array header', function(doneFn) {
     mocks.use(['arrayHeader']);
 
