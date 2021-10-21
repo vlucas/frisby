@@ -27,7 +27,6 @@
   },
   "dependencies": {
     "form-data": "^4.0.0",
-    "joi": "^17.4.2",
     "lodash": "^4.17.21",
     "node-fetch": "^2.6.5",
     "encoding": "^0.1.13"
@@ -35,7 +34,11 @@
   "devDependencies": {
     "eslint": "^7.32.0",
     "jest": "^27.3.1",
+    "joi": "^17.4.2",
     "nock": "^13.1.4"
+  },
+  "peerDependencies": {
+    "joi": "^17.4.2"
   },
   "jest": {
     "testPathIgnorePatterns": [
