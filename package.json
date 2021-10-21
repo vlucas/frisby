@@ -26,16 +26,16 @@
     "lint": "eslint src/** __tests__/**"
   },
   "dependencies": {
-    "form-data": "^2.2.0",
-    "joi": "^13.0.0",
-    "lodash": "^4.17.15",
-    "node-fetch": "^2.1.2",
-    "encoding": "^0.1.12"
+    "form-data": "^4.0.0",
+    "joi": "^13.7.0",
+    "lodash": "^4.17.21",
+    "node-fetch": "^2.6.5",
+    "encoding": "^0.1.13"
   },
   "devDependencies": {
-    "eslint": "^7.10.0",
-    "jest": "^26.4.2",
-    "nock": "^13.0.4"
+    "eslint": "^7.32.0",
+    "jest": "^27.3.1",
+    "nock": "^13.1.4"
   },
   "jest": {
     "testPathIgnorePatterns": [
