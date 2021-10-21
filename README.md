@@ -15,7 +15,7 @@ fast and fun.
 
 Install Frisby v2.x from NPM into your project:
 
-    npm install frisby --save-dev
+    npm install --save-dev frisby joi
 
 ## Creating Tests
 
