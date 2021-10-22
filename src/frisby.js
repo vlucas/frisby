@@ -150,7 +150,7 @@ module.exports = {
   get: get,
   globalSetup,
   head,
-  Joi,
+  Joi, // REVIEW: export?
   options,
   patch,
   post,

@@ -15,7 +15,7 @@ fast and fun.
 
 Install Frisby v2.x from NPM into your project:
 
-    npm install frisby --save-dev
+    npm install --save-dev frisby joi
 
 ## Creating Tests
 
@@ -39,7 +39,7 @@ A more complex example with nested dependent Frisby tests with Frisby's Promise-
 
 ```javascript
 const frisby = require('frisby');
-const Joi = frisby.Joi; // Frisby exposes Joi for convenience
+const Joi = require('joi');
 
 describe('Posts', function () {
   it('should return all posts and first post should have comments', function () {
