@@ -3,7 +3,7 @@
 [![NPM](https://nodei.co/npm/frisby.png)](https://nodei.co/npm/frisby/)
 [![CI](https://github.com/vlucas/frisby/actions/workflows/ci.yml/badge.svg)](https://github.com/vlucas/frisby/actions/workflows/ci.yml)
 
-![Frisby.js](https://www.frisbyjs.com/assets/frisbyjs.png)
+![Frisby.js](https://user-images.githubusercontent.com/5210420/193491809-ecfe1741-3931-4c32-8554-483294e91592.png)
 
 ## Introduction
 
