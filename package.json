@@ -19,7 +19,7 @@
   ],
   "main": "./src/frisby",
   "engines": {
-    "node": ">= 10.0.0"
+    "node": ">= 14.17.0"
   },
   "scripts": {
     "test": "jest",
