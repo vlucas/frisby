@@ -38,7 +38,7 @@
     "nock": "^13.1.4"
   },
   "peerDependencies": {
-    "joi": "^17.4.2"
+    "joi": ">= 13.7.0"
   },
   "jest": {
     "testPathIgnorePatterns": [
