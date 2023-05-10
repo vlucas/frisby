@@ -1,1 +1,3 @@
-node_modules
+__tests__
+.eslintrc.json
+.github
