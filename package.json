@@ -17,6 +17,9 @@
     "bdd",
     "frisby"
   ],
+  "files": [
+    "src"
+  ],
   "main": "./src/frisby",
   "engines": {
     "node": ">= 14.17.0"
