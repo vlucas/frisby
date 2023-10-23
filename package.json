@@ -31,14 +31,14 @@
   "dependencies": {
     "form-data": "^4.0.0",
     "lodash": "^4.17.21",
-    "node-fetch": "^2.6.5",
+    "node-fetch": "^2.7.0",
     "encoding": "^0.1.13"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
-    "jest": "^27.3.1",
-    "joi": "^17.4.2",
-    "nock": "^13.1.4"
+    "jest": "^27.5.1",
+    "joi": "^17.11.0",
+    "nock": "^13.3.6"
   },
   "peerDependencies": {
     "joi": ">= 13.7.0"
