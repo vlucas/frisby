@@ -19,6 +19,7 @@ const _globalSetupDefaults = {
     headers: {
       'Content-Type': 'application/json',
       'User-Agent': 'frisby/' + version + ' (+https://github.com/vlucas/frisby)',
+      'Connection': 'close',
     },
     rawBody: false,
     inspectOnFailure: true,
