@@ -32,7 +32,7 @@
     "encoding": "^0.1.13",
     "form-data": "^4.0.0",
     "lodash": "^4.17.21",
-    "node-fetch": "^2.7.0"
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
     "eslint": "^8.52.0",
