@@ -120,7 +120,7 @@ afterAll(function () {
 
 ### Expecting JSON types using Joi
 
-With Frisby, you can use [Joi](https://github.com/hapijs/joi) to set the expectation that the JSON body response from the HTTP call meets a defined schema. Check out the [Joi API](https://github.com/hapijs/joi/blob/master/API.md) for more details.
+With Frisby, you can use [Joi](https://github.com/sideway/joi) to set the expectation that the JSON body response from the HTTP call meets a defined schema. Check out the [joi.dev](https://joi.dev/api/) for more details.
 
 ## Using Jasmine Matchers Directly
 

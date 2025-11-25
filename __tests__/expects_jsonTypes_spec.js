@@ -1,7 +1,7 @@
 'use strict';
 
+const Joi = require('joi');
 const frisby = require('../src/frisby');
-const Joi = frisby.Joi;
 const mocks = require('./fixtures/http_mocks');
 
 const testHost = 'http://api.example.com';

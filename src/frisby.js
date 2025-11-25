@@ -1,7 +1,6 @@
 'use strict';
 
 const _ = require('lodash');
-const Joi = require('joi');
 const pkg = require('../package.json');
 const FormData = require('form-data');
 const FrisbySpec = require('./frisby/spec.js');
@@ -150,7 +149,6 @@ module.exports = {
   get: get,
   globalSetup,
   head,
-  Joi, // REVIEW: export?
   options,
   patch,
   post,
