@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/vlucas/frisby.png)](http://travis-ci.org/vlucas/frisby)
 # Frisby
 
 [![NPM](https://nodei.co/npm/frisby.png)](https://nodei.co/npm/frisby/)
